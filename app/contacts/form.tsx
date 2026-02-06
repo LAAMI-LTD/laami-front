@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { serviceOptions } from "./serviceChoices";
 
-export default function Contact() {
+type ContactProps = {
+  facebookUrl: string;
+  instagramUrl: string;
+};
+
+export default function Contact({ facebookUrl, instagramUrl }: ContactProps) {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -74,12 +79,14 @@ export default function Contact() {
     }
 
     const phoneNumber = "+254707848528";
-    
+
     // Find the service label
     const selectedService = serviceOptions.find(
-      (opt) => opt.value === formData.service
+      (opt) => opt.value === formData.service,
     );
-    const serviceLabel = selectedService ? selectedService.label : "Not specified";
+    const serviceLabel = selectedService
+      ? selectedService.label
+      : "Not specified";
 
     const message = `Hello, my name is ${formData.firstName} ${formData.lastName}. 
 
@@ -245,6 +252,50 @@ ${formData.message}`;
                             </span>
                           </p>
                         </div>
+                      </div>
+                    </div>
+                    {/* Social Links */}
+                    <div className="pt-4 border-t border-neutral-200 dark:border-neutral-800">
+                      <h4 className="text-xs uppercase tracking-wider font-semibold text-neutral-600 dark:text-neutral-400 mb-3">
+                        Follow us
+                      </h4>
+
+                      <div className="flex items-center gap-4">
+                        {/* Facebook */}
+                        <a
+                          href={facebookUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="Laami Labs on Facebook"
+                          className="group w-10 h-10 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center hover:bg-[#1877F2] transition-all duration-300"
+                        >
+                          <svg
+                            className="w-5 h-5 text-neutral-700 dark:text-neutral-300 group-hover:text-white"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.326v21.348C0 23.403.597 24 1.326 24h11.495v-9.294H9.691V11.01h3.13V8.309c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.312h3.587l-.467 3.696h-3.12V24h6.116C23.403 24 24 23.403 24 22.674V1.326C24 .597 23.403 0 22.675 0z" />
+                          </svg>
+                        </a>
+
+                        {/* Instagram */}
+                        <a
+                          href={instagramUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="Laami Labs on Instagram"
+                          className="group w-10 h-10 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#feda75] hover:via-[#d62976] hover:to-[#4f5bd5] transition-all duration-300"
+                        >
+                          <svg
+                            className="w-5 h-5 text-neutral-700 dark:text-neutral-300 group-hover:text-white"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.343 3.608 1.318.975.975 1.256 2.242 1.318 3.608.058 1.266.069 1.646.069 4.841 0 3.195-.012 3.575-.069 4.841-.062 1.366-.343 2.633-1.318 3.608-.975.975-2.242 1.256-3.608 1.318-1.266.058-1.646.069-4.85.069-3.204 0-3.584-.012-4.85-.069-1.366-.062-2.633-.343-3.608-1.318-.975-.975-1.256-2.242-1.318-3.608C2.175 15.575 2.163 15.195 2.163 12c0-3.195.012-3.575.069-4.841.062-1.366.343-2.633 1.318-3.608.975-.975 2.242-1.256 3.608-1.318C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.332.014 7.052.072 5.773.131 4.602.443 3.635 1.41 2.668 2.377 2.356 3.548 2.297 4.827.014 8.332 0 8.741 0 12c0 3.259.014 3.668.072 4.948.059 1.279.371 2.45 1.338 3.417.967.967 2.138 1.279 3.417 1.338C8.332 23.986 8.741 24 12 24s3.668-.014 4.948-.072c1.279-.059 2.45-.371 3.417-1.338.967-.967 1.279-2.138 1.338-3.417.058-1.28.072-1.689.072-4.948s-.014-3.668-.072-4.948c-.059-1.279-.371-2.45-1.338-3.417-.967-.967-2.138-1.279-3.417-1.338C15.668.014 15.259 0 12 0z" />
+                            <path d="M12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8z" />
+                            <circle cx="18.406" cy="5.594" r="1.44" />
+                          </svg>
+                        </a>
                       </div>
                     </div>
                   </div>
