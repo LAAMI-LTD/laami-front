@@ -165,7 +165,7 @@ ${formData.message}`;
                             href="tel:+254707848528"
                             className="text-base font-bold text-neutral-800 dark:text-neutral-200 hover:text-[#004d98] dark:hover:text-[#004d98] transition-colors"
                           >
-                            +254 711 372 214
+                            +254 707 848 528
                           </a>
                         </div>
                       </div>
