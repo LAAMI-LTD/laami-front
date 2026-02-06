@@ -36,7 +36,7 @@ export default function FloatingActions() {
 
       {/* WhatsApp with proper green */}
       <a
-        href="https://wa.me/254711372214"
+        href="https://wa.me/254707848528"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"

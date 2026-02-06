@@ -24,7 +24,7 @@ export default function CTA() {
       <p className="mt-8 text-gray-600 dark:text-gray-400">
         Still wondering where to begin? Let&apos;s chat about your vision –
         <a
-          href="https://wa.me/254711372214?text=Hello%20I%20would%20like%20to%20book%20a%20free%2030-minute%20business%20consultation."
+          href="https://wa.me/254707848528?text=Hello%20I%20would%20like%20to%20book%20a%20free%2030-minute%20business%20consultation."
           target="_blank"
           rel="noopener noreferrer"
           className="ml-2 text-[#009868] dark:text-green-500 hover:text-[#003d7a] dark:hover:text-blue-600 font-medium"

@@ -35,7 +35,7 @@ export default function HeroShowcase({
     <section className="relative bg-black text-white overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 z-0">
-        <Image src="/work.jpg" alt="" fill className="object-cover" priority />
+        <Image src="/work.avif" alt="" fill className="object-cover" priority />
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
       </div>
 

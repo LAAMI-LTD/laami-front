@@ -18,8 +18,8 @@ export default function Services({ services }: ServicesProps) {
   });
   const [isMobile, setIsMobile] = useState(false);
 
-  const phoneNumber = "+254711372214";
-  const whatsappNumber = "254711372214";
+  const phoneNumber = "+254707848528";
+  const whatsappNumber = "254707848528";
 
   // Check if mobile on mount and resize
   useEffect(() => {

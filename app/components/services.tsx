@@ -5,6 +5,7 @@ interface Service {
 }
 
 export default function Services() {
+  const CIRCLE_RADIUS = "clamp(11rem, 10vw, 16rem)";
   const services: Service[] = [
     {
       title: "Software That Works",
@@ -35,15 +36,15 @@ export default function Services() {
   const getClipPath = (position: string) => {
     switch (position) {
       case "bottom-right":
-        return "circle(calc(6.25rem + 7.5vw) at 100% 100%)";
+        return `circle(${CIRCLE_RADIUS} at 100% 100%)`;
       case "bottom-left":
-        return "circle(calc(6.25rem + 7.5vw) at 0% 100%)";
+        return `circle(${CIRCLE_RADIUS} at 0% 100%)`;
       case "top-right":
-        return "circle(calc(6.25rem + 7.5vw) at 100% 0%)";
+        return `circle(${CIRCLE_RADIUS} at 100% 0%)`;
       case "top-left":
-        return "circle(calc(6.25rem + 7.5vw) at 0% 0%)";
+        return `circle(${CIRCLE_RADIUS} at 0% 0%)`;
       default:
-        return "circle(calc(6.25rem + 7.5vw) at 100% 100%)";
+        return `circle(${CIRCLE_RADIUS} at 100% 100%)`;
     }
   };
 
@@ -55,10 +56,10 @@ export default function Services() {
   };
 
   const images = [
-    "/service/code.jpg", // code/software
-    "/service/corporate.jpg", // business/documents
-    "/service/design.jpg", // design/creativity
-    "/service/keyboard.jpg", // growth/analytics
+    "/service/code.avif", // code/software
+    "/service/corporate.avif", // business/documents
+    "/service/design.avif", // design/creativity
+    "/service/keyboard.avif", // growth/analytics
   ];
 
   // Color palette
@@ -236,7 +237,7 @@ export default function Services() {
           })}
         </div>
       </div>
-      <div className="grid-offer text-left grid sm:grid-cols-2 md:grid-cols-2 gap-5 max-w-5xl mx-auto">
+      <div className="grid-offer text-left grid sm:grid-cols-2 md:grid-cols-2 gap-5 max-w-6xl mx-auto">
         {services.map((service, index) => {
           // Calculate corner position for CSS custom properties
           const getCornerPosition = (position: string) => {

@@ -73,7 +73,7 @@ export default function Contact() {
       return;
     }
 
-    const phoneNumber = "+254711372214";
+    const phoneNumber = "+254707848528";
     
     // Find the service label
     const selectedService = serviceOptions.find(
@@ -162,7 +162,7 @@ ${formData.message}`;
                             Call/WhatsApp
                           </h4>
                           <a
-                            href="tel:+254711372214"
+                            href="tel:+254707848528"
                             className="text-base font-bold text-neutral-800 dark:text-neutral-200 hover:text-[#004d98] dark:hover:text-[#004d98] transition-colors"
                           >
                             +254 711 372 214
@@ -291,7 +291,7 @@ ${formData.message}`;
                     for immediate assistance.
                   </p>
                   <a
-                    href="tel:+254711372214"
+                    href="tel:+254707848528"
                     className="flex items-center justify-center gap-2 bg-white text-[#004d98] font-bold px-6 py-3 rounded-lg hover:scale-105 hover:shadow-xl transition-all duration-300"
                   >
                     <svg
@@ -623,10 +623,10 @@ ${formData.message}`;
                         </div>
                         <div className="text-white">
                           <h4 className="font-bold text-base mb-1">
-                            Message Sent!
+                            Our Email is currently not oparational
                           </h4>
                           <p className="text-sm font-medium">
-                            We&apos;ll get back to you within 24 hours.
+                            Email us at hello@laamilabs.co.ke
                           </p>
                         </div>
                       </div>

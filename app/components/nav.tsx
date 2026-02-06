@@ -9,7 +9,7 @@ interface NavProps {
   scrolled: boolean;
 }
 
-// Mobile Menu Component - Defined outside the main component
+// Mobile Menu Component
 const MobileMenuContent = ({ onClose }: { onClose: () => void }) => {
   const navLinks = {
     regular: [
@@ -26,10 +26,10 @@ const MobileMenuContent = ({ onClose }: { onClose: () => void }) => {
         <span className="font-bold text-white text-lg">
           LAAMI<span className="text-[#a50044]">LABS</span>
         </span>
-
         <button
           onClick={onClose}
           className="p-2 rounded-md bg-gray-800 hover:bg-[#004d98] transition"
+          aria-label="Close menu"
         >
           <X className="w-5 h-5 text-gray-300" />
         </button>
@@ -71,6 +71,22 @@ const MobileMenuContent = ({ onClose }: { onClose: () => void }) => {
 
 export default function Nav({ scrolled }: NavProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isWideScreen, setIsWideScreen] = useState(false);
+
+  // Check screen width for super wide monitors
+  useEffect(() => {
+    const checkScreenWidth = () => {
+      setIsWideScreen(window.innerWidth >= 1920);
+    };
+    
+    // Initial check
+    checkScreenWidth();
+    
+    // Add event listener
+    window.addEventListener('resize', checkScreenWidth);
+    
+    return () => window.removeEventListener('resize', checkScreenWidth);
+  }, []);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -91,6 +107,7 @@ export default function Nav({ scrolled }: NavProps) {
     ],
     cta: { href: "/contacts", label: "Reach Out" },
   };
+
   return (
     <>
       <nav
@@ -100,7 +117,12 @@ export default function Nav({ scrolled }: NavProps) {
             : "bg-gray-950/40"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Container with responsive max-widths */}
+        <div className={`
+          mx-auto px-4 sm:px-6 
+          ${isWideScreen ? 'max-w-[90rem] 2xl:max-w-[100rem] 3xl:max-w-[120rem]' : 'max-w-7xl'}
+          lg:px-8
+        `}>
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-3">
@@ -111,6 +133,7 @@ export default function Nav({ scrolled }: NavProps) {
                   width={32}
                   height={32}
                   className="object-contain"
+                  priority
                 />
               </div>
 
@@ -124,13 +147,13 @@ export default function Nav({ scrolled }: NavProps) {
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-6">
+            {/* Desktop Navigation - Enhanced for wide screens */}
+            <div className="hidden md:flex items-center space-x-6 xl:space-x-8">
               {navLinks.regular.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="relative px-4 py-2 font-medium text-gray-300 hover:text-white transition-colors group"
+                  className="relative px-4 py-2 font-medium text-gray-300 hover:text-white transition-colors group text-base lg:text-lg xl:text-lg"
                 >
                   {link.label}
                   <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-[#004d98] group-hover:w-3/4 transition-all duration-300" />
@@ -139,10 +162,10 @@ export default function Nav({ scrolled }: NavProps) {
 
               <Link
                 href={navLinks.cta.href}
-                className="px-6 py-2.5 font-semibold rounded-md text-white bg-[#a50044] hover:bg-[#004d98] transition-all flex items-center"
+                className="px-6 py-2.5 font-semibold rounded-md text-white bg-[#a50044] hover:bg-[#004d98] transition-all flex items-center text-base lg:text-lg xl:px-8 xl:py-3"
               >
                 {navLinks.cta.label}
-                <ChevronRight className="ml-2 w-4 h-4" />
+                <ChevronRight className="ml-2 w-4 h-4 lg:w-5 lg:h-5" />
               </Link>
             </div>
 
@@ -150,6 +173,7 @@ export default function Nav({ scrolled }: NavProps) {
             <button
               onClick={() => setMobileMenuOpen(true)}
               className="md:hidden p-2 rounded-md bg-gray-900 hover:bg-[#004d98] transition"
+              aria-label="Open menu"
             >
               <Menu className="w-5 h-5 text-gray-300" />
             </button>
@@ -157,7 +181,7 @@ export default function Nav({ scrolled }: NavProps) {
         </div>
       </nav>
 
-      {/* Mobile menu - separate from the nav, won't be affected by scrolled prop */}
+      {/* Mobile menu */}
       {mobileMenuOpen && (
         <MobileMenuContent onClose={() => setMobileMenuOpen(false)} />
       )}
