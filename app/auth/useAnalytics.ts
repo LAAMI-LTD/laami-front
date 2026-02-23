@@ -1,8 +1,9 @@
 // hooks/useAnalytics.ts
 'use client';
 
-import { analytics } from '../firebase';
+import { analyticsPromise } from '../firebase';
 import { logEvent, Analytics } from 'firebase/analytics';
+import { useState, useEffect } from 'react';
 
 // Define event parameter types for better type safety
 export type EventParams = {
@@ -34,24 +35,67 @@ export interface LoginErrorEventParams extends EventParams {
   error_message?: string;
 }
 
+// Cache the analytics instance once resolved
+let analyticsInstance: Analytics | null = null;
+let analyticsPromiseResolved = false;
+
+// Initialize analytics
+if (typeof window !== 'undefined') {
+  analyticsPromise.then((instance) => {
+    analyticsInstance = instance;
+    analyticsPromiseResolved = true;
+  });
+}
+
 export const useAnalytics = () => {
+  const [isReady, setIsReady] = useState(() => {
+    // Initialize with the current state
+    return analyticsPromiseResolved;
+  });
+
+  useEffect(() => {
+    // If already resolved, no need to set up the promise
+    if (analyticsPromiseResolved) {
+      return;
+    }
+
+    let mounted = true;
+
+    // Otherwise wait for it to resolve
+    analyticsPromise.then((instance) => {
+      analyticsInstance = instance;
+      analyticsPromiseResolved = true;
+      if (mounted) {
+        setIsReady(true);
+      }
+    });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   const logAnalyticsEvent = (
     eventName: EventNameType | string, 
     eventParams?: EventParams
   ): void => {
-    // Check if analytics is available
-    if (!analytics) {
-      // In development, log to console for debugging
-      if (process.env.NODE_ENV === 'development') {
-        console.log('🔍 Analytics event (dev):', { eventName, eventParams });
-      }
-      return;
+    // In development, log to console for debugging regardless
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🔍 Analytics event (dev):', { eventName, eventParams });
     }
 
-    try {
-      logEvent(analytics as Analytics, eventName, eventParams);
-    } catch (error) {
-      console.error('Failed to log analytics event:', error);
+    // Check if analytics is available in production
+    if (process.env.NODE_ENV === 'production') {
+      if (!analyticsInstance) {
+        console.warn('Analytics not initialized yet, event not logged:', eventName);
+        return;
+      }
+
+      try {
+        logEvent(analyticsInstance, eventName, eventParams);
+      } catch (error) {
+        console.error('Failed to log analytics event:', error);
+      }
     }
   };
 
@@ -67,11 +111,14 @@ export const useAnalytics = () => {
   return { 
     logAnalyticsEvent,
     logLoginSuccess,
-    logLoginError
+    logLoginError,
+    isReady
   };
 };
 
 // Type guard to check if analytics is available
-export const isAnalyticsAvailable = (): boolean => {
-  return !!analytics;
+export const isAnalyticsAvailable = async (): Promise<boolean> => {
+  if (analyticsInstance !== null) return true;
+  const instance = await analyticsPromise;
+  return instance !== null;
 };
