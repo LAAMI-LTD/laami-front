@@ -3,7 +3,6 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import { Share2, Check, Copy, Twitter, Facebook, Linkedin, Mail, Link as LinkIcon, X } from "lucide-react";
-import Nav from "../components/nav";
 import HeroShowcase from "./wokhero";
 import TabContentWrapper from "./tabs/TabContentWrapper";
 import Footer from "../components/footer";
@@ -52,7 +51,6 @@ const SOCIAL_SHARE_CONFIG = {
 type ToastType = "success" | "error" | "info";
 
 export default function WorkPage() {
-  const [scrolled, setScrolled] = useState(false);
   const [activeTab, setActiveTab] = useState<TabId>(getInitialTab);
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -65,27 +63,6 @@ export default function WorkPage() {
 
   const shareMenuRef = useRef<HTMLDivElement>(null);
   const shareButtonRef = useRef<HTMLButtonElement>(null);
-
-  const handleHashChange = useCallback(() => {
-    const hash = window.location.hash.replace("#", "");
-    if (VALID_TABS.includes(hash as TabId)) {
-      setActiveTab(hash as TabId);
-    }
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener("hashchange", handleHashChange);
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("hashchange", handleHashChange);
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [handleHashChange]);
 
   const handleTabChange = (tab: TabId) => {
     setActiveTab(tab);
@@ -307,8 +284,7 @@ export default function WorkPage() {
 
   return (
     <main className="min-h-screen bg-white dark:bg-[#000213] transition-colors duration-300">
-      <Nav scrolled={scrolled} />
-
+      
       <HeroShowcase activeTab={activeTab} onTabChange={handleTabChange} />
 
       {/* Tab Content Section with ID for scrolling */}

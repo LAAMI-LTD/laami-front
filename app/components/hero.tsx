@@ -9,7 +9,7 @@ export default function Home() {
         {/* Background with ultra-wide optimization */}
         <div className="absolute inset-0">
           <Image
-            src="/hero.avif"
+            src="/savanah.png"
             alt="Hero background"
             fill
             priority

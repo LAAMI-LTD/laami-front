@@ -3,7 +3,6 @@ export interface Service {
   title: string;
   description: string;
   time: string;
-  starting: string;
 }
 
 export interface BusinessStructure {

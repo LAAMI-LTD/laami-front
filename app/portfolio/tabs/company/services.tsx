@@ -151,14 +151,6 @@ Sent via Business Registration Portal - Services Inquiry`,
                   {service.time}
                 </p>
               </div>
-              <div>
-                <span className="text-gray-500 dark:text-gray-400 text-sm">
-                  Investment
-                </span>
-                <p className="text-[#a50044] dark:text-pink-500 font-medium">
-                  {service.starting}
-                </p>
-              </div>
               <button
                 onClick={() => handleSelectService(service)}
                 className="px-4 py-2 bg-[#004d98] dark:bg-blue-600 text-white rounded-lg text-sm hover:bg-[#003d7a] dark:hover:bg-blue-700 transition-colors hover:scale-105 active:scale-95"
@@ -219,14 +211,6 @@ Sent via Business Registration Portal - Services Inquiry`,
                   </p>
                   <p className="text-gray-900 dark:text-white font-medium text-sm sm:text-base">
                     {selectedService.time}
-                  </p>
-                </div>
-                <div className="bg-gray-50 dark:bg-gray-700/50 p-3 sm:p-4 rounded-lg">
-                  <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm mb-1">
-                    Starting From
-                  </p>
-                  <p className="text-[#a50044] dark:text-pink-500 font-medium text-sm sm:text-base">
-                    {selectedService.starting}
                   </p>
                 </div>
               </div>

@@ -15,28 +15,24 @@ export default function CompanyContent() {
       description:
         "We handle everything from Limited Companies to Sole Proprietorships so you can focus on what matters - building your dream.",
       time: "3-7 Days",
-      starting: "From KSh 17,000",
     },
     {
       title: "Protect Your Business Name",
       description:
         "Secure the perfect name for your venture. We'll search, reserve and register it officially so no one else can use it.",
       time: "1-2 Days",
-      starting: "From KSh 2,500",
     },
     {
       title: "Stay Tax Compliant from Day One",
       description:
         "We'll handle all KRA requirements - PIN registration, tax setup, VAT if needed - so you never worry about penalties.",
       time: "1-2 Days",
-      starting: "From KSh 3,000",
     },
     {
       title: "Open for Business Legally",
       description:
         "Get your Single Business Permit and all county approvals so you can operate smoothly without legal hurdles.",
       time: "2-5 Days",
-      starting: "From KSh 5,000",
     },
   ];
 

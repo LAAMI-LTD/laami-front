@@ -20,7 +20,7 @@ export default function CTA() {
         {/* Dark */}
         <div
           className="absolute inset-0 bg-cover bg-left hidden dark:block"
-          style={{ backgroundImage: "url('/card5.png')" }}
+          style={{ backgroundImage: "url('/fabric-logo-2.png')" }}
         />
 
         {/* Soft overlay (more readable than mix-blend) */}

@@ -7,6 +7,65 @@ type ContactProps = {
 };
 
 export default function Contact({ facebookUrl, instagramUrl }: ContactProps) {
+  const SOCIAL_LINKS = [
+    {
+      label: "Instagram",
+      href: "https://www.instagram.com/laamilabs",
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.343 3.608 1.318.975.975 1.256 2.242 1.318 3.608.058 1.266.069 1.646.069 4.841 0 3.195-.012 3.575-.069 4.841-.062 1.366-.343 2.633-1.318 3.608-.975.975-2.242 1.256-3.608 1.318-1.266.058-1.646.069-4.85.069-3.204 0-3.584-.012-4.85-.069-1.366-.062-2.633-.343-3.608-1.318-.975-.975-1.256-2.242-1.318-3.608C2.175 15.575 2.163 15.195 2.163 12c0-3.195.012-3.575.069-4.841.062-1.366.343-2.633 1.318-3.608.975-.975 2.242-1.256 3.608-1.318C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.332.014 7.052.072 5.773.131 4.602.443 3.635 1.41 2.668 2.377 2.356 3.548 2.297 4.827.014 8.332 0 8.741 0 12c0 3.259.014 3.668.072 4.948.059 1.279.371 2.45 1.338 3.417.967.967 2.138 1.279 3.417 1.338C8.332 23.986 8.741 24 12 24s3.668-.014 4.948-.072c1.279-.059 2.45-.371 3.417-1.338.967-.967 1.279-2.138 1.338-3.417.058-1.28.072-1.689.072-4.948s-.014-3.668-.072-4.948c-.059-1.279-.371-2.45-1.338-3.417-.967-.967-2.138-1.279-3.417-1.338C15.668.014 15.259 0 12 0z" />
+          <path d="M12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8z" />
+          <circle cx="18.406" cy="5.594" r="1.44" />
+        </svg>
+      ),
+    },
+    {
+      label: "Facebook",
+      href: "https://www.facebook.com/share/1Zv7PtL4T3/",
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.326v21.348C0 23.403.597 24 1.326 24h11.495v-9.294H9.691V11.01h3.13V8.309c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.312h3.587l-.467 3.696h-3.12V24h6.116C23.403 24 24 23.403 24 22.674V1.326C24 .597 23.403 0 22.675 0z" />
+        </svg>
+      ),
+    },
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/laami-labs-b294a13ab",
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+        </svg>
+      ),
+    },
+    {
+      label: "YouTube",
+      href: "https://youtube.com/@laamilabs?si=qHe32r0mx_7Uy5fY",
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z" />
+        </svg>
+      ),
+    },
+    {
+      label: "TikTok",
+      href: "https://www.tiktok.com/@laamilabs",
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
+        </svg>
+      ),
+    },
+    {
+      label: "Discord",
+      href: "https://discord.gg/mhu6kTgRB",
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+        </svg>
+      ),
+    },
+  ];
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -129,10 +188,10 @@ ${formData.message}`;
       </div>
 
       <div className="relative z-10 mx-auto px-2 py-12 lg:py-20 w-full">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex sm:flex-row flex-col items-center gap-8">
             {/* Contact Information */}
-            <div className="lg:col-span-1 space-y-6">
+            <div className="max-w-xl space-y-6">
               {/* Contact Cards Container */}
               <div className="relative">
                 <div className="absolute -inset-2 bg-[#004d98] dark:bg-[#004d98] rounded-2xl opacity-10 dark:opacity-10 blur-xl"></div>
@@ -254,48 +313,34 @@ ${formData.message}`;
                         </div>
                       </div>
                     </div>
-                    {/* Social Links */}
-                    <div className="pt-4 border-t border-neutral-200 dark:border-neutral-800">
-                      <h4 className="text-xs uppercase tracking-wider font-semibold text-neutral-600 dark:text-neutral-400 mb-3">
+                    {/* Social links */}
+                    <div className="pt-4 border-t border-[#004d98]/10 dark:border-[#004d98]/20">
+                      <p className="text-xs font-semibold uppercase tracking-widest text-[#004d98]/50 dark:text-[#6fa8ff]/50 mb-3">
                         Follow us
-                      </h4>
-
-                      <div className="flex items-center gap-4">
-                        {/* Facebook */}
-                        <a
-                          href={facebookUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label="Laami Labs on Facebook"
-                          className="group w-10 h-10 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center hover:bg-[#1877F2] transition-all duration-300"
-                        >
-                          <svg
-                            className="w-5 h-5 text-neutral-700 dark:text-neutral-300 group-hover:text-white"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {SOCIAL_LINKS.map((s) => (
+                          <a
+                            key={s.label}
+                            href={s.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`LAAMi LABS on ${s.label}`}
+                            title={s.label}
+                            className="
+                          w-9 h-9 rounded-xl
+                          flex items-center justify-center
+                          bg-[#004d98]/8 dark:bg-[#004d98]/15
+                          text-[#004d98] dark:text-[#6fa8ff]
+                          hover:bg-[#004d98] hover:text-white
+                          dark:hover:bg-[#004d98] dark:hover:text-white
+                          border border-[#004d98]/15 dark:border-[#004d98]/30
+                          transition-colors duration-150
+                        "
                           >
-                            <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.326v21.348C0 23.403.597 24 1.326 24h11.495v-9.294H9.691V11.01h3.13V8.309c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.312h3.587l-.467 3.696h-3.12V24h6.116C23.403 24 24 23.403 24 22.674V1.326C24 .597 23.403 0 22.675 0z" />
-                          </svg>
-                        </a>
-
-                        {/* Instagram */}
-                        <a
-                          href={instagramUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label="Laami Labs on Instagram"
-                          className="group w-10 h-10 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#feda75] hover:via-[#d62976] hover:to-[#4f5bd5] transition-all duration-300"
-                        >
-                          <svg
-                            className="w-5 h-5 text-neutral-700 dark:text-neutral-300 group-hover:text-white"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.343 3.608 1.318.975.975 1.256 2.242 1.318 3.608.058 1.266.069 1.646.069 4.841 0 3.195-.012 3.575-.069 4.841-.062 1.366-.343 2.633-1.318 3.608-.975.975-2.242 1.256-3.608 1.318-1.266.058-1.646.069-4.85.069-3.204 0-3.584-.012-4.85-.069-1.366-.062-2.633-.343-3.608-1.318-.975-.975-1.256-2.242-1.318-3.608C2.175 15.575 2.163 15.195 2.163 12c0-3.195.012-3.575.069-4.841.062-1.366.343-2.633 1.318-3.608.975-.975 2.242-1.256 3.608-1.318C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.332.014 7.052.072 5.773.131 4.602.443 3.635 1.41 2.668 2.377 2.356 3.548 2.297 4.827.014 8.332 0 8.741 0 12c0 3.259.014 3.668.072 4.948.059 1.279.371 2.45 1.338 3.417.967.967 2.138 1.279 3.417 1.338C8.332 23.986 8.741 24 12 24s3.668-.014 4.948-.072c1.279-.059 2.45-.371 3.417-1.338.967-.967 1.279-2.138 1.338-3.417.058-1.28.072-1.689.072-4.948s-.014-3.668-.072-4.948c-.059-1.279-.371-2.45-1.338-3.417-.967-.967-2.138-1.279-3.417-1.338C15.668.014 15.259 0 12 0z" />
-                            <path d="M12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8z" />
-                            <circle cx="18.406" cy="5.594" r="1.44" />
-                          </svg>
-                        </a>
+                            {s.icon}
+                          </a>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -365,7 +410,7 @@ ${formData.message}`;
             </div>
 
             {/* Contact Form */}
-            <div className="lg:col-span-2 relative">
+            <div className="flex-1 relative ">
               <div className="absolute -inset-2 bg-[#a50044] dark:bg-[#a50044] rounded-2xl opacity-10 dark:opacity-10 blur-xl"></div>
               <div className="relative bg-white dark:bg-neutral-900 rounded-2xl p-2 md:p-10 shadow-2xl border border-neutral-200 dark:border-neutral-800">
                 <div className="flex items-center gap-3 mb-4">

@@ -1,76 +1,12 @@
 "use client";
 
-import Link from "next/link";
-import { useState, useEffect } from "react";
-
 export default function CCTA() {
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Show/hide based on scroll direction
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsVisible(false); // Hide when scrolling down
-      } else {
-        setIsVisible(true); // Show when scrolling up
-      }
-
-      setLastScrollY(currentScrollY);
-    };
-
-    // Throttle scroll events for better performance
-    let ticking = false;
-    const throttledHandleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          handleScroll();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", throttledHandleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", throttledHandleScroll);
-  }, [lastScrollY]);
-
   return (
     <>
-      {/* Fixed Navigation Buttons */}
-      <div
-        className={`fixed z-50 transition-all duration-300 ease-in-out ${
-          isVisible ? "top-6 opacity-100" : "-top-20 opacity-0"
-        }`}
-      >
-        <div className="flex gap-4 w-screen px-4 sm:px-6 lg:px-8 justify-center sm:justify-start ">
-          <div className="max-w-6xl w-full mx-auto flex justify-end">
-            <div className="flex gap-4 animate-[fadeIn_1s_ease-out_0.1s]">
-              <Link
-                href="/portfolio"
-                className="px-5 py-3 rounded-lg bg-[#a50044] text-white font-semibold hover:bg-[#750033] transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#a50044] focus:ring-offset-2"
-                aria-label="Navigate to Company Portfolio page"
-              >
-                Company Portfolio
-              </Link>
-              <Link
-                href="/"
-                className="px-5 py-3 rounded-lg bg-[#004d98] text-white font-semibold hover:bg-[#003366] transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#004d98] focus:ring-offset-2"
-                aria-label="Navigate to Home page"
-              >
-                Home
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Content Section */}
       <section
         id="contact"
-        className="relative overflow-hidden bg-white dark:bg-neutral-900"
+        className="relative min-h-[60vh] overflow-hidden bg-white dark:bg-neutral-900"
       >
         {/* Background images for both themes */}
         <div className="absolute inset-0 z-0">
@@ -85,7 +21,7 @@ export default function CCTA() {
           <div
             className="absolute inset-0 bg-cover bg-left hidden dark:block"
             style={{
-              backgroundImage: "url('/card5.png')",
+              backgroundImage: "url('/fabric-logo-2.png')",
             }}
           />
 

@@ -1,7 +1,11 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import FloatingActions from "./components/floatLayout";
+import FloatingActions from "./components/FloatingActions";
+import FirebaseAnalytics from "./components/FirebaseAnalytics";
+import CookieBanner from "./components/CookieBanner";
+import NavWrapper from "./components/NavWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -173,11 +177,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <NavWrapper />
         {children}
+
         <FloatingActions
           facebookUrl={FACEBOOK_URL}
           instagramUrl={INSTAGRAM_URL}
         />
+
+        <CookieBanner />
+
+        <FirebaseAnalytics />
       </body>
     </html>
   );
