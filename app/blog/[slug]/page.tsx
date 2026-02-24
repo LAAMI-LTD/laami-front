@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// app/blog/[slug]/page.tsx - REDESIGNED WITHOUT GRADIENTS
+// app/blog/[slug]/page.tsx - REDESIGNED WITH IMPROVED SHARE & OG METADATA
 
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, Calendar, Tag, User, ArrowLeft, Share2 } from "lucide-react";
+import { Clock, Calendar, Tag, User, ArrowLeft } from "lucide-react";
 import { calculateReadTime, formatDate, generateSlug } from "./utils";
 import { BlogJsonLd } from "./seo/BlogJsonLd";
-import { ShareButtons } from "./share";
 import { BlogContentRenderer } from "./content";
 import { AuthorCard } from "./author";
 import { RelatedPosts } from "./related";
@@ -16,6 +15,7 @@ import { TableOfContents } from "./Toc";
 import { CollapsibleToc } from "./CollapsibleToc";
 import Footer from "@/app/components/footer";
 import { EditButtonWrapper } from "./EditButtonWrapper";
+import { ShareButtons } from "./share";
 
 interface BlogPost {
   _id: string;
@@ -38,31 +38,33 @@ interface BlogPost {
 }
 
 interface ContentBlock {
-  type: "paragraph" | "heading" | "image" | "code" | "quote" | "list" | "embed";
+  type:
+    | "paragraph"
+    | "heading"
+    | "image"
+    | "code"
+    | "quote"
+    | "list"
+    | "embed"
+    | "link";
   data: any;
   order?: number;
 }
 
 interface PageProps {
-  params: Promise<{
-    slug: string;
-  }>;
+  params: Promise<{ slug: string }>;
 }
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/blogs/slug/${slug}`,
-      {
-        next: { revalidate: 60 },
-      },
+      { next: { revalidate: 60 } },
     );
-
     if (!res.ok) {
       if (res.status === 404) return null;
       throw new Error(`Failed to fetch blog post: ${res.statusText}`);
     }
-
     return res.json();
   } catch (error) {
     console.error("Error fetching blog post:", error);
@@ -81,6 +83,44 @@ async function incrementViews(slug: string) {
   }
 }
 
+function generateExcerpt(
+  content: ContentBlock[],
+  maxLength: number = 160,
+): string {
+  let text = "";
+  for (const block of content) {
+    if (block.type === "paragraph" || block.type === "heading") {
+      text += block.data.text + " ";
+    }
+    if (text.length >= maxLength) break;
+  }
+  return text.length > maxLength
+    ? text.substring(0, maxLength).trim() + "..."
+    : text.trim() || "Read this insightful article on LAAMI LABS";
+}
+
+function generateSocialImage(post: BlogPost): string {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://laamilabs.co.ke";
+
+  if (post.coverImage) {
+    // Cloudinary: force exact 1200×630 crop — critical for WhatsApp
+    if (post.coverImage.includes("cloudinary.com")) {
+      return post.coverImage.replace(
+        "/upload/",
+        "/upload/w_1200,h_630,c_fill,q_auto,f_jpg/",
+      );
+    }
+    return post.coverImage;
+  }
+
+  // Fallback: OG image generation endpoint
+  const title = encodeURIComponent(post.title.slice(0, 70));
+  const author = encodeURIComponent(post.author.name);
+  const tags = encodeURIComponent(post.tags.slice(0, 3).join(", "));
+  return `${baseUrl}/api/og?title=${title}&author=${author}&tags=${tags}`;
+}
+
+// ─── Metadata ────────────────────────────────────────────────────────────────
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
@@ -97,17 +137,23 @@ export async function generateMetadata({
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://laamilabs.co.ke";
   const postUrl = `${baseUrl}/blog/${post.slug}`;
 
+  // WhatsApp reads og:description — keep it tight: 2–4 sentences max, under 300 chars
+  const rawExcerpt = post.excerpt || generateExcerpt(post.content, 160);
+  const description =
+    rawExcerpt.length > 200 ? rawExcerpt.slice(0, 197) + "..." : rawExcerpt;
+
+  const socialImage = generateSocialImage(post);
+  const publishedTime = post.publishedAt || post.createdAt;
+  const authorUrl = `${baseUrl}/blog/author/${generateSlug(post.author.name)}`;
+
+  // Title: WhatsApp shows ~60 chars — keep OG title shorter than the page <title>
+  const ogTitle =
+    post.title.length > 60 ? post.title.slice(0, 57) + "..." : post.title;
+
   return {
     title: `${post.title} | LAAMI LABS Blog`,
-    description:
-      post.excerpt ||
-      `Read ${post.title} by ${post.author.name} - Expert insights and tutorials on software development, tech, and innovation.`,
-    authors: [
-      {
-        name: post.author.name,
-        url: `${baseUrl}/blog/author/${generateSlug(post.author.name)}`,
-      },
-    ],
+    description,
+    authors: [{ name: post.author.name, url: authorUrl }],
     keywords: [
       ...post.tags,
       "tutorial",
@@ -115,46 +161,92 @@ export async function generateMetadata({
       "programming",
       "tech blog",
     ],
+
     openGraph: {
-      title: post.title,
-      description: post.excerpt || `Read ${post.title} by ${post.author.name}`,
+      title: ogTitle, // shorter for WhatsApp card title
+      description,
       url: postUrl,
       siteName: "LAAMI LABS",
-      images: post.coverImage
-        ? [
-            {
-              url: post.coverImage,
-              width: 1200,
-              height: 630,
-              alt: post.title,
-            },
-          ]
-        : [
-            {
-              url: `${baseUrl}/og-image.png`,
-              width: 1200,
-              height: 630,
-              alt: "LAAMI LABS Blog",
-            },
-          ],
+      images: [
+        {
+          url: socialImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+          // Always use jpeg for best WhatsApp compatibility
+          type: "image/jpeg",
+        },
+      ],
       locale: "en_US",
       type: "article",
-      publishedTime: post.publishedAt || post.createdAt,
+      publishedTime,
       modifiedTime: post.updatedAt,
-      authors: [post.author.name],
+      authors: [authorUrl],
       tags: post.tags,
+      section: post.tags[0] || "Technology",
     },
+
     twitter: {
       card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt || `Read ${post.title} by ${post.author.name}`,
-      images: post.coverImage ? [post.coverImage] : [],
+      title: `${post.title} | LAAMI LABS`,
+      description,
+      images: [socialImage],
       creator: "@laamilabs",
       site: "@laamilabs",
     },
-    alternates: {
-      canonical: postUrl,
+
+    // Explicit og: properties — WhatsApp's crawler is strict about these
+    other: {
+      // Image dimensions must be explicit — WhatsApp skips images without them
+      "og:image": socialImage,
+      "og:image:width": "1200",
+      "og:image:height": "630",
+      "og:image:type": "image/jpeg",
+      "og:image:alt": ogTitle,
+      "og:url": postUrl,
+      "og:type": "article",
+      "og:title": ogTitle,
+      "og:description": description,
+      "og:site_name": "LAAMI LABS",
+      "og:updated_time": post.updatedAt,
+
+      // Article schema
+      "article:published_time": publishedTime,
+      "article:modified_time": post.updatedAt,
+      "article:section": post.tags[0] || "Technology",
+      "article:tag": post.tags.join(", "),
+      "article:author": post.author.name,
+
+      // Twitter extras
+      "twitter:label1": "Written by",
+      "twitter:data1": post.author.name,
+      "twitter:label2": "Reading time",
+      "twitter:data2": `${calculateReadTime(post.content)} min read`,
+
+      // Facebook specific
+      "fb:app_id": "YOUR_FB_APP_ID", // Replace with your Facebook App ID if you have one
+      "og:see_also": baseUrl,
+
+      // Pinterest
+      "pinterest:richpins": "enabled",
+
+      // LinkedIn specific
+      "linkedin:author": authorUrl,
+
+      // Slack/Discord unfurl
+      "theme-color": "#8a0038",
+
+      // WhatsApp specific (some clients read these)
+      "og:whatsapp:title": ogTitle,
+      "og:whatsapp:description": description,
+      "og:whatsapp:image": socialImage,
+
+      // iMessage
+      "apple:content-type": "article",
     },
+
+    alternates: { canonical: postUrl },
+
     robots: {
       index: post.published,
       follow: post.published,
@@ -166,30 +258,31 @@ export async function generateMetadata({
         "max-snippet": -1,
       },
     },
-    category: post.tags[0] || "Technology",
   };
 }
 
+// ─── Page ─────────────────────────────────────────────────────────────────────
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
   const post = await getBlogPost(slug);
 
-  if (!post) {
-    notFound();
-  }
+  if (!post) notFound();
 
   incrementViews(slug);
 
   const readTime = calculateReadTime(post.content);
   const publishDate = post.publishedAt || post.createdAt;
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://laamilabs.co.ke";
+  const socialImage = generateSocialImage(post);
+  const shareUrl = `${baseUrl}/blog/${post.slug}`;
+  const shareDescription = post.excerpt || generateExcerpt(post.content, 120);
 
   return (
     <>
       <BlogJsonLd post={post} />
 
-      <article className="min-h-screen bg-white dark:bg-gray-950">
-        {/* Sticky Header */}
+      <article className="min-h-screen pt-20 bg-white dark:bg-gray-950">
+        {/* ── Sticky Header ────────────────────────────────────── */}
         <div className="sticky top-0 z-40 backdrop-blur-xl bg-white/90 dark:bg-gray-950/90 border-b-2 border-gray-200 dark:border-gray-800">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
@@ -204,26 +297,31 @@ export default async function BlogPostPage({ params }: PageProps) {
               </Link>
 
               <div className="flex items-center gap-4">
-                {/* Edit Button - Client component that reads from localStorage */}
-                <EditButtonWrapper slug={post.slug} authorId={post.author._id} />
+                <EditButtonWrapper
+                  slug={post.slug}
+                  authorId={post.author._id}
+                />
 
                 <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm font-medium text-gray-900 dark:text-white">
                   <Clock className="w-4 h-4 text-[#8a0038] dark:text-[#ff6b9d]" />
                   <span>{readTime} min</span>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <button className="p-2 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-[#8a0038] dark:hover:border-[#ff6b9d] transition-colors">
-                    <Share2 className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                  </button>
-                </div>
+                {/* Compact share buttons for sticky header */}
+                <ShareButtons
+                  url={shareUrl}
+                  title={post.title}
+                  description={shareDescription}
+                  image={socialImage}
+                  variant="compact"
+                  showLabels={false}
+                />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Rest of your component remains exactly the same... */}
-        {/* Hero Section */}
+        {/* ── Hero ─────────────────────────────────────────────── */}
         <div className="relative border-b-2 border-gray-200 dark:border-gray-800">
           {post.coverImage ? (
             <div className="relative w-full h-[60vh] lg:h-screen overflow-hidden bg-gray-100 dark:bg-gray-900">
@@ -235,10 +333,8 @@ export default async function BlogPostPage({ params }: PageProps) {
                 className="object-cover"
                 sizes="100vw"
               />
-              {/* Solid overlay instead of gradient */}
               <div className="absolute inset-0 bg-black/50" />
 
-              {/* Floating Tags */}
               {post.tags && post.tags.length > 0 && (
                 <div className="absolute top-8 left-0 right-0 z-10">
                   <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -258,7 +354,6 @@ export default async function BlogPostPage({ params }: PageProps) {
                 </div>
               )}
 
-              {/* Title Overlay */}
               <div className="absolute bottom-0 left-0 right-0 z-10 bg-white dark:bg-gray-950 border-t-4 border-[#8a0038]">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                   <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight">
@@ -270,7 +365,6 @@ export default async function BlogPostPage({ params }: PageProps) {
           ) : (
             <div className="relative overflow-hidden bg-white dark:bg-gray-900">
               <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-                {/* Tags */}
                 {post.tags && post.tags.length > 0 && (
                   <div className="flex flex-wrap gap-3 mb-8">
                     {post.tags.map((tag) => (
@@ -285,7 +379,6 @@ export default async function BlogPostPage({ params }: PageProps) {
                     ))}
                   </div>
                 )}
-
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight border-l-8 border-[#8a0038] pl-6">
                   {post.title}
                 </h1>
@@ -294,11 +387,10 @@ export default async function BlogPostPage({ params }: PageProps) {
           )}
         </div>
 
-        {/* Meta Bar */}
+        {/* ── Meta Bar ─────────────────────────────────────────── */}
         <div className="border-b-2 border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex flex-wrap items-center gap-8">
-              {/* Author */}
               <Link
                 href={`/blog/author/${generateSlug(post.author.name)}`}
                 className="flex items-center gap-4 group"
@@ -314,7 +406,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                       />
                     </div>
                   ) : (
-                    <div className="w-16 h-16 rounded-full bg-[#8a0038] dark:bg-[#004d98] flex items-center justify-center ring-4 ring-gray-200 dark:ring-gray-700 group-hover:ring-[#8a0038] dark:group-hover:ring-[#ff6b9d] transition-all">
+                    <div className="w-16 h-16 rounded-full bg-[#8a0038] flex items-center justify-center ring-4 ring-gray-200 dark:ring-gray-700 group-hover:ring-[#8a0038] transition-all">
                       <User className="w-8 h-8 text-white" />
                     </div>
                   )}
@@ -331,7 +423,6 @@ export default async function BlogPostPage({ params }: PageProps) {
 
               <div className="h-12 w-px bg-gray-300 dark:bg-gray-700" />
 
-              {/* Date */}
               <div className="flex items-center gap-3 px-4 py-2 rounded-lg bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700">
                 <Calendar className="w-5 h-5 text-[#8a0038] dark:text-[#ff6b9d]" />
                 <time
@@ -342,16 +433,14 @@ export default async function BlogPostPage({ params }: PageProps) {
                 </time>
               </div>
 
-              {/* Read Time */}
               <div className="flex items-center gap-3 px-4 py-2 rounded-lg bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700">
                 <Clock className="w-5 h-5 text-[#004d98] dark:text-[#6b9dff]" />
                 <span className="text-sm font-medium text-gray-900 dark:text-white">
-                  {readTime} min
+                  {readTime} min read
                 </span>
               </div>
             </div>
 
-            {/* Excerpt */}
             {post.excerpt && (
               <div className="mt-8 pt-8 border-t-2 border-gray-200 dark:border-gray-800">
                 <p className="text-xl font-medium text-gray-700 dark:text-gray-300 leading-relaxed">
@@ -362,35 +451,30 @@ export default async function BlogPostPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Main Content Grid */}
+        {/* ── Main Content ─────────────────────────────────────── */}
         <div className="mx-auto px-4 sm:px-6 py-12 lg:py-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-            {/* Table of Contents - Desktop Sidebar */}
+            {/* Sidebar TOC */}
             <aside className="hidden lg:block lg:col-span-3">
               <div className="sticky top-24 space-y-6">
-                <div>
-                  <div className="flex items-center gap-2 mb-6 pb-4 border-b-2 border-gray-200 dark:border-gray-800">
-                    <h3 className="font-semibold text-gray-900 dark:text-white text-sm uppercase tracking-wide">
-                      Contents
-                    </h3>
-                  </div>
-                  <TableOfContents content={post.content} />
+                <div className="flex items-center gap-2 mb-6 pb-4 border-b-2 border-gray-200 dark:border-gray-800">
+                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm uppercase tracking-wide">
+                    Contents
+                  </h3>
                 </div>
+                <TableOfContents content={post.content} />
               </div>
             </aside>
 
-            {/* Article Content */}
+            {/* Article body */}
             <div className="lg:col-span-9">
-              {/* Table of Contents - Mobile Collapsible */}
               <div className="lg:hidden mb-8">
                 <CollapsibleToc content={post.content} />
               </div>
 
-              {/* Rich Content */}
               <div
-                className="prose prose-lg dark:prose-invert max-w-none 
-                prose-headings:scroll-mt-24 
-                prose-headings:font-bold
+                className="prose prose-lg dark:prose-invert max-w-none
+                prose-headings:scroll-mt-24 prose-headings:font-bold
                 prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:border-l-4 prose-h2:border-[#8a0038] prose-h2:pl-6
                 prose-h3:text-2xl prose-h3:mt-10 prose-h3:mb-4
                 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:text-lg prose-p:font-normal
@@ -405,11 +489,27 @@ export default async function BlogPostPage({ params }: PageProps) {
                 <BlogContentRenderer content={post.content} />
               </div>
 
-              {/* Tags Section */}
+              {/* Share section after content */}
+              <div className="mt-12 p-8 bg-white dark:bg-gray-900 rounded-2xl border-2 border-gray-200 dark:border-gray-800">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                  <span className="w-1 h-8 bg-[#8a0038] rounded-full" />
+                  Share this article
+                </h3>
+                <ShareButtons
+                  url={shareUrl}
+                  title={post.title}
+                  description={shareDescription}
+                  image={socialImage}
+                  variant="full"
+                  showLabels={false}
+                />
+              </div>
+
+              {/* Tags */}
               {post.tags && post.tags.length > 0 && (
                 <div className="mt-12 p-8 bg-white dark:bg-gray-900 rounded-2xl border-2 border-gray-200 dark:border-gray-800">
                   <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-gray-200 dark:border-gray-800">
-                    <Tag className="w-6 h-6 text-[#8a0038] " />
+                    <Tag className="w-6 h-6 text-[#8a0038]" />
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white uppercase tracking-wide">
                       Topics
                     </h3>
@@ -429,38 +529,14 @@ export default async function BlogPostPage({ params }: PageProps) {
               )}
 
               {/* Author Card */}
-              <div className="mt-12 p-8 bg-white dark:bg-gray-900 rounded-2xl border-4 border-[#8a0038]  shadow-xl">
+              <div className="mt-12 p-8 bg-white dark:bg-gray-900 rounded-2xl border-4 border-[#8a0038] shadow-xl">
                 <AuthorCard author={post.author} />
-              </div>
-
-              {/* Share CTA */}
-              <div className="mt-8 p-8 bg-[#8a0038] dark:bg-[#004d98] rounded-2xl text-white border-4 border-[#6d002d] dark:border-[#003d7a]">
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-                  <div>
-                    <h3 className="text-2xl font-bold mb-3 flex items-center gap-3">
-                      <Share2 className="w-6 h-6" />
-                      Share This Article
-                    </h3>
-                    <p className="text-white/90 font-medium">
-                      Help others discover this content!
-                    </p>
-                  </div>
-                  <ShareButtons
-                    url={`${baseUrl}/blog/${post.slug}`}
-                    title={post.title}
-                    description={
-                      post.excerpt ||
-                      `Check out "${post.title}" by ${post.author.name}`
-                    }
-                    showLabels
-                  />
-                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Related Posts Section */}
+        {/* ── Related Posts ─────────────────────────────────────── */}
         <div className="border-t-4 border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
             <div className="mb-12 border-l-8 border-[#8a0038] pl-6">
@@ -474,6 +550,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             <RelatedPosts currentPostId={post._id} tags={post.tags} />
           </div>
         </div>
+
         <Footer />
       </article>
     </>

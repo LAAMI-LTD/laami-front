@@ -54,6 +54,12 @@ export function blocksToHtml(blocks: ContentBlock[]): string {
           </div>`,
         );
         break;
+
+      case "link":
+        htmlParts.push(
+          `<a href="${block.data.url || '#'}" ${block.data.target ? `target="${block.data.target}"` : ''} ${block.data.rel ? `rel="${block.data.rel}"` : ''}>${block.data.text || ''}</a>`
+        );
+        break;
     }
   });
 
@@ -190,6 +196,19 @@ export function htmlToBlocksConverter(htmlContent: string): ContentBlock[] {
             url: embedUrl,
           },
         });
+      }else if (element.tagName === "A") {
+        const anchor = element as HTMLAnchorElement;
+        blocks.push({
+          id: `block-${tempId++}`,
+          type: "link",
+          order: order++,
+          data: {
+            text: anchor.textContent || "",
+            url: anchor.href || "",
+            target: anchor.target || "_self",
+            rel: anchor.rel || "",
+          },
+        });
       }
     }
   });
@@ -200,7 +219,7 @@ export function htmlToBlocksConverter(htmlContent: string): ContentBlock[] {
 // Helper function to convert table to readable text format
 function convertTableToText(table: HTMLTableElement): string {
   let text = "<strong>Summary Checklist</strong><br/><br/>";
-  
+
   // Get headers
   const headers: string[] = [];
   const headerRow = table.querySelector("thead tr");
@@ -209,13 +228,13 @@ function convertTableToText(table: HTMLTableElement): string {
       headers.push(th.textContent?.trim() || "");
     });
   }
-  
+
   // Add header row
   if (headers.length > 0) {
     text += headers.join(" | ") + "<br/>";
     text += headers.map(() => "---").join(" | ") + "<br/>";
   }
-  
+
   // Get body rows
   const bodyRows = table.querySelectorAll("tbody tr");
   bodyRows.forEach(row => {
@@ -225,6 +244,6 @@ function convertTableToText(table: HTMLTableElement): string {
     });
     text += cells.join(" | ") + "<br/>";
   });
-  
+
   return text;
 }

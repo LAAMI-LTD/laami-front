@@ -3,241 +3,69 @@
 // app/privacy-policy/page.tsx
 import Link from "next/link";
 
-// ── Section component with modern design ───────────────────
-function Section({
-  title,
-  icon,
-  children,
-}: {
-  title: string;
-  icon: React.ReactNode;
-  children: React.ReactNode;
-}) {
+// ── Animated Section Wrapper ─────────────────────────────────
+function FadeSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
-    <div className="group">
-      <div className="flex items-start gap-4">
-        {/* Icon with modern styling */}
-        <div className="relative">
-          <div className="absolute inset-0 bg-[#004d98]/20 dark:bg-[#004d98]/30 rounded-xl blur-lg group-hover:blur-xl transition-all opacity-0 group-hover:opacity-100" />
-          <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-[#004d98]/10 to-[#a50044]/10 dark:from-[#004d98]/20 dark:to-[#a50044]/20 border border-[#004d98]/20 dark:border-[#004d98]/30 group-hover:border-[#004d98]/40 dark:group-hover:border-[#004d98]/50 transition-all">
-            <span className="text-[#004d98] dark:text-[#6fa8ff] group-hover:scale-110 transition-transform duration-300">
-              {icon}
-            </span>
-          </div>
-        </div>
+    <div
+      className="animate-fade-in"
+      style={{ animationDelay: `${delay}ms`, animationFillMode: "both" }}
+    >
+      {children}
+    </div>
+  );
+}
 
-        {/* Content */}
-        <div className="flex-1 space-y-3">
-          <h3 className="text-lg font-semibold tracking-tight text-[#0d1b2e] dark:text-white font-poppins">
-            {title}
-          </h3>
-          <div className="prose prose-sm max-w-none text-[#334155] dark:text-[#94a3b8] space-y-3 font-poppins">
-            {children}
-          </div>
-        </div>
+// ── Section Title ─────────────────────────────────────────────
+function SectionTitle({ roman, title }: { roman: string; title: string }) {
+  return (
+    <div className="mb-10 flex items-center gap-5">
+      <span className="text-xs text-[#c8a96e]/40 uppercase tracking-[0.3em] font-bold">
+        {roman}
+      </span>
+      <div className="h-px flex-1 bg-[#1e1a14]" />
+      <h2
+        className="text-2xl sm:text-3xl font-bold text-[#f5f0e8]"
+        style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+      >
+        {title}
+      </h2>
+    </div>
+  );
+}
+
+// ── Right Row ─────────────────────────────────────────────────
+function RightRow({ title, desc }: { title: string; desc: string }) {
+  return (
+    <div className="group flex items-start gap-4 py-4 border-b border-[#1e1a14] hover:border-[#c8a96e]/20 transition-colors">
+      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#c8a96e]/30 group-hover:bg-[#c8a96e] transition-colors shrink-0" />
+      <div>
+        <span
+          className="font-semibold text-[#d4c9b0] group-hover:text-[#f5f0e8] transition-colors"
+          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "1.05em" }}
+        >
+          {title}
+        </span>
+        {desc && (
+          <span className="text-sm text-[#5a5448] group-hover:text-[#7a7060] transition-colors ml-2">
+            — {desc}
+          </span>
+        )}
       </div>
     </div>
   );
 }
 
-// ── SVG icons (enhanced) ───────────────────────────────────
-const Icons = {
-  lock: (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={1.5}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
-      />
-    </svg>
-  ),
-  clipboard: (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={1.5}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H9a2.25 2.25 0 01-2.25-2.25V9.75M15.75 18V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18v1.578c0 1.135-.845 2.098-1.976 2.192a48.573 48.573 0 01-10.093 0C3.095 21.776 2.25 20.823 2.25 19.686v-9.42c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M18.75 12h-4.5M18.75 15h-4.5"
-      />
-    </svg>
-  ),
-  bulb: (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={1.5}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"
-      />
-    </svg>
-  ),
-  chart: (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={1.5}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"
-      />
-    </svg>
-  ),
-  cookie: (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={1.5}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
-      />
-    </svg>
-  ),
-  handshake: (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={1.5}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
-      />
-    </svg>
-  ),
-  globe: (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={1.5}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 21a9.05 9.05 0 100-18 9.05 9.05 0 000 18zM2.25 12h19.5M12 21c1.8 0 3.3-4.03 3.3-9S13.8 3 12 3s-3.3 4.03-3.3 9 1.5 9 3.3 9z"
-      />
-    </svg>
-  ),
-  scale: (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={1.5}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97c.48.212.936.47 1.36.758m0 0c.423.288.79.624 1.09 1.004m-2.45-1.762l-1.588 1.588M21 12c0 .963-.126 1.896-.364 2.784m-2.45-7.876l-1.586 1.586M5.25 4.97c-.48.212-.936.47-1.36.758m0 0c-.423.288-.79.624-1.09 1.004m2.45-1.762l1.588 1.588M3 12c0 .963.126 1.896.364 2.784m0 0l1.586-1.586M7.5 21.818v-.955A4.5 4.5 0 0112 16.5v.955m0 0a4.5 4.5 0 014.5 4.5h-9a4.5 4.5 0 014.5-4.5z"
-      />
-    </svg>
-  ),
-  shield: (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={1.5}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
-      />
-    </svg>
-  ),
-  child: (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={1.5}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z"
-      />
-    </svg>
-  ),
-  mail: (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={1.5}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.57 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-      />
-    </svg>
-  ),
-  arrowLeft: (
-    <svg
-      className="w-4 h-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-      />
-    </svg>
-  ),
-  check: (
-    <svg
-      className="w-4 h-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2.5}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M4.5 12.75l6 6 9-13.5"
-      />
-    </svg>
-  ),
-};
+// ── Bullet List Item ──────────────────────────────────────────
+function BulletItem({ children }: { children: React.ReactNode }) {
+  return (
+    <li className="group flex items-start gap-3 py-2">
+      <span className="mt-2 w-1 h-1 rounded-full bg-[#c8a96e]/40 group-hover:bg-[#c8a96e] transition-colors shrink-0" />
+      <span className="text-sm text-[#6a6050] group-hover:text-[#8a8070] leading-relaxed transition-colors">
+        {children}
+      </span>
+    </li>
+  );
+}
 
 // ── Page ─────────────────────────────────────────────────────
 export default function PrivacyPolicy() {
@@ -248,496 +76,504 @@ export default function PrivacyPolicy() {
   });
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-[#030712] dark:to-[#111827] font-poppins">
-      {/* Modern background pattern */}
-      <div className="absolute inset-0 bg-grid-slate-100 dark:bg-grid-slate-900/25 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none" />
+    <>
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Mono:wght@400;500&display=swap');
 
-      {/* Content */}
-      <div className="relative mt-16">
-        {/* ── Hero ──────────────────────────────────────────── */}
-        <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center">
-          {/* Brand with modern styling */}
-          <div className="inline-flex items-center gap-4 mb-8">
-            <div className="relative">
-              <div className="absolute inset-0 bg-[#004d98]/20 dark:bg-[#004d98]/30 rounded-2xl blur-2xl" />
-              <div className="relative w-14 h-14 ">
-                <img
-                  src="/laami.png"
-                  alt="laami logo"
-                  className="w-full h-full object-cover"
-                />
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes grain {
+          0%, 100% { transform: translate(0, 0); }
+          10% { transform: translate(-2%, -3%); }
+          20% { transform: translate(3%, 2%); }
+          30% { transform: translate(-1%, 4%); }
+          40% { transform: translate(4%, -1%); }
+          50% { transform: translate(-3%, 3%); }
+          60% { transform: translate(2%, -2%); }
+          70% { transform: translate(-4%, 1%); }
+          80% { transform: translate(1%, -4%); }
+          90% { transform: translate(3%, 3%); }
+        }
+
+        .animate-fade-in {
+          animation: fade-in 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .grain::after {
+          content: '';
+          position: fixed;
+          inset: -200%;
+          width: 400%;
+          height: 400%;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+          pointer-events: none;
+          opacity: 0.4;
+          animation: grain 8s steps(1) infinite;
+          z-index: 100;
+        }
+
+        ::selection {
+          background: #c8a96e;
+          color: #0a0a0a;
+        }
+      `}</style>
+
+      <main className="grain relative min-h-screen bg-[#0a0a08] text-[#7a7060]" style={{ fontFamily: "'DM Mono', monospace" }}>
+
+        {/* Ambient glow */}
+        <div className="pointer-events-none fixed inset-0 overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full opacity-[0.04]"
+            style={{ background: "radial-gradient(ellipse at center, #c8a96e 0%, transparent 70%)" }} />
+          <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full opacity-[0.02]"
+            style={{ background: "radial-gradient(ellipse at center, #4b6b8b 0%, transparent 70%)" }} />
+        </div>
+
+        {/* ── Header ──────────────────────────────────────────── */}
+        <header className="relative border-b border-[#1e1a14]">
+          <div className="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-7 h-7 rounded overflow-hidden">
+                <img src="/laami.png" alt="LAAMI" className="w-full h-full object-cover" />
               </div>
-            </div>
-            <div>
-              <span className="text-3xl font-bold tracking-tight font-poppins">
-                <span className="text-[#a50044] dark:text-[#ff6699]">
-                  LAAMI
-                </span>
-                <span className="text-[#004d98] dark:text-[#6fa8ff]">
-                  {" "}
-                  LABS
-                </span>
+              <span className="text-xs uppercase tracking-[0.25em] text-[#4a4438]">
+                <span className="text-[#c8a96e]">LAAMI</span> LABS
               </span>
-              <div className="h-0.5 w-full bg-gradient-to-r from-[#004d98] to-[#a50044] mt-1 rounded-full" />
             </div>
+
+            <nav className="hidden sm:flex items-center gap-6 text-[10px] uppercase tracking-[0.2em] text-[#3a3428]">
+              <span className="text-[#c8a96e]/60">Privacy</span>
+              <Link href="/cookie-policy" className="hover:text-[#c8a96e]/70 transition-colors">Cookies</Link>
+              <Link href="/terms-of-service" className="hover:text-[#c8a96e]/70 transition-colors">Terms</Link>
+            </nav>
           </div>
+        </header>
 
-          <h1 className="text-5xl sm:text-6xl font-bold tracking-tight text-[#0d1b2e] dark:text-white mb-4 font-poppins">
-            Privacy{" "}
-            <span className="text-[#004d98] dark:text-[#6fa8ff]">Policy</span>
-          </h1>
-          <p className="text-lg text-[#475569] dark:text-[#94a3b8] font-poppins">
-            Last updated:{" "}
-            <span className="font-semibold text-[#a50044] dark:text-[#ff6699]">
-              {effectiveDate}
-            </span>
-          </p>
-        </section>
+        <div className="max-w-5xl mx-auto px-6 pb-32">
 
-        {/* ── Content card ──────────────────────────────────── */}
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-          <div className="relative">
-            {/* Decorative elements */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-[#004d98] to-[#a50044] rounded-3xl blur-xl opacity-20" />
+          {/* ── Hero ──────────────────────────────────────────── */}
+          <FadeSection>
+            <section className="pt-24 pb-20 border-b border-[#1e1a14]">
+              <p className="text-[10px] uppercase tracking-[0.35em] text-[#3a3428] mb-8">
+                laamilabs.co.ke / privacy-policy
+              </p>
 
-            <div className="relative bg-white dark:bg-[#0f172a] rounded-2xl border border-[#004d98]/10 dark:border-[#004d98]/30 shadow-xl overflow-hidden">
-              {/* Modern header accent */}
-              <div className="h-2 bg-gradient-to-r from-[#004d98] via-[#a50044] to-[#004d98]" />
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-8">
+                <div>
+                  <h1
+                    className="text-7xl sm:text-8xl md:text-9xl font-bold leading-[0.9] tracking-tight text-[#f5f0e8] mb-2"
+                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  >
+                    Privacy
+                  </h1>
+                  <h1
+                    className="text-7xl sm:text-8xl md:text-9xl font-bold leading-[0.9] tracking-tight"
+                    style={{
+                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      WebkitTextStroke: "1px rgba(200,169,110,0.4)",
+                      color: "transparent",
+                    }}
+                  >
+                    Policy
+                  </h1>
+                </div>
 
-              <div className="px-6 sm:px-10 md:px-12 py-12 space-y-12">
-                {/* Intro with modern styling */}
-                <div className="relative">
-                  <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-[#004d98] to-[#a50044] rounded-full" />
-                  <p className="pl-4 text-lg text-[#334155] dark:text-[#cbd5e1] leading-relaxed font-poppins">
-                    At{" "}
-                    <span className="font-bold text-[#a50044] dark:text-[#ff6699]">
-                      LAAMI LABS
+                <div className="flex flex-col items-start sm:items-end gap-3 pb-2">
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428]">
+                    Effective
+                  </span>
+                  <span
+                    className="text-lg text-[#c8a96e]"
+                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  >
+                    {effectiveDate}
+                  </span>
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#c8a96e] animate-pulse" />
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#4a4438]">
+                      Current Version
                     </span>
-                    , accessible from{" "}
-                    <span className="font-bold text-[#004d98] dark:text-[#6fa8ff]">
-                      laamilabs.co.ke
-                    </span>
-                    , one of our main priorities is the privacy of our visitors.
-                    This Privacy Policy document contains types of information
-                    that is collected and recorded by LAAMI LABS and how we use
-                    it.
+                  </div>
+                </div>
+              </div>
+            </section>
+          </FadeSection>
+
+          {/* ── Intro ─────────────────────────────────────────── */}
+          <FadeSection delay={100}>
+            <section className="py-16 border-b border-[#1e1a14] grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.25em] text-[#3a3428] mb-3">Overview</p>
+                <div className="h-px w-8 bg-[#c8a96e]/40" />
+              </div>
+              <div>
+                <p className="text-base text-[#8a8070] leading-loose">
+                  At{" "}
+                  <span className="text-[#c8a96e]" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "1.05em", fontStyle: "italic" }}>
+                    LAAMI LABS
+                  </span>
+                  , accessible from{" "}
+                  <span className="text-[#d4c9b0]">laamilabs.co.ke</span>,
+                  the privacy of our visitors is a paramount concern.
+                  This document outlines the categories of information we
+                  collect, the reasons we collect it, and how we use it
+                  to deliver and improve our services.
+                </p>
+
+                <div className="mt-8 p-5 border border-[#1e1a14] bg-[#0d0d0b]">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#c8a96e]/50 mb-3">Commitment</p>
+                  <p className="text-sm text-[#5a5448] leading-relaxed">
+                    We are committed to handling your personal data with care,
+                    transparency, and in full compliance with applicable data
+                    protection laws including the GDPR and CCPA.
                   </p>
                 </div>
+              </div>
+            </section>
+          </FadeSection>
 
-                {/* Divider */}
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-[#004d98]/10 dark:border-[#004d98]/30" />
-                  </div>
-                  <div className="relative flex justify-center">
-                    <span className="bg-white dark:bg-[#0f172a] px-4 text-xs uppercase tracking-wider text-[#004d98]/50 dark:text-[#6fa8ff]/50 font-poppins">
-                      Your Privacy Matters
-                    </span>
-                  </div>
+          {/* ── Consent ───────────────────────────────────────── */}
+          <FadeSection delay={150}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="I" title="Consent" />
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
+                <div />
+                <p className="text-sm text-[#6a6050] leading-loose">
+                  By using our website, you hereby consent to our Privacy Policy
+                  and agree to its terms. Your continued use of our services following
+                  any updates to this policy constitutes acceptance of those changes.
+                </p>
+              </div>
+            </section>
+          </FadeSection>
+
+          {/* ── Information We Collect ────────────────────────── */}
+          <FadeSection delay={200}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="II" title="Information We Collect" />
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
+                <div>
+                  <p className="text-xs text-[#4a4438] leading-relaxed">
+                    Data is collected transparently and only for the purposes stated.
+                  </p>
                 </div>
+                <div className="space-y-4 text-sm text-[#6a6050] leading-loose">
+                  <p>
+                    The personal information we request, and the reasons we request it,
+                    will always be made clear to you at the point of collection.
+                  </p>
+                  <p>
+                    If you contact us directly, we may receive additional information
+                    such as your name, email address, phone number, the contents of
+                    your message and any attachments, and other information you choose
+                    to provide.
+                  </p>
+                  <p>
+                    When you register for an account, we may ask for contact
+                    information including your name, company name, address,
+                    email address, and telephone number.
+                  </p>
+                </div>
+              </div>
+            </section>
+          </FadeSection>
 
-                {/* Sections with increased spacing */}
-                <div className="space-y-12">
-                  <Section title="Consent" icon={Icons.lock}>
-                    <p>
-                      By using our website, you hereby consent to our Privacy
-                      Policy and agree to its terms.
-                    </p>
-                  </Section>
+          {/* ── How We Use Your Information ───────────────────── */}
+          <FadeSection delay={250}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="III" title="How We Use Your Information" />
 
-                  <Section
-                    title="Information We Collect"
-                    icon={Icons.clipboard}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#1e1a14]">
+                {[
+                  { num: "01", label: "Operate", desc: "Provide and maintain our website" },
+                  { num: "02", label: "Improve", desc: "Personalize and expand our services" },
+                  { num: "03", label: "Analyze", desc: "Understand how you use our site" },
+                  { num: "04", label: "Develop", desc: "Build new products and features" },
+                  { num: "05", label: "Communicate", desc: "Correspond directly or via partners" },
+                  { num: "06", label: "Protect", desc: "Detect and prevent fraud" },
+                ].map(({ num, label, desc }) => (
+                  <div
+                    key={label}
+                    className="group bg-[#0a0a08] hover:bg-[#0d0d0b] p-8 transition-colors duration-300"
                   >
-                    <p>
-                      The personal information that you are asked to provide,
-                      and the reasons why you are asked to provide it, will be
-                      made clear to you at the point we ask you to provide your
-                      personal information.
-                    </p>
-                    <p>
-                      If you contact us directly, we may receive additional
-                      information about you such as your name, email address,
-                      phone number, the contents of the message and/or
-                      attachments you may send us, and any other information you
-                      may choose to provide.
-                    </p>
-                    <p>
-                      When you register for an Account, we may ask for your
-                      contact information, including items such as name, company
-                      name, address, email address, and telephone number.
-                    </p>
-                  </Section>
-
-                  <Section
-                    title="How We Use Your Information"
-                    icon={Icons.bulb}
-                  >
-                    <p>
-                      We use the information we collect in various ways,
-                      including to:
-                    </p>
-                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
-                      {[
-                        "Provide, operate, and maintain our website",
-                        "Improve, personalize, and expand our website",
-                        "Understand and analyze how you use our website",
-                        "Develop new products, services, and features",
-                        "Communicate with you directly or through partners",
-                        "Send you emails",
-                        "Find and prevent fraud",
-                      ].map((item) => (
-                        <li key={item} className="flex items-start gap-2.5">
-                          <span className="mt-1 text-[#004d98] dark:text-[#6fa8ff] shrink-0">
-                            {Icons.check}
-                          </span>
-                          <span className="text-sm font-poppins">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </Section>
-
-                  <Section title="Log Files" icon={Icons.chart}>
-                    <p>
-                      LAAMI LABS follows a standard procedure of using log
-                      files. These files log visitors when they visit websites.
-                      All hosting companies do this as part of hosting
-                      services&apos; analytics. The information collected by log
-                      files includes internet protocol (IP) addresses, browser
-                      type, Internet Service Provider (ISP), date and time
-                      stamp, referring/exit pages, and possibly the number of
-                      clicks. These are not linked to any personally
-                      identifiable information.
-                    </p>
-                  </Section>
-
-                  <Section title="Cookies and Web Beacons" icon={Icons.cookie}>
-                    <p>
-                      Like any other website, LAAMI LABS uses
-                      &apos;cookies&apos;. These cookies are used to store
-                      information including visitors&apos; preferences and the
-                      pages on the website that the visitor accessed or visited.
-                      The information is used to optimize the users&apos;
-                      experience by customizing our web page content based on
-                      visitors&apos; browser type and/or other information.
-                    </p>
-                    <p>
-                      For more general information on cookies, please read{" "}
-                      <a
-                        href="https://www.privacypolicyonline.com/what-are-cookies/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#004d98] dark:text-[#6fa8ff] hover:text-[#a50044] dark:hover:text-[#ff6699] underline-offset-4 underline font-medium transition-colors font-poppins"
-                      >
-                        &quot;What Are Cookies&quot;
-                      </a>
-                    </p>
-                  </Section>
-
-                  <Section title="Advertising Partners" icon={Icons.handshake}>
-                    <p>
-                      You may consult this list to find the Privacy Policy for
-                      each of the advertising partners of LAAMI LABS.
-                    </p>
-                    <p>
-                      Third-party ad servers or ad networks use technologies
-                      like cookies, JavaScript, or Web Beacons that are used in
-                      their respective advertisements and links that appear on
-                      LAAMI LABS, which are sent directly to users&apos;
-                      browsers. They automatically receive your IP address when
-                      this occurs.
-                    </p>
-                    <p>
-                      Note that LAAMI LABS has no access to or control over
-                      these cookies that are used by third-party advertisers.
-                    </p>
-                  </Section>
-
-                  <Section title="Third Party Policies" icon={Icons.globe}>
-                    <p>
-                      LAAMI LABS&apos;s Privacy Policy does not apply to other
-                      advertisers or websites. Thus, we are advising you to
-                      consult the respective Privacy Policies of these
-                      third-party ad servers for more detailed information. It
-                      may include their practices and instructions about how to
-                      opt-out of certain options.
-                    </p>
-                  </Section>
-
-                  <Section title="CCPA Privacy Rights" icon={Icons.scale}>
-                    <p>
-                      Under the CCPA, among other rights, California consumers
-                      have the right to:
-                    </p>
-                    <ul className="space-y-3 mt-3">
-                      {[
-                        "Request that a business disclose the categories and specific pieces of personal data collected.",
-                        "Request that a business delete any personal data about the consumer collected.",
-                        "Request that a business that sells a consumer's personal data, not sell the consumer's personal data.",
-                      ].map((item) => (
-                        <li key={item} className="flex items-start gap-2.5">
-                          <span className="mt-1 text-[#004d98] dark:text-[#6fa8ff] shrink-0">
-                            {Icons.check}
-                          </span>
-                          <span className="text-sm font-poppins">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <p className="mt-3">
-                      If you make a request, we have one month to respond to
-                      you. Please contact us to exercise any of these rights.
-                    </p>
-                  </Section>
-
-                  <Section
-                    title="GDPR Data Protection Rights"
-                    icon={Icons.shield}
-                  >
-                    <p>
-                      Every user is entitled to the following data protection
-                      rights:
-                    </p>
-                    <ul className="space-y-3 mt-3">
-                      {[
-                        [
-                          "The right to access",
-                          "Request copies of your personal data.",
-                        ],
-                        [
-                          "The right to rectification",
-                          "Request correction of inaccurate information.",
-                        ],
-                        [
-                          "The right to erasure",
-                          "Request erasure of your personal data.",
-                        ],
-                        [
-                          "The right to restrict processing",
-                          "Request restriction of processing your data.",
-                        ],
-                        [
-                          "The right to object to processing",
-                          "Object to our processing of your data.",
-                        ],
-                        [
-                          "The right to data portability",
-                          "Request transfer of your data to another organization.",
-                        ],
-                      ].map(([right, desc]) => (
-                        <li key={right} className="flex items-start gap-2.5">
-                          <span className="mt-1 text-[#004d98] dark:text-[#6fa8ff] shrink-0">
-                            {Icons.check}
-                          </span>
-                          <span className="text-sm font-poppins">
-                            <span className="font-semibold text-[#0d1b2e] dark:text-white">
-                              {right}
-                            </span>{" "}
-                            — {desc}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                    <p className="mt-3">
-                      If you make a request, we have one month to respond to
-                      you.
-                    </p>
-                  </Section>
-
-                  <Section title="Children's Information" icon={Icons.child}>
-                    <p>
-                      Another part of our priority is adding protection for
-                      children while using the internet. We encourage parents
-                      and guardians to observe, participate in, and/or monitor
-                      and guide their online activity.
-                    </p>
-                    <p>
-                      LAAMI LABS does not knowingly collect any Personal
-                      Identifiable Information from children under the age of
-                      13. If you think that your child provided this kind of
-                      information on our website, please contact us immediately
-                      and we will do our best to promptly remove such
-                      information from our records.
-                    </p>
-                  </Section>
-
-                  <Section title="Contact Us" icon={Icons.mail}>
-                    <p>
-                      If you have any questions or suggestions about our Privacy
-                      Policy, do not hesitate to contact us:
-                    </p>
-
-                    {/* Modern contact card */}
-                    <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <a
-                        href="mailto:inquiry@laamilabs.co.ke"
-                        className="group flex items-center gap-3 p-4 rounded-xl bg-[#004d98]/5 dark:bg-[#004d98]/10 border border-[#004d98]/10 dark:border-[#004d98]/30 hover:border-[#004d98]/30 dark:hover:border-[#004d98]/50 transition-all"
-                      >
-                        <div className="p-2 rounded-lg bg-[#004d98]/10 dark:bg-[#004d98]/20 text-[#004d98] dark:text-[#6fa8ff] group-hover:scale-110 transition-transform">
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.57 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-                            />
-                          </svg>
-                        </div>
-                        <div className="flex-1">
-                          <div className="text-xs text-[#004d98]/60 dark:text-[#6fa8ff]/60 font-poppins">
-                            Email
-                          </div>
-                          <div className="text-sm font-medium text-[#0d1b2e] dark:text-white group-hover:text-[#004d98] dark:group-hover:text-[#6fa8ff] transition-colors font-poppins">
-                            inquiry@laamilabs.co.ke
-                          </div>
-                        </div>
-                      </a>
-
-                      <a
-                        href="tel:+234707848528"
-                        className="group flex items-center gap-3 p-4 rounded-xl bg-[#a50044]/5 dark:bg-[#a50044]/10 border border-[#a50044]/10 dark:border-[#a50044]/30 hover:border-[#a50044]/30 dark:hover:border-[#a50044]/50 transition-all"
-                      >
-                        <div className="p-2 rounded-lg bg-[#a50044]/10 dark:bg-[#a50044]/20 text-[#a50044] dark:text-[#ff6699] group-hover:scale-110 transition-transform">
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
-                            />
-                          </svg>
-                        </div>
-                        <div className="flex-1">
-                          <div className="text-xs text-[#a50044]/60 dark:text-[#ff6699]/60 font-poppins">
-                            Phone
-                          </div>
-                          <div className="text-sm font-medium text-[#0d1b2e] dark:text-white group-hover:text-[#a50044] dark:group-hover:text-[#ff6699] transition-colors font-poppins">
-                            +234 707 848 528
-                          </div>
-                        </div>
-                      </a>
-
-                      <div className="sm:col-span-2 flex items-center gap-3 p-4 rounded-xl bg-[#004d98]/5 dark:bg-[#004d98]/10 border border-[#004d98]/10 dark:border-[#004d98]/30">
-                        <div className="p-2 rounded-lg bg-[#004d98]/10 dark:bg-[#004d98]/20 text-[#004d98] dark:text-[#6fa8ff]">
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-                            />
-                          </svg>
-                        </div>
-                        <div>
-                          <div className="text-xs text-[#004d98]/60 dark:text-[#6fa8ff]/60 font-poppins">
-                            Office
-                          </div>
-                          <div className="text-sm font-medium text-[#0d1b2e] dark:text-white font-poppins">
-                            Eldoret, Kenya
-                          </div>
-                        </div>
-                      </div>
+                    <div className="text-xs text-[#3a3428] mb-4 font-bold">{num}</div>
+                    <div
+                      className="text-lg font-bold text-[#d4c9b0] group-hover:text-[#f5f0e8] mb-2 transition-colors"
+                      style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    >
+                      {label}
                     </div>
-                  </Section>
-                </div>
+                    <div className="text-xs text-[#4a4438] group-hover:text-[#6a6050] transition-colors">
+                      {desc}
+                    </div>
+                    <div className="mt-6 h-px w-0 group-hover:w-full bg-[#c8a96e]/30 transition-all duration-500" />
+                  </div>
+                ))}
+              </div>
+            </section>
+          </FadeSection>
 
-                {/* Footer note */}
-                <div className="pt-8 border-t border-[#004d98]/10 dark:border-[#004d98]/30">
-                  <p className="text-center text-sm text-[#64748b] dark:text-[#94a3b8] font-poppins">
-                    By using LAAMI LABS, you agree to the terms outlined in this
-                    privacy policy. This policy is effective as of{" "}
-                    <span className="font-semibold text-[#004d98] dark:text-[#6fa8ff]">
-                      {effectiveDate}
-                    </span>
+          {/* ── Log Files ─────────────────────────────────────── */}
+          <FadeSection delay={300}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="IV" title="Log Files" />
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
+                <div />
+                <div className="space-y-4">
+                  <p className="text-sm text-[#6a6050] leading-loose">
+                    LAAMI LABS follows standard industry practice in maintaining log files.
+                    These files record visitor activity on our servers as part of our hosting
+                    analytics infrastructure.
+                  </p>
+                  <div className="p-5 border border-[#1e1a14] bg-[#0d0d0b]">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-[#c8a96e]/50 mb-3">
+                      Data Points Logged
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {["IP Addresses", "Browser Type", "ISP", "Date & Time", "Referring Pages", "Click Count"].map((item) => (
+                        <div key={item} className="flex items-center gap-2 text-xs text-[#5a5448]">
+                          <span className="w-1 h-1 rounded-full bg-[#c8a96e]/30" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                    <p className="mt-4 text-xs text-[#3a3428]">
+                      These are not linked to any personally identifiable information.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </FadeSection>
+
+          {/* ── Cookies & Web Beacons ─────────────────────────── */}
+          <FadeSection delay={325}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="V" title="Cookies & Web Beacons" />
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
+                <div />
+                <div className="space-y-4 text-sm text-[#6a6050] leading-loose">
+                  <p>
+                    Like most websites, LAAMI LABS uses cookies to store information
+                    about visitor preferences and the pages accessed. This data is used
+                    to optimize the user experience by customizing page content based on
+                    browser type and browsing patterns.
+                  </p>
+                  <p>
+                    For a detailed account of how we use cookies specifically, please
+                    review our{" "}
+                    <Link
+                      href="/cookie-policy"
+                      className="text-[#c8a96e] hover:text-[#d4b97e] transition-colors underline underline-offset-4 decoration-[#c8a96e]/30"
+                    >
+                      Cookie Policy
+                    </Link>
                     .
                   </p>
                 </div>
               </div>
-            </div>
-          </div>
+            </section>
+          </FadeSection>
 
-          {/* ── Back to Home ────────────────────────────────── */}
-          <div className="mt-12 text-center">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#004d98] hover:bg-[#0061be] text-white text-sm font-semibold transition-all shadow-lg shadow-[#004d98]/20 hover:shadow-xl hover:shadow-[#004d98]/30 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#004d98] focus-visible:ring-offset-2 font-poppins"
-            >
-              {Icons.arrowLeft}
-              Back to Home
-            </Link>
-          </div>
+          {/* ── Advertising Partners ──────────────────────────── */}
+          <FadeSection delay={350}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="VI" title="Advertising Partners" />
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
+                <div>
+                  <p className="text-xs text-[#4a4438] leading-relaxed">
+                    Third-party networks operate under their own policies.
+                  </p>
+                </div>
+                <div className="space-y-4 text-sm text-[#6a6050] leading-loose">
+                  <p>
+                    Third-party ad servers and networks may use technologies such
+                    as cookies, JavaScript, or Web Beacons in advertisements and
+                    links appearing on LAAMI LABS. These are sent directly to your
+                    browser, and your IP address is automatically received at that point.
+                  </p>
+                  <p>
+                    LAAMI LABS has no access to or control over the cookies used
+                    by third-party advertisers. We recommend consulting their
+                    individual privacy policies for full details.
+                  </p>
+                </div>
+              </div>
+            </section>
+          </FadeSection>
 
-          {/* ── Footer links ────────────────────────────────── */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-6">
-            {[
-              {
-                href: "/privacy-policy",
-                label: "Privacy Policy",
-                active: true,
-              },
-              { href: "/terms-of-service", label: "Terms of Service" },
-              { href: "/cookie-policy", label: "Cookie Policy" },
-            ].map(({ href, label, active }) => (
-              <a
-                key={href}
-                href={href}
-                className={`
-                  text-sm font-medium transition-colors font-poppins
-                  ${
-                    active
-                      ? "text-[#004d98] dark:text-[#6fa8ff]"
-                      : "text-[#64748b] dark:text-[#94a3b8] hover:text-[#004d98] dark:hover:text-[#6fa8ff]"
-                  }
-                `}
-              >
-                {label}
-                {active && (
-                  <span className="ml-2 inline-block w-1 h-1 rounded-full bg-[#004d98] dark:bg-[#6fa8ff]" />
-                )}
-              </a>
-            ))}
-          </div>
-        </section>
-      </div>
+          {/* ── Third Party Policies ──────────────────────────── */}
+          <FadeSection delay={375}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="VII" title="Third-Party Policies" />
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
+                <div />
+                <p className="text-sm text-[#6a6050] leading-loose">
+                  This Privacy Policy applies solely to LAAMI LABS and does not extend
+                  to third-party advertisers or external websites linked from our platform.
+                  We advise consulting the respective Privacy Policies of any third-party
+                  services you interact with, including instructions on how to opt out
+                  of certain data practices.
+                </p>
+              </div>
+            </section>
+          </FadeSection>
 
-      {/* Add these styles to your global CSS or add to your layout */}
-      <style jsx>{`
-        .bg-grid-slate-100 {
-          background-image:
-            linear-gradient(to right, #f1f5f9 1px, transparent 1px),
-            linear-gradient(to bottom, #f1f5f9 1px, transparent 1px);
-          background-size: 24px 24px;
-        }
-        .dark .bg-grid-slate-900\/25 {
-          background-image:
-            linear-gradient(
-              to right,
-              rgba(15, 23, 42, 0.25) 1px,
-              transparent 1px
-            ),
-            linear-gradient(
-              to bottom,
-              rgba(15, 23, 42, 0.25) 1px,
-              transparent 1px
-            );
-        }
-      `}</style>
-    </main>
+          {/* ── CCPA + GDPR ───────────────────────────────────── */}
+          <FadeSection delay={400}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="VIII" title="Your Legal Rights" />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1e1a14]">
+                {/* CCPA */}
+                <div className="bg-[#0a0a08] p-10">
+                  <div className="flex items-center gap-3 mb-8">
+                    <span className="text-[10px] uppercase tracking-[0.25em] text-[#c8a96e]/40">California</span>
+                    <div className="h-px flex-1 bg-[#1e1a14]" />
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428]">CCPA</span>
+                  </div>
+                  <p className="text-xs text-[#4a4438] leading-relaxed mb-6">
+                    Under the California Consumer Privacy Act, California residents have the right to:
+                  </p>
+                  <ul className="space-y-1">
+                    {[
+                      "Request disclosure of personal data categories collected",
+                      "Request deletion of collected personal data",
+                      "Opt out of the sale of personal data",
+                    ].map((item) => <BulletItem key={item}>{item}</BulletItem>)}
+                  </ul>
+                  <p className="mt-6 text-xs text-[#3a3428]">
+                    We respond to all requests within one calendar month.
+                  </p>
+                </div>
+
+                {/* GDPR */}
+                <div className="bg-[#0a0a08] p-10">
+                  <div className="flex items-center gap-3 mb-8">
+                    <span className="text-[10px] uppercase tracking-[0.25em] text-[#c8a96e]/40">European Union</span>
+                    <div className="h-px flex-1 bg-[#1e1a14]" />
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428]">GDPR</span>
+                  </div>
+                  <p className="text-xs text-[#4a4438] leading-relaxed mb-6">
+                    Every user holds the following data protection rights:
+                  </p>
+                  <div className="pl-4">
+                    {[
+                      ["Access", "Request copies of your personal data"],
+                      ["Rectification", "Correct inaccurate information"],
+                      ["Erasure", "Request deletion of your data"],
+                      ["Restrict", "Limit how your data is processed"],
+                      ["Object", "Object to data processing"],
+                      ["Portability", "Transfer data to another organization"],
+                    ].map(([right, desc]) => (
+                      <RightRow key={right} title={right} desc={desc} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+          </FadeSection>
+
+          {/* ── Children's Information ────────────────────────── */}
+          <FadeSection delay={425}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="IX" title="Children's Information" />
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
+                <div>
+                  <p className="text-xs text-[#4a4438] leading-relaxed">
+                    Protecting children online is a priority.
+                  </p>
+                </div>
+                <div className="space-y-4 text-sm text-[#6a6050] leading-loose">
+                  <p>
+                    We encourage parents and guardians to observe, participate in,
+                    and monitor their children&apos;s online activity. LAAMI LABS does
+                    not knowingly collect personally identifiable information from
+                    children under the age of 13.
+                  </p>
+                  <p>
+                    If you believe your child has submitted personal information on
+                    our website, please contact us immediately. We will make every
+                    effort to promptly remove such information from our records.
+                  </p>
+                </div>
+              </div>
+            </section>
+          </FadeSection>
+
+          {/* ── Contact ───────────────────────────────────────── */}
+          <FadeSection delay={450}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="X" title="Contact" />
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#1e1a14]">
+                <a
+                  href="mailto:inquiry@laamilabs.co.ke"
+                  className="group bg-[#0a0a08] hover:bg-[#0d0d0b] p-8 transition-colors"
+                >
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428] mb-4">Email</div>
+                  <div
+                    className="text-base font-bold text-[#d4c9b0] group-hover:text-[#c8a96e] transition-colors leading-tight"
+                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  >
+                    inquiry@laamilabs.co.ke
+                  </div>
+                  <div className="mt-4 text-[#3a3428] group-hover:translate-x-1 transition-transform text-xs">→</div>
+                </a>
+
+                <a
+                  href="tel:+234707848528"
+                  className="group bg-[#0a0a08] hover:bg-[#0d0d0b] p-8 transition-colors"
+                >
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428] mb-4">Phone</div>
+                  <div
+                    className="text-base font-bold text-[#d4c9b0] group-hover:text-[#c8a96e] transition-colors leading-tight"
+                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  >
+                    +234 707 848 528
+                  </div>
+                  <div className="mt-4 text-[#3a3428] group-hover:translate-x-1 transition-transform text-xs">→</div>
+                </a>
+
+                <div className="bg-[#0a0a08] p-8">
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428] mb-4">Office</div>
+                  <div
+                    className="text-base font-bold text-[#d4c9b0] leading-tight"
+                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  >
+                    Eldoret, Kenya
+                  </div>
+                  <div className="mt-4 text-[10px] uppercase tracking-[0.15em] text-[#3a3428]">EA +3</div>
+                </div>
+              </div>
+            </section>
+          </FadeSection>
+
+          {/* ── Footer ────────────────────────────────────────── */}
+          <FadeSection delay={500}>
+            <footer className="pt-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+              <p className="text-[10px] text-[#2a2418] uppercase tracking-[0.2em]">
+                © {new Date().getFullYear()} LAAMI LABS — All rights reserved
+              </p>
+
+              <div className="flex items-center gap-8 text-[10px] uppercase tracking-[0.2em]">
+                <Link href="/" className="text-[#3a3428] hover:text-[#c8a96e]/60 transition-colors">
+                  Home
+                </Link>
+                <span className="text-[#c8a96e]/40">Privacy</span>
+                <Link href="/cookie-policy" className="text-[#3a3428] hover:text-[#c8a96e]/60 transition-colors">
+                  Cookies
+                </Link>
+                <Link href="/terms-of-service" className="text-[#3a3428] hover:text-[#c8a96e]/60 transition-colors">
+                  Terms
+                </Link>
+              </div>
+            </footer>
+          </FadeSection>
+
+        </div>
+      </main>
+    </>
   );
 }

@@ -13,6 +13,7 @@ import {
   List,
   FileCode,
   Upload,
+  Link,
 } from "lucide-react";
 import { ContentBlock } from "../types";
 import { BLOCK_ICONS } from "../constants";
@@ -407,6 +408,45 @@ export default function BlockEditor({
                   />
                 </div>
               )}
+              {block.type === "link" && (
+                <div className="space-y-3">
+                  <input
+                    type="text"
+                    value={block.data.text || ""}
+                    onChange={(e) =>
+                      onUpdateBlock(index, "data.text", e.target.value)
+                    }
+                    className="w-full rounded-lg border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-gray-900 dark:text-white focus:border-[#a50044] focus:outline-none"
+                    placeholder="Link text..."
+                  />
+                  <input
+                    type="url"
+                    value={block.data.url || ""}
+                    onChange={(e) =>
+                      onUpdateBlock(index, "data.url", e.target.value)
+                    }
+                    className="w-full rounded-lg border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-gray-900 dark:text-white focus:border-[#a50044] focus:outline-none"
+                    placeholder="https://example.com"
+                  />
+                  <div className="flex items-center gap-4">
+                    <label className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                      <input
+                        type="checkbox"
+                        checked={block.data.target === "_blank"}
+                        onChange={(e) =>
+                          onUpdateBlock(
+                            index,
+                            "data.target",
+                            e.target.checked ? "_blank" : "_self",
+                          )
+                        }
+                        className="rounded border-gray-300 text-[#a50044] focus:ring-[#a50044]"
+                      />
+                      Open in new tab
+                    </label>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         );
@@ -425,6 +465,7 @@ export default function BlockEditor({
             { type: "quote", icon: Quote, label: "Quote" },
             { type: "list", icon: List, label: "List" },
             { type: "embed", icon: FileCode, label: "Embed" },
+            { type: "link", icon: Link, label: "Link" },
           ].map(({ type, icon: Icon, label }) => (
             <button
               key={type}

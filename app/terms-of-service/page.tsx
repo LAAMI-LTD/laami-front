@@ -3,118 +3,64 @@
 // app/terms-of-service/page.tsx
 import Link from "next/link";
 
-// ── Section component with modern design (adapted from Privacy Policy) ───
-function Section({
-  title,
-  icon,
-  children,
-}: {
-  title: string;
-  icon: React.ReactNode;
-  children: React.ReactNode;
-}) {
+// ── Animated Section Wrapper ─────────────────────────────────
+function FadeSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
-    <div className="group">
-      <div className="flex items-start gap-4">
-        {/* Icon with modern styling */}
-        <div className="relative">
-          <div className="absolute inset-0 bg-[#a50044]/20 dark:bg-[#a50044]/30 rounded-xl blur-lg group-hover:blur-xl transition-all opacity-0 group-hover:opacity-100" />
-          <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-[#a50044]/10 to-[#004d98]/10 dark:from-[#a50044]/20 dark:to-[#004d98]/20 border border-[#a50044]/20 dark:border-[#a50044]/30 group-hover:border-[#a50044]/40 dark:group-hover:border-[#a50044]/50 transition-all">
-            <span className="text-[#a50044] dark:text-[#ff6699] group-hover:scale-110 transition-transform duration-300">
-              {icon}
-            </span>
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 space-y-3 ">
-          <h3 className="text-lg font-semibold tracking-tight text-[#0d1b2e] dark:text-white font-poppins">
-            {title}
-          </h3>
-          <div className="prose prose-sm max-w-none text-[#334155] dark:text-[#94a3b8] space-y-3 font-poppins">
-            {children}
-          </div>
-        </div>
-      </div>
+    <div
+      className="animate-fade-in"
+      style={{ animationDelay: `${delay}ms`, animationFillMode: "both" }}
+    >
+      {children}
     </div>
   );
 }
 
-// ── SVG icons (using same icon set as Privacy Policy) ───────────────────
-const Icons = {
-  // Legal & Documents
-  scroll: (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-    </svg>
-  ),
-  handshake: (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-    </svg>
-  ),
-  user: (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-    </svg>
-  ),
-  document: (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-    </svg>
-  ),
-  prohibited: (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-    </svg>
-  ),
-  copyright: (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9.75L21 15m-6-6l3-3m-3 3h4.5" />
-    </svg>
-  ),
-  termination: (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-    </svg>
-  ),
-  liability: (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-    </svg>
-  ),
-  gavel: (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97c.48.212.936.47 1.36.758m0 0c.423.288.79.624 1.09 1.004m-2.45-1.762l-1.588 1.588M21 12c0 .963-.126 1.896-.364 2.784m-2.45-7.876l-1.586 1.586M5.25 4.97c-.48.212-.936.47-1.36.758m0 0c-.423.288-.79.624-1.09 1.004m2.45-1.762l1.588 1.588M3 12c0 .963.126 1.896.364 2.784m0 0l1.586-1.586M7.5 21.818v-.955A4.5 4.5 0 0112 16.5v.955m0 0a4.5 4.5 0 014.5 4.5h-9a4.5 4.5 0 014.5-4.5z" />
-    </svg>
-  ),
-  refresh: (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-    </svg>
-  ),
-  mail: (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.57 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-    </svg>
-  ),
-  check: (
-    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-    </svg>
-  ),
-  arrowLeft: (
-    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-    </svg>
-  ),
-  arrowRight: (
-    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-    </svg>
-  ),
-};
+// ── Section Title ─────────────────────────────────────────────
+function SectionTitle({ roman, title }: { roman: string; title: string }) {
+  return (
+    <div className="mb-10 flex items-center gap-5">
+      <span className="text-xs text-[#c8a96e]/40 uppercase tracking-[0.3em] font-bold">
+        {roman}
+      </span>
+      <div className="h-px flex-1 bg-[#1e1a14]" />
+      <h2
+        className="text-2xl sm:text-3xl font-bold text-[#f5f0e8]"
+        style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+      >
+        {title}
+      </h2>
+    </div>
+  );
+}
+
+// ── Bullet Item ───────────────────────────────────────────────
+function BulletItem({ children }: { children: React.ReactNode }) {
+  return (
+    <li className="group flex items-start gap-3 py-2">
+      <span className="mt-2 w-1 h-1 rounded-full bg-[#c8a96e]/40 group-hover:bg-[#c8a96e] transition-colors shrink-0" />
+      <span className="text-sm text-[#6a6050] group-hover:text-[#8a8070] leading-relaxed transition-colors">
+        {children}
+      </span>
+    </li>
+  );
+}
+
+// ── Definition Row ────────────────────────────────────────────
+function DefRow({ term, definition }: { term: string; definition: string }) {
+  return (
+    <div className="group flex items-start gap-4 py-5 border-b border-[#1e1a14] hover:border-[#c8a96e]/20 transition-colors">
+      <span
+        className="shrink-0 text-sm font-bold text-[#c8a96e]/60 group-hover:text-[#c8a96e] transition-colors w-28"
+        style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "1em" }}
+      >
+        &quot;{term}&quot;
+      </span>
+      <span className="text-sm text-[#6a6050] group-hover:text-[#8a8070] leading-relaxed transition-colors">
+        {definition}
+      </span>
+    </div>
+  );
+}
 
 // ── Page ─────────────────────────────────────────────────────
 export default function TermsOfService() {
@@ -125,532 +71,593 @@ export default function TermsOfService() {
   });
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-[#030712] dark:to-[#111827] font-poppins">
-      {/* Modern background pattern */}
-      <div className="absolute inset-0 bg-grid-slate-100 dark:bg-grid-slate-900/25 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none" />
+    <>
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Mono:wght@400;500&display=swap');
 
-      {/* Content */}
-      <div className="relative mt-16">
-        {/* ── Hero ──────────────────────────────────────────── */}
-        <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center">
-          {/* Brand with modern styling */}
-          <div className="inline-flex items-center gap-4 mb-8">
-            <div className="relative">
-              <div className="absolute inset-0 bg-[#a50044]/20 dark:bg-[#a50044]/30 rounded-2xl blur-2xl" />
-              <div className="relative w-14 h-14 ">
-                <img
-                  src="/laami.png"
-                  alt="laami logo"
-                  className="w-full h-full object-cover"
-                />
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes grain {
+          0%, 100% { transform: translate(0, 0); }
+          10% { transform: translate(-2%, -3%); }
+          20% { transform: translate(3%, 2%); }
+          30% { transform: translate(-1%, 4%); }
+          40% { transform: translate(4%, -1%); }
+          50% { transform: translate(-3%, 3%); }
+          60% { transform: translate(2%, -2%); }
+          70% { transform: translate(-4%, 1%); }
+          80% { transform: translate(1%, -4%); }
+          90% { transform: translate(3%, 3%); }
+        }
+
+        .animate-fade-in {
+          animation: fade-in 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .grain::after {
+          content: '';
+          position: fixed;
+          inset: -200%;
+          width: 400%;
+          height: 400%;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+          pointer-events: none;
+          opacity: 0.4;
+          animation: grain 8s steps(1) infinite;
+          z-index: 100;
+        }
+
+        ::selection {
+          background: #c8a96e;
+          color: #0a0a0a;
+        }
+      `}</style>
+
+      <main className="grain relative min-h-screen bg-[#0a0a08] text-[#7a7060]" style={{ fontFamily: "'DM Mono', monospace" }}>
+
+        {/* Ambient glow */}
+        <div className="pointer-events-none fixed inset-0 overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full opacity-[0.04]"
+            style={{ background: "radial-gradient(ellipse at center, #c8a96e 0%, transparent 70%)" }} />
+          <div className="absolute bottom-0 left-1/4 w-[600px] h-[400px] rounded-full opacity-[0.02]"
+            style={{ background: "radial-gradient(ellipse at center, #6b4b8b 0%, transparent 70%)" }} />
+        </div>
+
+        {/* ── Header ──────────────────────────────────────────── */}
+        <header className="relative border-b border-[#1e1a14]">
+          <div className="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-7 h-7 rounded overflow-hidden">
+                <img src="/laami.png" alt="LAAMI" className="w-full h-full object-cover" />
               </div>
-            </div>
-            <div>
-              <span className="text-3xl font-bold tracking-tight font-poppins">
-                <span className="text-[#a50044] dark:text-[#ff6699]">
-                  LAAMI
-                </span>
-                <span className="text-[#004d98] dark:text-[#6fa8ff]">
-                  {" "}
-                  LABS
-                </span>
+              <span className="text-xs uppercase tracking-[0.25em] text-[#4a4438]">
+                <span className="text-[#c8a96e]">LAAMI</span> LABS
               </span>
-              <div className="h-0.5 w-full bg-gradient-to-r from-[#004d98] to-[#a50044] mt-1 rounded-full" />
             </div>
+
+            <nav className="hidden sm:flex items-center gap-6 text-[10px] uppercase tracking-[0.2em] text-[#3a3428]">
+              <Link href="/privacy-policy" className="hover:text-[#c8a96e]/70 transition-colors">Privacy</Link>
+              <Link href="/cookie-policy" className="hover:text-[#c8a96e]/70 transition-colors">Cookies</Link>
+              <span className="text-[#c8a96e]/60">Terms</span>
+            </nav>
           </div>
+        </header>
 
-          <h1 className="text-5xl sm:text-6xl font-bold tracking-tight text-[#0d1b2e] dark:text-white mb-4 font-poppins">
-            Terms of{" "}
-            <span className="text-[#a50044] dark:text-[#ff6699]">Service</span>
-          </h1>
-          <p className="text-lg text-[#475569] dark:text-[#94a3b8] font-poppins">
-            Last updated:{" "}
-            <span className="font-semibold text-[#004d98] dark:text-[#6fa8ff]">
-              {effectiveDate}
-            </span>
-          </p>
-        </section>
+        <div className="max-w-5xl mx-auto px-6 pb-32">
 
-        {/* ── Content card ──────────────────────────────────── */}
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-          <div className="relative">
-            {/* Decorative elements */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-[#004d98] to-[#a50044] rounded-3xl blur-xl opacity-20" />
+          {/* ── Hero ──────────────────────────────────────────── */}
+          <FadeSection>
+            <section className="pt-24 pb-20 border-b border-[#1e1a14]">
+              <p className="text-[10px] uppercase tracking-[0.35em] text-[#3a3428] mb-8">
+                laamilabs.co.ke / terms-of-service
+              </p>
 
-            <div className="relative bg-white dark:bg-[#0f172a] rounded-2xl border border-[#a50044]/10 dark:border-[#a50044]/30 shadow-xl overflow-hidden">
-              {/* Modern header accent */}
-              <div className="h-2 bg-gradient-to-r from-[#004d98] via-[#a50044] to-[#004d98]" />
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-8">
+                <div>
+                  <h1
+                    className="text-7xl sm:text-8xl md:text-9xl font-bold leading-[0.9] tracking-tight text-[#f5f0e8] mb-2"
+                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  >
+                    Terms of
+                  </h1>
+                  <h1
+                    className="text-7xl sm:text-8xl md:text-9xl font-bold leading-[0.9] tracking-tight"
+                    style={{
+                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      WebkitTextStroke: "1px rgba(200,169,110,0.4)",
+                      color: "transparent",
+                    }}
+                  >
+                    Service
+                  </h1>
+                </div>
 
-              <div className="px-6 sm:px-10 md:px-12 py-12 space-y-12">
-                {/* Intro with modern styling */}
-                <div className="relative">
-                  <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-[#004d98] to-[#a50044] rounded-full" />
-                  <p className="pl-4 text-lg text-[#334155] dark:text-[#cbd5e1] leading-relaxed font-poppins">
-                    Welcome to{" "}
-                    <span className="font-bold text-[#a50044] dark:text-[#ff6699]">
-                      LAAMI LABS
+                <div className="flex flex-col items-start sm:items-end gap-3 pb-2">
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428]">
+                    Effective
+                  </span>
+                  <span
+                    className="text-lg text-[#c8a96e]"
+                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  >
+                    {effectiveDate}
+                  </span>
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#c8a96e] animate-pulse" />
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#4a4438]">
+                      Current Version
                     </span>
-                    . By accessing or using our website at{" "}
-                    <span className="font-bold text-[#004d98] dark:text-[#6fa8ff]">
-                      laamilabs.co.ke
-                    </span>
-                    , you agree to be bound by these Terms of Service and all
-                    applicable laws and regulations. If you do not agree with any of
-                    these terms, you are prohibited from using or accessing this
-                    site.
+                  </div>
+                </div>
+              </div>
+            </section>
+          </FadeSection>
+
+          {/* ── Intro ─────────────────────────────────────────── */}
+          <FadeSection delay={100}>
+            <section className="py-16 border-b border-[#1e1a14] grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.25em] text-[#3a3428] mb-3">Overview</p>
+                <div className="h-px w-8 bg-[#c8a96e]/40" />
+              </div>
+              <div>
+                <p className="text-base text-[#8a8070] leading-loose">
+                  Welcome to{" "}
+                  <span className="text-[#c8a96e]" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "1.05em", fontStyle: "italic" }}>
+                    LAAMI LABS
+                  </span>
+                  . By accessing or using our website at{" "}
+                  <span className="text-[#d4c9b0]">laamilabs.co.ke</span>,
+                  you agree to be bound by these Terms of Service and all applicable
+                  laws and regulations. If you do not agree with any of these terms,
+                  you are prohibited from using or accessing this site.
+                </p>
+
+                <div className="mt-8 p-5 border border-[#1e1a14] bg-[#0d0d0b]">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#c8a96e]/50 mb-3">Legal Notice</p>
+                  <p className="text-sm text-[#5a5448] leading-relaxed">
+                    These Terms constitute a legally binding agreement between you and
+                    LAAMI LABS. Please read them carefully before using our services.
                   </p>
                 </div>
+              </div>
+            </section>
+          </FadeSection>
 
-                {/* Divider */}
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-[#a50044]/10 dark:border-[#a50044]/30" />
-                  </div>
-                  <div className="relative flex justify-center">
-                    <span className="bg-white dark:bg-[#0f172a] px-4 text-xs uppercase tracking-wider text-[#a50044]/50 dark:text-[#ff6699]/50 font-poppins">
-                      Legal Agreement
-                    </span>
+          {/* ── Agreement to Terms ────────────────────────────── */}
+          <FadeSection delay={150}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="I" title="Agreement to Terms" />
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
+                <div />
+                <p className="text-sm text-[#6a6050] leading-loose">
+                  By accessing our services, you confirm that you are at least 18 years old
+                  or have parental or guardian consent, and that you agree to comply with
+                  these terms. These terms constitute a legally binding agreement between
+                  you and LAAMI LABS.
+                </p>
+              </div>
+            </section>
+          </FadeSection>
+
+          {/* ── Definitions ───────────────────────────────────── */}
+          <FadeSection delay={175}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="II" title="Definitions" />
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
+                <div>
+                  <p className="text-xs text-[#4a4438] leading-relaxed">
+                    Key terms used throughout this agreement.
+                  </p>
+                </div>
+                <div className="pl-4">
+                  <DefRow
+                    term="Company"
+                    definition="Referred to as 'We', 'Us', or 'Our' — refers to LAAMI LABS, Eldoret, Kenya."
+                  />
+                  <DefRow
+                    term="Service"
+                    definition="The website and all associated services provided by LAAMI LABS at laamilabs.co.ke."
+                  />
+                  <DefRow
+                    term="User"
+                    definition="Referred to as 'You' or 'Your' — any individual accessing or using the Service."
+                  />
+                  <DefRow
+                    term="Content"
+                    definition="Text, images, videos, audio, or any other material that can be posted, uploaded, or shared on our Service."
+                  />
+                </div>
+              </div>
+            </section>
+          </FadeSection>
+
+          {/* ── User Accounts ─────────────────────────────────── */}
+          <FadeSection delay={200}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="III" title="User Accounts" />
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
+                <div />
+                <div className="space-y-6">
+                  <p className="text-sm text-[#6a6050] leading-loose">
+                    When you create an account with us, you must provide accurate,
+                    complete, and current information. Failure to do so constitutes a
+                    breach of the Terms, which may result in immediate termination of
+                    your account.
+                  </p>
+
+                  <div className="p-6 border border-[#1e1a14] bg-[#0d0d0b]">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-[#c8a96e]/50 mb-4">
+                      Your Responsibilities
+                    </p>
+                    <ul className="space-y-1">
+                      {[
+                        "Maintaining the security and confidentiality of your account",
+                        "All activities that occur under your account credentials",
+                        "Notifying us immediately of any unauthorized use or breach",
+                      ].map((item) => <BulletItem key={item}>{item}</BulletItem>)}
+                    </ul>
                   </div>
                 </div>
+              </div>
+            </section>
+          </FadeSection>
 
-                {/* Sections with increased spacing */}
-                <div className="space-y-12">
-                  <Section title="Agreement to Terms" icon={Icons.handshake}>
-                    <p>
-                      By accessing our services, you confirm that you are at least 18
-                      years old or have parental/guardian consent, and that you agree
-                      to comply with these terms. These terms constitute a legally
-                      binding agreement between you and LAAMI LABS.
-                    </p>
-                  </Section>
-
-                  <Section title="Definitions" icon={Icons.scroll}>
-                    <div className="space-y-3">
-                      <p>
-                        <span className="font-semibold text-[#a50044] dark:text-[#ff6699]">
-                          &quot;Company&quot;
-                        </span>{" "}
-                        (referred to as either &quot;the Company&quot;,
-                        &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this
-                        Agreement) refers to LAAMI LABS, Eldoret, Kenya.
-                      </p>
-                      <p>
-                        <span className="font-semibold text-[#a50044] dark:text-[#ff6699]">
-                          &quot;Service&quot;
-                        </span>{" "}
-                        refers to the website and all associated services provided by
-                        LAAMI LABS.
-                      </p>
-                      <p>
-                        <span className="font-semibold text-[#a50044] dark:text-[#ff6699]">
-                          &quot;User&quot;
-                        </span>{" "}
-                        (referred to as &quot;You&quot;, &quot;Your&quot;) refers to
-                        any individual accessing or using the Service.
-                      </p>
-                      <p>
-                        <span className="font-semibold text-[#a50044] dark:text-[#ff6699]">
-                          &quot;Content&quot;
-                        </span>{" "}
-                        refers to text, images, videos, audio, or any other material
-                        that can be posted, uploaded, or shared on our Service.
-                      </p>
-                    </div>
-                  </Section>
-
-                  <Section title="User Accounts" icon={Icons.user}>
-                    <div className="space-y-4">
-                      <p>
-                        When you create an account with us, you must provide accurate,
-                        complete, and current information. Failure to do so
-                        constitutes a breach of the Terms, which may result in
-                        immediate termination of your account.
-                      </p>
-
-                      <div className="bg-gradient-to-r from-[#a50044]/5 to-[#004d98]/5 p-5 rounded-xl border border-[#a50044]/20 dark:border-[#004d98]/30">
-                        <p className="font-semibold mb-2 text-[#0d1b2e] dark:text-white font-poppins">
-                          You are responsible for:
-                        </p>
-                        <ul className="space-y-2">
-                          {[
-                            "Maintaining the security of your account",
-                            "All activities that occur under your account",
-                            "Notifying us immediately of any unauthorized use",
-                          ].map((item) => (
-                            <li key={item} className="flex items-start gap-2.5">
-                              <span className="mt-1 text-[#a50044] dark:text-[#ff6699] shrink-0">
-                                {Icons.check}
-                              </span>
-                              <span className="text-sm font-poppins">{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </Section>
-
-                  <Section title="User Content" icon={Icons.document}>
-                    <div className="space-y-4">
-                      <p>
-                        Our Service allows you to post, link, store, share and
-                        otherwise make available certain information, text, graphics,
-                        videos, or other material. You retain all rights to your
-                        Content, but you grant us a license to use it.
-                      </p>
-
-                      <p className="font-semibold text-[#0d1b2e] dark:text-white font-poppins">
-                        By posting Content, you represent and warrant that:
-                      </p>
-                      <ul className="space-y-2">
-                        {[
-                          "The Content is yours or you have the right to use it",
-                          "The Content does not violate any third-party rights",
-                          "The Content is not illegal, harmful, or misleading",
-                          "You will not impersonate any person or entity",
-                        ].map((item) => (
-                          <li key={item} className="flex items-start gap-2.5">
-                            <span className="mt-1 text-[#a50044] dark:text-[#ff6699] shrink-0">
-                              {Icons.check}
-                            </span>
-                            <span className="text-sm font-poppins">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      <p className="mt-4">
-                        We reserve the right to remove any Content that violates these
-                        terms without prior notice.
-                      </p>
-                    </div>
-                  </Section>
-
-                  <Section title="Prohibited Activities" icon={Icons.prohibited}>
-                    <div className="space-y-3">
-                      <p>
-                        You may not access or use the Service for any purpose other
-                        than that for which we make it available. The Service may not
-                        be used in connection with any commercial purposes except
-                        those specifically endorsed or approved by us.
-                      </p>
-
-                      <p className="font-semibold mt-4 text-[#0d1b2e] dark:text-white font-poppins">
-                        As a user, you agree not to:
-                      </p>
-                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
-                        {[
-                          "Violate any applicable laws or regulations",
-                          "Infringe on intellectual property rights",
-                          "Harass, abuse, or harm another person",
-                          "Impersonate any person or entity",
-                          "Interfere with or disrupt the Service",
-                          "Attempt to gain unauthorized access to our systems",
-                          "Collect or track personal information of others",
-                          "Use the Service for any illegal or unauthorized purpose",
-                          "Post spam, malware, or malicious content",
-                        ].map((item) => (
-                          <li key={item} className="flex items-start gap-2.5">
-                            <span className="mt-1 text-[#a50044] dark:text-[#ff6699] shrink-0">
-                              {Icons.check}
-                            </span>
-                            <span className="text-sm font-poppins">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </Section>
-
-                  <Section title="Intellectual Property" icon={Icons.copyright}>
-                    <div className="space-y-4">
-                      <p>
-                        The Service and its original content (excluding Content
-                        provided by users), features, and functionality are and will
-                        remain the exclusive property of LAAMI LABS and its licensors.
-                      </p>
-
-                      <p>
-                        Our trademarks and trade dress may not be used in connection
-                        with any product or service without our prior written consent.
-                        This includes:
-                      </p>
-
-                      <div className="flex flex-wrap gap-3 mt-2">
-                        {[
-                          "LAAMI LABS",
-                          "LAAMI",
-                          "All logos and designs",
-                        ].map((item) => (
-                          <span
-                            key={item}
-                            className="px-3 py-1 rounded-full bg-gradient-to-r from-[#a50044]/10 to-[#004d98]/10 text-[#0d1b2e] dark:text-white text-sm font-medium font-poppins border border-[#a50044]/20 dark:border-[#004d98]/30"
-                          >
-                            {item}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </Section>
-
-                  <Section title="Copyright Policy" icon={Icons.copyright}>
-                    <p>
-                      We respect the intellectual property rights of others. It is our
-                      policy to respond to any claim that Content posted on the
-                      Service infringes the copyright or other intellectual property
-                      rights of any person.
-                    </p>
-                    <p className="mt-3">
-                      If you are a copyright owner or authorized to act on behalf of
-                      one, please report any alleged infringements by contacting our
-                      Copyright Agent at{" "}
-                      <a
-                        href="mailto:copyright@laamilabs.co.ke"
-                        className="text-[#004d98] dark:text-[#6fa8ff] hover:text-[#a50044] dark:hover:text-[#ff6699] underline-offset-4 underline font-medium transition-colors font-poppins"
-                      >
-                        inquiry@laamilabs.co.ke
-                      </a>
-                      .
-                    </p>
-                  </Section>
-
-                  <Section title="Termination" icon={Icons.termination}>
-                    <p>
-                      We may terminate or suspend your account and bar access to the
-                      Service immediately, without prior notice or liability, under
-                      our sole discretion, for any reason whatsoever, including
-                      without limitation a breach of the Terms.
-                    </p>
-                    <p className="mt-3">
-                      If you wish to terminate your account, you may simply
-                      discontinue using the Service or contact us to request account
-                      deletion.
-                    </p>
-                  </Section>
-
-                  <Section title="Limitation of Liability" icon={Icons.liability}>
-                    <div className="space-y-3">
-                      <p>
-                        In no event shall LAAMI LABS, nor its directors, employees,
-                        partners, agents, suppliers, or affiliates, be liable for any
-                        indirect, incidental, special, consequential or punitive
-                        damages, including without limitation, loss of profits, data,
-                        use, goodwill, or other intangible losses, resulting from:
-                      </p>
-                      <ul className="space-y-2 mt-3">
-                        {[
-                          "Your use or inability to use the Service",
-                          "Any conduct or content of any third party on the Service",
-                          "Any content obtained from the Service",
-                          "Unauthorized access, use, or alteration of your transmissions or content",
-                        ].map((item) => (
-                          <li key={item} className="flex items-start gap-2.5">
-                            <span className="mt-1 text-[#a50044] dark:text-[#ff6699] shrink-0">
-                              {Icons.check}
-                            </span>
-                            <span className="text-sm font-poppins">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </Section>
-
-                  <Section title="Disclaimer of Warranties" icon={Icons.liability}>
-                    <p>
-                      The Service is provided on an &quot;AS IS&quot; and &quot;AS
-                      AVAILABLE&quot; basis. The Service is provided without
-                      warranties of any kind, whether express or implied, including,
-                      but not limited to, implied warranties of merchantability,
-                      fitness for a particular purpose, non-infringement or course of
-                      performance.
-                    </p>
-                  </Section>
-
-                  <Section title="Governing Law" icon={Icons.gavel}>
-                    <p>
-                      These Terms shall be governed and construed in accordance with
-                      the laws of Kenya, without regard to its conflict of law
-                      provisions.
-                    </p>
-                    <p className="mt-3">
-                      Our failure to enforce any right or provision of these Terms
-                      will not be considered a waiver of those rights. If any
-                      provision of these Terms is held to be invalid or unenforceable
-                      by a court, the remaining provisions of these Terms will remain
-                      in effect.
-                    </p>
-                  </Section>
-
-                  <Section title="Changes to Terms" icon={Icons.refresh}>
-                    <p>
-                      We reserve the right, at our sole discretion, to modify or
-                      replace these Terms at any time. If a revision is material, we
-                      will try to provide at least 30 days&apos; notice prior to any
-                      new terms taking effect. What constitutes a material change will
-                      be determined at our sole discretion.
-                    </p>
-                    <p className="mt-3">
-                      By continuing to access or use our Service after those revisions
-                      become effective, you agree to be bound by the revised terms.
-                    </p>
-                  </Section>
-
-                  <Section title="Contact Us" icon={Icons.mail}>
-                    <p className="mb-4">
-                      If you have any questions about these Terms of Service, please
-                      contact us:
-                    </p>
-
-                    {/* Modern contact card */}
-                    <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <a
-                        href="mailto:legal@laamilabs.co.ke"
-                        className="group flex items-center gap-3 p-4 rounded-xl bg-[#a50044]/5 dark:bg-[#a50044]/10 border border-[#a50044]/10 dark:border-[#a50044]/30 hover:border-[#a50044]/30 dark:hover:border-[#a50044]/50 transition-all"
-                      >
-                        <div className="p-2 rounded-lg bg-[#a50044]/10 dark:bg-[#a50044]/20 text-[#a50044] dark:text-[#ff6699] group-hover:scale-110 transition-transform">
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.57 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                          </svg>
-                        </div>
-                        <div className="flex-1">
-                          <div className="text-xs text-[#a50044]/60 dark:text-[#ff6699]/60 font-poppins">
-                            Email
-                          </div>
-                          <div className="text-sm font-medium text-[#0d1b2e] dark:text-white group-hover:text-[#a50044] dark:group-hover:text-[#ff6699] transition-colors font-poppins">
-                            legal@laamilabs.co.ke
-                          </div>
-                        </div>
-                      </a>
-
-                      <a
-                        href="tel:+234707848528"
-                        className="group flex items-center gap-3 p-4 rounded-xl bg-[#004d98]/5 dark:bg-[#004d98]/10 border border-[#004d98]/10 dark:border-[#004d98]/30 hover:border-[#004d98]/30 dark:hover:border-[#004d98]/50 transition-all"
-                      >
-                        <div className="p-2 rounded-lg bg-[#004d98]/10 dark:bg-[#004d98]/20 text-[#004d98] dark:text-[#6fa8ff] group-hover:scale-110 transition-transform">
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-                          </svg>
-                        </div>
-                        <div className="flex-1">
-                          <div className="text-xs text-[#004d98]/60 dark:text-[#6fa8ff]/60 font-poppins">
-                            Phone
-                          </div>
-                          <div className="text-sm font-medium text-[#0d1b2e] dark:text-white group-hover:text-[#004d98] dark:group-hover:text-[#6fa8ff] transition-colors font-poppins">
-                            +234 707 848 528
-                          </div>
-                        </div>
-                      </a>
-
-                      <div className="sm:col-span-2 flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-[#a50044]/5 to-[#004d98]/5 border border-[#a50044]/20 dark:border-[#004d98]/30">
-                        <div className="p-2 rounded-lg bg-gradient-to-br from-[#a50044]/10 to-[#004d98]/10 text-[#a50044] dark:text-[#ff6699]">
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <div className="text-xs text-[#a50044]/60 dark:text-[#ff6699]/60 font-poppins">
-                            Office
-                          </div>
-                          <div className="text-sm font-medium text-[#0d1b2e] dark:text-white font-poppins">
-                            Eldoret, Kenya
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Section>
-
-                  <Section title="Acknowledgement" icon={Icons.check}>
-                    <p className="font-semibold text-[#0d1b2e] dark:text-white">
-                      BY USING THE SERVICE OR OTHER SERVICES PROVIDED BY LAAMI LABS,
-                      YOU ACKNOWLEDGE THAT YOU HAVE READ THESE TERMS OF SERVICE AND
-                      AGREE TO BE BOUND BY THEM.
-                    </p>
-                  </Section>
+          {/* ── User Content ──────────────────────────────────── */}
+          <FadeSection delay={225}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="IV" title="User Content" />
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
+                <div>
+                  <p className="text-xs text-[#4a4438] leading-relaxed">
+                    You retain ownership. We receive a license to operate.
+                  </p>
                 </div>
+                <div className="space-y-6">
+                  <p className="text-sm text-[#6a6050] leading-loose">
+                    Our Service allows you to post, link, store, share, and otherwise
+                    make available certain information, text, graphics, videos, or other
+                    material. You retain all rights to your Content, but grant us a
+                    license to use it in connection with operating the Service.
+                  </p>
 
-                {/* Footer note */}
-                <div className="pt-8 border-t border-[#a50044]/10 dark:border-[#a50044]/30">
-                  <p className="text-center text-sm text-[#64748b] dark:text-[#94a3b8] font-poppins">
-                    © {new Date().getFullYear()} LAAMI LABS. All rights reserved.
-                    These Terms of Service were last updated on{" "}
-                    <span className="font-semibold text-[#a50044] dark:text-[#ff6699]">
-                      {effectiveDate}
-                    </span>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428] mb-4">
+                      By posting Content, you warrant that:
+                    </p>
+                    <ul className="space-y-1">
+                      {[
+                        "The Content is yours or you hold the right to use it",
+                        "The Content does not violate any third-party rights",
+                        "The Content is not illegal, harmful, or misleading",
+                        "You will not impersonate any person or entity",
+                      ].map((item) => <BulletItem key={item}>{item}</BulletItem>)}
+                    </ul>
+                  </div>
+
+                  <p className="text-sm text-[#5a5448] leading-loose">
+                    We reserve the right to remove any Content that violates these terms
+                    without prior notice.
+                  </p>
+                </div>
+              </div>
+            </section>
+          </FadeSection>
+
+          {/* ── Prohibited Activities ─────────────────────────── */}
+          <FadeSection delay={250}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="V" title="Prohibited Activities" />
+
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12 mb-8">
+                <div />
+                <p className="text-sm text-[#6a6050] leading-loose">
+                  You may not access or use the Service for any purpose other than
+                  that for which we make it available. Commercial use requires explicit
+                  prior endorsement from LAAMI LABS.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#1e1a14]">
+                {[
+                  { num: "01", label: "Legal Violations", desc: "Violate any applicable laws or regulations" },
+                  { num: "02", label: "IP Infringement", desc: "Infringe on intellectual property rights" },
+                  { num: "03", label: "Harassment", desc: "Harass, abuse, or harm another person" },
+                  { num: "04", label: "Impersonation", desc: "Impersonate any person or entity" },
+                  { num: "05", label: "Interference", desc: "Disrupt or interfere with the Service" },
+                  { num: "06", label: "Unauthorized Access", desc: "Attempt to breach our systems" },
+                  { num: "07", label: "Data Harvesting", desc: "Collect personal information of others" },
+                  { num: "08", label: "Malicious Content", desc: "Post spam, malware, or harmful content" },
+                  { num: "09", label: "Illegal Use", desc: "Use the Service for any unlawful purpose" },
+                ].map(({ num, label, desc }) => (
+                  <div
+                    key={label}
+                    className="group bg-[#0a0a08] hover:bg-[#0d0d0b] p-8 transition-colors duration-300"
+                  >
+                    <div className="text-xs text-[#3a3428] mb-4 font-bold">{num}</div>
+                    <div
+                      className="text-base font-bold text-[#d4c9b0] group-hover:text-[#f5f0e8] mb-2 transition-colors"
+                      style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    >
+                      {label}
+                    </div>
+                    <div className="text-xs text-[#4a4438] group-hover:text-[#6a6050] transition-colors">
+                      {desc}
+                    </div>
+                    <div className="mt-6 h-px w-0 group-hover:w-full bg-[#c8a96e]/20 transition-all duration-500" />
+                  </div>
+                ))}
+              </div>
+            </section>
+          </FadeSection>
+
+          {/* ── Intellectual Property ─────────────────────────── */}
+          <FadeSection delay={275}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="VI" title="Intellectual Property" />
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
+                <div />
+                <div className="space-y-5">
+                  <p className="text-sm text-[#6a6050] leading-loose">
+                    The Service and its original content, features, and functionality
+                    are and will remain the exclusive property of LAAMI LABS and its
+                    licensors. Our trademarks and trade dress may not be used in
+                    connection with any product or service without our prior written
+                    consent.
+                  </p>
+
+                  <div className="flex flex-wrap gap-3">
+                    {["LAAMI LABS", "LAAMI", "All logos & designs"].map((item) => (
+                      <span
+                        key={item}
+                        className="px-4 py-2 border border-[#c8a96e]/20 text-[#c8a96e]/60 text-xs uppercase tracking-[0.15em]"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+          </FadeSection>
+
+          {/* ── Copyright Policy ──────────────────────────────── */}
+          <FadeSection delay={300}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="VII" title="Copyright Policy" />
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
+                <div />
+                <div className="space-y-4 text-sm text-[#6a6050] leading-loose">
+                  <p>
+                    We respect the intellectual property rights of others. It is our
+                    policy to respond promptly to any claim that Content posted on the
+                    Service infringes the copyright or other intellectual property
+                    rights of any person.
+                  </p>
+                  <p>
+                    If you are a copyright owner or authorized to act on behalf of one,
+                    report alleged infringements to our Copyright Agent at{" "}
+                    <a
+                      href="mailto:inquiry@laamilabs.co.ke"
+                      className="text-[#c8a96e] hover:text-[#d4b97e] transition-colors underline underline-offset-4 decoration-[#c8a96e]/30"
+                    >
+                      inquiry@laamilabs.co.ke
+                    </a>
                     .
                   </p>
                 </div>
               </div>
-            </div>
-          </div>
+            </section>
+          </FadeSection>
 
-          {/* ── Navigation Buttons ────────────────────────────────── */}
-          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#004d98] hover:bg-[#0061be] text-white text-sm font-semibold transition-all shadow-lg shadow-[#004d98]/20 hover:shadow-xl hover:shadow-[#004d98]/30 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#004d98] focus-visible:ring-offset-2 font-poppins"
-            >
-              {Icons.arrowLeft}
-              Back to Home
-            </Link>
+          {/* ── Termination + Liability ────────────────────────── */}
+          <FadeSection delay={325}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="VIII" title="Termination & Liability" />
 
-            <Link
-              href="/privacy-policy"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-[#a50044] text-[#a50044] dark:border-[#ff6699] dark:text-[#ff6699] font-semibold text-sm hover:bg-[#a50044]/5 dark:hover:bg-[#ff6699]/10 transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a50044] shadow-lg font-poppins"
-            >
-              Read Privacy Policy
-              {Icons.arrowRight}
-            </Link>
-          </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1e1a14]">
+                {/* Termination */}
+                <div className="bg-[#0a0a08] p-10">
+                  <div className="flex items-center gap-3 mb-8">
+                    <span className="text-[10px] uppercase tracking-[0.25em] text-[#c8a96e]/40">Account</span>
+                    <div className="h-px flex-1 bg-[#1e1a14]" />
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428]">Termination</span>
+                  </div>
+                  <p className="text-sm text-[#5a5448] leading-relaxed mb-4">
+                    We may terminate or suspend your account immediately, without prior
+                    notice or liability, for any reason including breach of these Terms.
+                  </p>
+                  <p className="text-sm text-[#5a5448] leading-relaxed">
+                    To terminate your account voluntarily, discontinue using the Service
+                    or contact us to request deletion.
+                  </p>
+                </div>
 
-          {/* ── Footer links ────────────────────────────────── */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-6">
-            {[
-              { href: "/privacy-policy", label: "Privacy Policy" },
-              { href: "/terms-of-service", label: "Terms of Service", active: true },
-              { href: "/cookie-policy", label: "Cookie Policy" },
-            ].map(({ href, label, active }) => (
-              <Link
-                key={href}
-                href={href}
-                className={`
-                  text-sm font-medium transition-colors font-poppins
-                  ${
-                    active
-                      ? "text-[#a50044] dark:text-[#ff6699]"
-                      : "text-[#64748b] dark:text-[#94a3b8] hover:text-[#a50044] dark:hover:text-[#ff6699]"
-                  }
-                `}
-              >
-                {label}
-                {active && (
-                  <span className="ml-2 inline-block w-1 h-1 rounded-full bg-[#a50044] dark:bg-[#ff6699]" />
-                )}
-              </Link>
-            ))}
-          </div>
-        </section>
-      </div>
+                {/* Liability */}
+                <div className="bg-[#0a0a08] p-10">
+                  <div className="flex items-center gap-3 mb-8">
+                    <span className="text-[10px] uppercase tracking-[0.25em] text-[#c8a96e]/40">Damages</span>
+                    <div className="h-px flex-1 bg-[#1e1a14]" />
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428]">Limitation</span>
+                  </div>
+                  <p className="text-xs text-[#4a4438] leading-relaxed mb-4">
+                    LAAMI LABS shall not be liable for any indirect, incidental, or
+                    consequential damages arising from:
+                  </p>
+                  <ul className="space-y-1">
+                    {[
+                      "Your use or inability to use the Service",
+                      "Third-party conduct or content on the Service",
+                      "Unauthorized access to your transmissions",
+                      "Content obtained from the Service",
+                    ].map((item) => <BulletItem key={item}>{item}</BulletItem>)}
+                  </ul>
+                </div>
+              </div>
+            </section>
+          </FadeSection>
 
-      {/* Grid background styles */}
-      <style jsx>{`
-        .bg-grid-slate-100 {
-          background-image:
-            linear-gradient(to right, #f1f5f9 1px, transparent 1px),
-            linear-gradient(to bottom, #f1f5f9 1px, transparent 1px);
-          background-size: 24px 24px;
-        }
-        .dark .bg-grid-slate-900\/25 {
-          background-image:
-            linear-gradient(
-              to right,
-              rgba(15, 23, 42, 0.25) 1px,
-              transparent 1px
-            ),
-            linear-gradient(
-              to bottom,
-              rgba(15, 23, 42, 0.25) 1px,
-              transparent 1px
-            );
-        }
-      `}</style>
-    </main>
+          {/* ── Disclaimer ────────────────────────────────────── */}
+          <FadeSection delay={350}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="IX" title="Disclaimer of Warranties" />
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
+                <div />
+                <div className="p-6 border border-[#1e1a14] bg-[#0d0d0b]">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#c8a96e]/50 mb-4">
+                    As-Is Basis
+                  </p>
+                  <p className="text-sm text-[#5a5448] leading-relaxed">
+                    The Service is provided on an{" "}
+                    <span className="text-[#d4c9b0]">&quot;AS IS&quot;</span> and{" "}
+                    <span className="text-[#d4c9b0]">&quot;AS AVAILABLE&quot;</span>{" "}
+                    basis, without warranties of any kind — whether express or implied,
+                    including but not limited to warranties of merchantability, fitness
+                    for a particular purpose, or non-infringement.
+                  </p>
+                </div>
+              </div>
+            </section>
+          </FadeSection>
+
+          {/* ── Governing Law + Changes ───────────────────────── */}
+          <FadeSection delay={375}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="X" title="Governing Law & Changes" />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1e1a14]">
+                <div className="bg-[#0a0a08] p-10">
+                  <div className="flex items-center gap-3 mb-8">
+                    <span className="text-[10px] uppercase tracking-[0.25em] text-[#c8a96e]/40">Jurisdiction</span>
+                    <div className="h-px flex-1 bg-[#1e1a14]" />
+                  </div>
+                  <p className="text-sm text-[#5a5448] leading-relaxed mb-4">
+                    These Terms shall be governed and construed in accordance with the
+                    laws of{" "}
+                    <span className="text-[#d4c9b0]" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+                      Kenya
+                    </span>
+                    , without regard to conflict of law provisions.
+                  </p>
+                  <p className="text-sm text-[#5a5448] leading-relaxed">
+                    Our failure to enforce any provision will not be considered a
+                    waiver. Invalid provisions will be severed; remaining terms
+                    remain in full effect.
+                  </p>
+                </div>
+
+                <div className="bg-[#0a0a08] p-10">
+                  <div className="flex items-center gap-3 mb-8">
+                    <span className="text-[10px] uppercase tracking-[0.25em] text-[#c8a96e]/40">Revisions</span>
+                    <div className="h-px flex-1 bg-[#1e1a14]" />
+                  </div>
+                  <p className="text-sm text-[#5a5448] leading-relaxed mb-4">
+                    We reserve the right to modify these Terms at any time. If a
+                    revision is material, we will try to provide at least{" "}
+                    <span className="text-[#d4c9b0]">30 days&apos; notice</span>{" "}
+                    prior to new terms taking effect.
+                  </p>
+                  <p className="text-sm text-[#5a5448] leading-relaxed">
+                    Continued use of the Service after revisions become effective
+                    constitutes acceptance of the revised terms.
+                  </p>
+                </div>
+              </div>
+            </section>
+          </FadeSection>
+
+          {/* ── Acknowledgement ───────────────────────────────── */}
+          <FadeSection delay={400}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <div className="p-8 border border-[#c8a96e]/10 bg-[#0d0d0b]">
+                <p className="text-[10px] uppercase tracking-[0.25em] text-[#c8a96e]/40 mb-5">
+                  Acknowledgement
+                </p>
+                <p
+                  className="text-xl sm:text-2xl font-bold text-[#d4c9b0] leading-relaxed"
+                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                >
+                  By using the Service, you acknowledge that you have read these
+                  Terms of Service and agree to be bound by them.
+                </p>
+              </div>
+            </section>
+          </FadeSection>
+
+          {/* ── Contact ───────────────────────────────────────── */}
+          <FadeSection delay={425}>
+            <section className="py-16 border-b border-[#1e1a14]">
+              <SectionTitle roman="XI" title="Contact" />
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#1e1a14]">
+                <a
+                  href="mailto:legal@laamilabs.co.ke"
+                  className="group bg-[#0a0a08] hover:bg-[#0d0d0b] p-8 transition-colors"
+                >
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428] mb-4">Legal Email</div>
+                  <div
+                    className="text-base font-bold text-[#d4c9b0] group-hover:text-[#c8a96e] transition-colors leading-tight"
+                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  >
+                    legal@laamilabs.co.ke
+                  </div>
+                  <div className="mt-4 text-[#3a3428] group-hover:translate-x-1 transition-transform text-xs">→</div>
+                </a>
+
+                <a
+                  href="tel:+234707848528"
+                  className="group bg-[#0a0a08] hover:bg-[#0d0d0b] p-8 transition-colors"
+                >
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428] mb-4">Phone</div>
+                  <div
+                    className="text-base font-bold text-[#d4c9b0] group-hover:text-[#c8a96e] transition-colors leading-tight"
+                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  >
+                    +234 707 848 528
+                  </div>
+                  <div className="mt-4 text-[#3a3428] group-hover:translate-x-1 transition-transform text-xs">→</div>
+                </a>
+
+                <div className="bg-[#0a0a08] p-8">
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428] mb-4">Office</div>
+                  <div
+                    className="text-base font-bold text-[#d4c9b0] leading-tight"
+                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  >
+                    Eldoret, Kenya
+                  </div>
+                  <div className="mt-4 text-[10px] uppercase tracking-[0.15em] text-[#3a3428]">EA +3</div>
+                </div>
+              </div>
+            </section>
+          </FadeSection>
+
+          {/* ── Footer ────────────────────────────────────────── */}
+          <FadeSection delay={475}>
+            <footer className="pt-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+              <p className="text-[10px] text-[#2a2418] uppercase tracking-[0.2em]">
+                © {new Date().getFullYear()} LAAMI LABS — All rights reserved
+              </p>
+
+              <div className="flex items-center gap-8 text-[10px] uppercase tracking-[0.2em]">
+                <Link href="/" className="text-[#3a3428] hover:text-[#c8a96e]/60 transition-colors">
+                  Home
+                </Link>
+                <Link href="/privacy-policy" className="text-[#3a3428] hover:text-[#c8a96e]/60 transition-colors">
+                  Privacy
+                </Link>
+                <Link href="/cookie-policy" className="text-[#3a3428] hover:text-[#c8a96e]/60 transition-colors">
+                  Cookies
+                </Link>
+                <span className="text-[#c8a96e]/40">Terms</span>
+              </div>
+            </footer>
+          </FadeSection>
+
+        </div>
+      </main>
+    </>
   );
 }

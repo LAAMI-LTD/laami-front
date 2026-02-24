@@ -5,6 +5,7 @@ import {
   Quote,
   List,
   FileCode,
+  Link,
 } from "lucide-react";
 import { BlockIconsType } from "./types";
 
@@ -16,6 +17,7 @@ export const BLOCK_ICONS: BlockIconsType = {
   quote: Quote,
   list: List,
   embed: FileCode,
+  link: Link,
 };
 
 export const BLOCK_TEMPLATES = {

@@ -21,7 +21,8 @@ import 'prismjs/components/prism-json';
 import { 
   Copy, 
   Check, 
-  Link as LinkIcon
+  Link as LinkIcon,
+  ExternalLink
 } from 'lucide-react';
 
 // Initialize Poppins font
@@ -32,7 +33,7 @@ const poppins = Poppins({
 });
 
 interface ContentBlock {
-  type: 'paragraph' | 'heading' | 'image' | 'code' | 'quote' | 'list' | 'embed';
+  type: 'paragraph' | 'heading' | 'image' | 'code' | 'quote' | 'list' | 'embed' | 'link'; // Add 'link' here
   data: any;
   order?: number;
 }
@@ -267,24 +268,52 @@ export function BlogContentRenderer({ content }: BlogContentRendererProps) {
       );
     }
 
-    // Generic link
+    // Generic embed
+    return (
+      <div className="my-10">
+        <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-900">
+          <iframe
+            src={data.url}
+            title="Embedded content"
+            className="w-full h-full"
+            allowFullScreen
+          />
+        </div>
+      </div>
+    );
+  };
+
+  // New renderLink function
+  const renderLink = (data: any, index: number) => {
     const isEven = index % 2 === 0;
     const accentColor = isEven ? '#8a0038' : '#004d98';
+    const isExternal = data.target === '_blank' || data.url.startsWith('http');
     
     return (
-      <div className="my-8">
+      <div className="my-6">
         <Link
           href={data.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`${poppins.className} inline-flex items-center gap-2 text-sm hover:underline underline-offset-2`}
+          target={data.target || '_self'}
+          rel={data.rel || (data.target === '_blank' ? 'noopener noreferrer' : undefined)}
+          className={`${poppins.className} inline-flex items-center gap-2 group`}
           style={{ color: accentColor }}
         >
-          {data.url}
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-          </svg>
+          <span className="font-medium text-lg hover:underline underline-offset-4 decoration-2 transition-all">
+            {data.text || data.url}
+          </span>
+          {isExternal ? (
+            <ExternalLink className="w-4 h-4 opacity-70 group-hover:opacity-100 transition-opacity" />
+          ) : (
+            <LinkIcon className="w-4 h-4 opacity-70 group-hover:opacity-100 transition-opacity" />
+          )}
         </Link>
+        
+        {/* Show URL as metadata for external links */}
+        {isExternal && data.url && (
+          <div className="mt-1 text-xs text-gray-500 dark:text-gray-400 font-mono">
+            {data.url.replace(/^https?:\/\//, '')}
+          </div>
+        )}
       </div>
     );
   };
@@ -305,6 +334,8 @@ export function BlogContentRenderer({ content }: BlogContentRendererProps) {
         return renderList(block.data, index);
       case 'embed':
         return renderEmbed(block.data, index);
+      case 'link': // Add link case
+        return renderLink(block.data, index);
       default:
         return null;
     }

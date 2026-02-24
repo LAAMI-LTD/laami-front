@@ -7,7 +7,7 @@ export type BlockIconsType = {
 
 
 export interface ContentBlock {
-  type: "heading" | "paragraph" | "image" | "list" | "quote" | "code" | "embed";
+  type: "heading" | "paragraph" | "image" | "list" | "quote" | "code" | "embed"|"link";
   data: any;
   id: string;
   order?: number;
