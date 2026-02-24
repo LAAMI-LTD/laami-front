@@ -319,7 +319,6 @@ const MobileMenuContent = ({
             className="flex items-center justify-between text-3xl font-light text-gray-300 hover:text-white transition group"
           >
             <span className="flex items-center gap-3 group-hover:translate-x-2 transition-transform duration-300">
-              <LogIn className="w-6 h-6" />
               Login
             </span>
             <ChevronRight className="w-6 h-6 text-[#004d98]" />

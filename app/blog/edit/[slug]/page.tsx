@@ -472,7 +472,7 @@ export default function EditBlogPage() {
     currentUserRole === "admin" || currentUserAuthorId === form.author;
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#000213] transition-colors duration-300">
+    <div className="min-h-screen pt-20 bg-white dark:bg-[#000213] transition-colors duration-300">
       {showNewAuthorForm && (
         <NewAuthorForm
           onSubmit={handleCreateAuthor}

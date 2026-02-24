@@ -180,48 +180,48 @@ export default function SubscriptionStatus({
     </svg>
   );
 
-  // Tailwind classes for consistent styling
+  // Generic Tailwind classes for consistent styling with dark mode support
   const containerClasses =
-    "relative bg-[#F7F5F0] p-7 overflow-hidden w-full min-w-[280px] font-sans before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-[#A50044] before:to-[#004D98] after:content-['NEWSLETTER'] after:absolute after:bottom-[-12px] after:right-[-8px] after:font-['Bebas_Neue'] after:text-[72px] after:leading-none after:text-[#004D98]/10 after:tracking-wider after:pointer-events-none";
+    "relative bg-stone-50 dark:bg-neutral-900 p-7 overflow-hidden w-full min-w-[280px] font-sans before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-rose-700 before:to-blue-800 after:content-['NEWSLETTER'] after:absolute after:bottom-[-12px] after:right-[-8px] after:font-['Bebas_Neue'] after:text-[72px] after:leading-none after:text-blue-800/10 dark:after:text-blue-500/20 after:tracking-wider after:pointer-events-none";
 
   const labelClasses =
-    "font-['Bebas_Neue'] text-2xl tracking-wider text-[#0A0A0A] mb-1 leading-tight";
+    "font-['Bebas_Neue'] text-2xl tracking-wider text-neutral-900 dark:text-white mb-1 leading-tight";
 
   const sublabelClasses =
-    "text-lg font-light text-[#5A5A5A] mb-5 tracking-wide";
+    "text-lg font-light text-neutral-600 dark:text-neutral-400 mb-5 tracking-wide";
 
   const errorClasses =
-    "bg-[#A50044]/10 border-l-3 border-[#A50044] p-2 text-lg text-[#A50044] mb-4 rounded-r";
+    "bg-rose-700/10 dark:bg-rose-700/20 border-l-4 border-rose-700 p-2 text-lg text-rose-700 dark:text-rose-400 mb-4";
 
   const inputClasses =
-    "w-full p-3 font-normal bg-white border border-[#E0DDD8] rounded-sm outline-none text-[#0A0A0A] placeholder:text-[#B0ADA8] focus:border-[#004D98] disabled:opacity-50 disabled:bg-[#F0EEE9]";
+    "w-full p-3 font-normal bg-white dark:bg-neutral-800 border border-stone-300 dark:border-neutral-700 rounded-sm outline-none text-neutral-900 dark:text-white placeholder:text-stone-400 dark:placeholder:text-neutral-500 focus:border-blue-800 dark:focus:border-blue-500 disabled:opacity-50 disabled:bg-stone-100 dark:disabled:bg-neutral-800";
 
   const primaryButtonClasses =
-    "w-full py-3 px-4 font-['Bebas_Neue'] text-base tracking-wider text-white bg-[#004D98] rounded-sm cursor-pointer transition-colors hover:bg-[#003A72] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed";
+    "w-full py-3 px-4 font-['Bebas_Neue'] text-base tracking-wider text-white bg-blue-800 rounded-sm cursor-pointer transition-colors hover:bg-blue-900 dark:hover:bg-blue-700 active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed";
 
   const secondaryButtonClasses =
-    "w-full py-2.5 px-4  font-medium text-[#0A0A0A] bg-white border border-[#E0DDD8] rounded-sm cursor-pointer flex items-center justify-center gap-2 transition-colors hover:border-[#004D98] hover:bg-[#004D98]/10 disabled:opacity-50 disabled:cursor-not-allowed";
+    "w-full py-2.5 px-4 font-medium text-neutral-900 dark:text-white bg-white dark:bg-neutral-800 border border-stone-300 dark:border-neutral-700 rounded-sm cursor-pointer flex items-center justify-center gap-2 transition-colors hover:border-blue-800 dark:hover:border-blue-500 hover:bg-blue-800/10 dark:hover:bg-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed";
 
   const dividerClasses = "flex items-center gap-2.5 my-4";
 
-  const dividerLineClasses = "flex-1 h-px bg-[#E0DDD8]";
+  const dividerLineClasses = "flex-1 h-px bg-stone-300 dark:bg-neutral-700";
 
   const dividerTextClasses =
-    "font-light text-[#B0ADA8] tracking-wider uppercase";
+    "font-light text-stone-400 dark:text-neutral-500 tracking-wider uppercase text-sm";
 
   const statusPillClasses =
     "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-lg font-medium tracking-wide mb-3 before:w-1.5 before:h-1.5 before:rounded-full before:bg-current";
 
   const emailTagClasses =
-    "font-light text-[#5A5A5A] mb-4 flex items-center gap-1";
+    "font-light text-neutral-600 dark:text-neutral-400 mb-4 flex items-center gap-1";
 
-  const emailTagStrongClasses = "font-medium text-[#0A0A0A]";
+  const emailTagStrongClasses = "font-medium text-neutral-900 dark:text-white";
 
   const dangerButtonClasses =
-    "text-lg font-medium text-[#A50044] bg-none border-none cursor-pointer p-0 tracking-wide underline underline-offset-3 decoration-1 opacity-80 hover:opacity-100 disabled:opacity-30 disabled:cursor-not-allowed";
+    "text-lg font-medium text-rose-700 dark:text-rose-400 bg-none border-none cursor-pointer p-0 tracking-wide underline underline-offset-2 decoration-1 opacity-80 hover:opacity-100 disabled:opacity-30 disabled:cursor-not-allowed";
 
   const spinnerClasses =
-    "inline-block w-3 h-3 border-2 border-[#E0DDD8] border-t-[#004D98] rounded-full animate-spin mr-1.5 align-middle";
+    "inline-block w-3 h-3 border-2 border-stone-300 dark:border-neutral-600 border-t-blue-800 dark:border-t-blue-500 rounded-full animate-spin mr-1.5 align-middle";
 
   const actionsClasses = "flex flex-col gap-2";
 
@@ -234,7 +234,7 @@ export default function SubscriptionStatus({
             <div className={sublabelClasses}>Your subscription is active</div>
             {errorMessage && <div className={errorClasses}>{errorMessage}</div>}
             <div
-              className={`${statusPillClasses} before:bg-[#A50044] text-[#A50044] bg-[#A50044]/10`}
+              className={`${statusPillClasses} before:bg-rose-700 text-rose-700 dark:text-rose-400 bg-rose-700/10 dark:bg-rose-700/20`}
             >
               Subscribed
             </div>
@@ -337,7 +337,7 @@ export default function SubscriptionStatus({
           {errorMessage && <div className={errorClasses}>{errorMessage}</div>}
           {status === "inactive" && (
             <div
-              className={`${statusPillClasses} before:bg-[#5A5A5A] text-[#5A5A5A] bg-black/5`}
+              className={`${statusPillClasses} before:bg-neutral-600 dark:before:bg-neutral-400 text-neutral-600 dark:text-neutral-400 bg-black/5 dark:bg-white/5`}
             >
               Unsubscribed
             </div>
@@ -370,7 +370,7 @@ export default function SubscriptionStatus({
           <div className={sublabelClasses}>Your subscription is active</div>
           {errorMessage && <div className={errorClasses}>{errorMessage}</div>}
           <div
-            className={`${statusPillClasses} before:bg-[#A50044] text-[#A50044] bg-[#A50044]/10`}
+            className={`${statusPillClasses} before:bg-rose-700 text-rose-700 dark:text-rose-400 bg-rose-700/10 dark:bg-rose-700/20`}
           >
             Subscribed
           </div>

@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Sparkles, Send, Upload, X, User } from "lucide-react";
+import {  Send, Upload, X, User } from "lucide-react";
 import { CreateBlogForm } from "../types";
 import AuthorSelector from "./AuthorSelector";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 
 interface BlogInfoCardProps {
   form: CreateBlogForm;

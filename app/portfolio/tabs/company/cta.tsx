@@ -14,7 +14,7 @@ export default function CTA() {
           <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
         </Link>
         <Link
-          href="/downloads/stress-free-business-guide.pdf"
+          href="https://drive.google.com/file/d/18c1-VU4ckiFPUzaJh2CJp50m0O8aTPtm/view?usp=drive_link"
           className="inline-flex items-center justify-center px-8 py-4 bg-white dark:bg-gray-800 border-2 border-[#a50044] dark:border-pink-500 text-[#a50044] dark:text-pink-500 rounded-lg font-medium text-lg hover:bg-[#a50044] hover:text-white dark:hover:bg-pink-500 dark:hover:text-white transition-all duration-300 group"
           download
         >

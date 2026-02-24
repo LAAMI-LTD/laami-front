@@ -13,7 +13,7 @@ export function useBlogForm() {
     coverImage: "",
     tags: "",
     author: "",
-    published: false,
+    published: true,
     publishedAt: null,
   });
 
