@@ -34,11 +34,29 @@ export function useBlogForm() {
   const generateId = () => Math.random().toString(36).substring(2, 9);
 
   const addBlock = (type: ContentBlock["type"]) => {
+    // Fix: Provide a fallback template for missing block types
+    const getBlockTemplate = (blockType: string) => {
+      // Check if the type exists in BLOCK_TEMPLATES
+      if (blockType in BLOCK_TEMPLATES) {
+        return BLOCK_TEMPLATES[blockType as keyof typeof BLOCK_TEMPLATES] || {};
+      }
+      
+      // Provide default templates for common block types
+      switch (blockType) {
+        case 'link':
+          return { url: '', text: '', openInNewTab: true };
+        case 'embed':
+          return { url: '', type: 'youtube', caption: '' };
+        default:
+          return {};
+      }
+    };
+
     const newBlock: ContentBlock = {
       id: generateId(),
       type,
       order: form.content.length,
-      data: BLOCK_TEMPLATES[type] || {},
+      data: getBlockTemplate(type),
     };
     setForm((prev) => ({
       ...prev,
@@ -103,7 +121,6 @@ export function useBlogForm() {
   };
 
   // New method to populate form with existing blog data
-  // New method to populate form with existing blog data
   const setFormFromBlog = (blogData: {
     title: string;
     slug: string;
@@ -127,7 +144,6 @@ export function useBlogForm() {
       tags: blogData.tags || "",
       published: blogData.published,
       coverImage: blogData.coverImage || "",
-      // Convert string to Date object if it exists, otherwise null
       publishedAt: blogData.publishedAt ? new Date(blogData.publishedAt) : null,
     });
   };
@@ -142,7 +158,7 @@ export function useBlogForm() {
     setAuthor,
     setPublished,
     setCoverImage,
-    setFormFromBlog, // Added this function
+    setFormFromBlog,
     resetForm,
   };
 }
