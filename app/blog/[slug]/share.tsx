@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Link2, Check, Mail, Share2, X } from 'lucide-react';
+import { useState } from "react";
+import { Link2, Check, Mail, Share2, X } from "lucide-react";
 
 interface ShareButtonsProps {
   url: string;
@@ -9,7 +9,7 @@ interface ShareButtonsProps {
   description?: string;
   image?: string;
   showLabels?: boolean;
-  variant?: 'compact' | 'full' | 'minimal';
+  variant?: "compact" | "full" | "minimal";
   className?: string;
 }
 
@@ -49,8 +49,8 @@ export function ShareButtons({
   description,
   image,
   showLabels = false,
-  variant = 'compact',
-  className = '',
+  variant = "compact",
+  className = "",
 }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -58,8 +58,8 @@ export function ShareButtons({
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
   const encodedDescription = encodeURIComponent(description || title);
-  const whatsappText = `${title}\n\n${description || ''}\n\n${url}`;
-  const telegramText = `${title} - ${description || ''}`;
+  const whatsappText = `${title}\n\n${description || ""}\n\n${url}`;
+  const telegramText = `${title} - ${description || ""}`;
 
   const shareLinks = {
     twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}&via=laamilabs`,
@@ -76,7 +76,7 @@ export function ShareButtons({
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy:', err);
+      console.error("Failed to copy:", err);
     }
   };
 
@@ -86,12 +86,13 @@ export function ShareButtons({
         await navigator.share({ title, text: description || title, url });
         setIsOpen(false);
       } catch (err) {
-        console.log('Share cancelled:', err);
+        console.log("Share cancelled:", err);
       }
     }
   };
 
-  const showNativeShare = typeof navigator !== 'undefined' && 'share' in navigator;
+  const showNativeShare =
+    typeof navigator !== "undefined" && "share" in navigator;
 
   interface PlatformButton {
     name: string;
@@ -103,54 +104,54 @@ export function ShareButtons({
   }
 
   const buttons: PlatformButton[] = [
-    { 
-      name: 'X', 
-      label: 'Share on X', 
-      icon: XIcon, 
-      href: shareLinks.twitter, 
-      color: '#000000',
-      darkColor: '#ffffff'
+    {
+      name: "X",
+      label: "Share on X",
+      icon: XIcon,
+      href: shareLinks.twitter,
+      color: "#000000",
+      darkColor: "#ffffff",
     },
-    { 
-      name: 'Facebook', 
-      label: 'Share on Facebook', 
-      icon: FacebookIcon, 
-      href: shareLinks.facebook, 
-      color: '#1877F2' 
+    {
+      name: "Facebook",
+      label: "Share on Facebook",
+      icon: FacebookIcon,
+      href: shareLinks.facebook,
+      color: "#1877F2",
     },
-    { 
-      name: 'LinkedIn', 
-      label: 'Share on LinkedIn', 
-      icon: LinkedInIcon, 
-      href: shareLinks.linkedin, 
-      color: '#0A66C2' 
+    {
+      name: "LinkedIn",
+      label: "Share on LinkedIn",
+      icon: LinkedInIcon,
+      href: shareLinks.linkedin,
+      color: "#0A66C2",
     },
-    { 
-      name: 'WhatsApp', 
-      label: 'Share on WhatsApp', 
-      icon: WhatsAppIcon, 
-      href: shareLinks.whatsapp, 
-      color: '#25D366' 
+    {
+      name: "WhatsApp",
+      label: "Share on WhatsApp",
+      icon: WhatsAppIcon,
+      href: shareLinks.whatsapp,
+      color: "#25D366",
     },
-    { 
-      name: 'Telegram', 
-      label: 'Share on Telegram', 
-      icon: TelegramIcon, 
-      href: shareLinks.telegram, 
-      color: '#229ED9' 
+    {
+      name: "Telegram",
+      label: "Share on Telegram",
+      icon: TelegramIcon,
+      href: shareLinks.telegram,
+      color: "#229ED9",
     },
-    { 
-      name: 'Email', 
-      label: 'Share via Email', 
-      icon: Mail, 
-      href: shareLinks.email, 
-      color: '#6B7280',
-      darkColor: '#9CA3AF'
+    {
+      name: "Email",
+      label: "Share via Email",
+      icon: Mail,
+      href: shareLinks.email,
+      color: "#6B7280",
+      darkColor: "#9CA3AF",
     },
   ];
 
   // ─── Minimal variant ─────────────────────────────────────────────────────────
-  if (variant === 'minimal') {
+  if (variant === "minimal") {
     return (
       <div className={`flex items-center gap-1.5 ${className}`}>
         {buttons.slice(0, 4).map((btn) => (
@@ -165,12 +166,14 @@ export function ShareButtons({
           >
             <btn.icon
               className="w-4 h-4 transition-colors duration-150"
-              style={{ 
-                color: btn.darkColor ? btn.color : btn.color,
-                '@media (prefers-color-scheme: dark)': {
-                  color: btn.darkColor || btn.color
-                }
-              } as React.CSSProperties}
+              style={
+                {
+                  color: btn.darkColor ? btn.color : btn.color,
+                  "@media (prefers-color-scheme: dark)": {
+                    color: btn.darkColor || btn.color,
+                  },
+                } as React.CSSProperties
+              }
             />
           </a>
         ))}
@@ -178,24 +181,26 @@ export function ShareButtons({
         <button
           onClick={handleCopyLink}
           aria-label="Copy link"
-          title={copied ? 'Copied!' : 'Copy link'}
+          title={copied ? "Copied!" : "Copy link"}
           className="flex items-center justify-center w-9 h-9 rounded-full border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/5 transition-all duration-150"
         >
-          {copied
-            ? <Check className="w-4 h-4 text-emerald-500" />
-            : <Link2 className="w-4 h-4 text-gray-500 dark:text-gray-400" />}
+          {copied ? (
+            <Check className="w-4 h-4 text-emerald-500" />
+          ) : (
+            <Link2 className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+          )}
         </button>
       </div>
     );
   }
 
-  // ─── Full variant ─────────────────────────────────────────────────────────────
-  if (variant === 'full') {
+  // ─── Full variant (modern redesign) ─────────────────────────────────────────────
+  if (variant === "full") {
     return (
-      <div className={`space-y-3 ${className}`}>
+      <div className={`space-y-4 ${className}`}>
         {showLabels && (
           <p className="text-[11px] font-semibold tracking-widest uppercase text-gray-400 dark:text-gray-500">
-            Share
+            Share this article
           </p>
         )}
 
@@ -207,22 +212,32 @@ export function ShareButtons({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={btn.label}
-              className="group flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-white/[0.03] hover:border-[color:var(--btn-color)] dark:hover:border-[color:var(--btn-dark-color,var(--btn-color))] hover:bg-[color:var(--btn-color)]/5 dark:hover:bg-[color:var(--btn-color)]/10 transition-all duration-150"
-              style={{ 
-                '--btn-color': btn.color,
-                '--btn-dark-color': btn.darkColor || btn.color
-              } as React.CSSProperties}
+              className="group relative flex items-center gap-2.5 px-4 py-2.5 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-gray-900/50 hover:border-transparent hover:shadow-lg transition-all duration-200 overflow-hidden"
+              style={
+                {
+                  "--btn-color": btn.color,
+                  "--btn-dark-color": btn.darkColor || btn.color,
+                } as React.CSSProperties
+              }
             >
-              <btn.icon 
-                className="w-4 h-4 transition-colors"
-                style={{ 
-                  color: btn.darkColor ? btn.color : btn.color,
-                  '@media (prefers-color-scheme: dark)': {
-                    color: btn.darkColor || btn.color
-                  }
-                } as React.CSSProperties}
+              {/* Hover background effect */}
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                style={{
+                  backgroundColor: btn.color,
+                }}
               />
-              <span className="text-xs font-medium text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+
+              {/* Icon - with conditional dark mode color */}
+              <btn.icon
+                className="relative w-4 h-4 transition-colors duration-200 z-10"
+                style={{
+                  color: btn.color,
+                }}
+              />
+
+              {/* Label - with proper dark mode handling via Tailwind */}
+              <span className="relative text-xs font-medium text-gray-700 dark:text-gray-300 group-hover:text-white transition-colors duration-200 z-10">
                 {btn.name}
               </span>
             </a>
@@ -230,19 +245,31 @@ export function ShareButtons({
 
           <button
             onClick={handleCopyLink}
-            className={`group flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-150 ${
+            className={`group relative flex items-center gap-2.5 px-4 py-2.5 rounded-xl border transition-all duration-200 overflow-hidden ${
               copied
-                ? 'border-emerald-300 dark:border-emerald-500/40 bg-emerald-50 dark:bg-emerald-500/10'
-                : 'border-gray-200 dark:border-white/10 bg-white dark:bg-white/[0.03] hover:border-gray-400 dark:hover:border-white/20'
+                ? "border-emerald-300 dark:border-emerald-500/40 bg-emerald-50 dark:bg-emerald-500/10"
+                : "border-gray-200 dark:border-white/10 bg-white dark:bg-gray-900/50 hover:border-gray-400 dark:hover:border-white/20 hover:shadow-lg"
             }`}
           >
-            {copied
-              ? <Check className="w-4 h-4 text-emerald-500" />
-              : <Link2 className="w-4 h-4 text-gray-500 dark:text-gray-400" />}
-            <span className={`text-xs font-medium transition-colors ${
-              copied ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-600 dark:text-gray-400'
-            }`}>
-              {copied ? 'Copied!' : 'Copy link'}
+            {/* Hover effect for non-copied state */}
+            {!copied && (
+              <div className="absolute inset-0 bg-gray-900 dark:bg-white opacity-0 group-hover:opacity-5 transition-opacity duration-200" />
+            )}
+
+            {copied ? (
+              <Check className="relative w-4 h-4 text-emerald-500 dark:text-emerald-400 z-10" />
+            ) : (
+              <Link2 className="relative w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-200 z-10" />
+            )}
+
+            <span
+              className={`relative text-xs font-medium transition-colors duration-200 z-10 ${
+                copied
+                  ? "text-emerald-600 dark:text-emerald-400"
+                  : "text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300"
+              }`}
+            >
+              {copied ? "Copied!" : "Copy link"}
             </span>
           </button>
         </div>
@@ -250,10 +277,10 @@ export function ShareButtons({
         {showNativeShare && (
           <button
             onClick={handleShare}
-            className="sm:hidden flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-medium hover:bg-gray-700 dark:hover:bg-gray-100 transition-colors"
+            className="sm:hidden flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-gray-900 to-gray-800 dark:from-gray-100 dark:to-gray-200 text-white dark:text-gray-900 text-sm font-medium hover:shadow-lg hover:shadow-gray-900/20 dark:hover:shadow-white/10 transition-all duration-200"
           >
             <Share2 className="w-4 h-4" />
-            More options
+            More sharing options
           </button>
         )}
       </div>
@@ -270,8 +297,8 @@ export function ShareButtons({
         aria-expanded={isOpen}
         className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-sm font-medium transition-all duration-150 ${
           isOpen
-            ? 'border-gray-400 dark:border-white/30 bg-gray-50 dark:bg-white/5 text-gray-900 dark:text-white'
-            : 'border-gray-200 dark:border-white/10 bg-white dark:bg-white/[0.03] text-gray-600 dark:text-gray-400 hover:border-gray-400 dark:hover:border-white/20 hover:text-gray-900 dark:hover:text-white'
+            ? "border-gray-400 dark:border-white/30 bg-gray-50 dark:bg-white/5 text-gray-900 dark:text-white"
+            : "border-gray-200 dark:border-white/10 bg-white dark:bg-white/[0.03] text-gray-600 dark:text-gray-400 hover:border-gray-400 dark:hover:border-white/20 hover:text-gray-900 dark:hover:text-white"
         }`}
       >
         <Share2 className="w-4 h-4" />
@@ -289,7 +316,6 @@ export function ShareButtons({
 
           <div className="absolute right-0 top-11 z-50 w-72">
             <div className="bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-xl shadow-xl shadow-black/10 dark:shadow-black/40 overflow-hidden">
-              
               {/* Header */}
               <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-white/[0.06]">
                 <span className="text-xs font-semibold tracking-widest uppercase text-gray-400 dark:text-gray-500">
@@ -309,10 +335,16 @@ export function ShareButtons({
                 <div className="rounded-lg overflow-hidden border border-gray-100 dark:border-white/[0.06] bg-gray-50 dark:bg-white/[0.02]">
                   <div className="relative w-full aspect-[1200/630] bg-gradient-to-br from-[#8a0038] to-[#3d0019] dark:from-[#b00048] dark:to-[#4d0020]">
                     {image ? (
-                      <img src={image} alt={title} className="absolute inset-0 w-full h-full object-cover" />
+                      <img
+                        src={image}
+                        alt={title}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-4xl font-black text-white/10 dark:text-white/20 tracking-tight uppercase">LAAMI</span>
+                        <span className="text-4xl font-black text-white/10 dark:text-white/20 tracking-tight uppercase">
+                          LAAMI
+                        </span>
                       </div>
                     )}
                   </div>
@@ -358,23 +390,32 @@ export function ShareButtons({
 
                 {/* URL copy bar */}
                 <button
-                  onClick={() => { handleCopyLink(); setTimeout(() => setIsOpen(false), 600); }}
+                  onClick={() => {
+                    handleCopyLink();
+                    setTimeout(() => setIsOpen(false), 600);
+                  }}
                   className={`w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg border transition-all duration-150 ${
                     copied
-                      ? 'border-emerald-300 dark:border-emerald-500/30 bg-emerald-50 dark:bg-emerald-500/5'
-                      : 'border-gray-200 dark:border-white/[0.08] hover:border-gray-300 dark:hover:border-white/[0.15] bg-gray-50 dark:bg-white/[0.02]'
+                      ? "border-emerald-300 dark:border-emerald-500/30 bg-emerald-50 dark:bg-emerald-500/5"
+                      : "border-gray-200 dark:border-white/[0.08] hover:border-gray-300 dark:hover:border-white/[0.15] bg-gray-50 dark:bg-white/[0.02]"
                   }`}
                 >
                   <div className="flex items-center gap-2 min-w-0">
-                    <Link2 className={`w-3.5 h-3.5 flex-shrink-0 ${copied ? 'text-emerald-500' : 'text-gray-400 dark:text-gray-500'}`} />
+                    <Link2
+                      className={`w-3.5 h-3.5 flex-shrink-0 ${copied ? "text-emerald-500" : "text-gray-400 dark:text-gray-500"}`}
+                    />
                     <span className="text-[10px] font-mono text-gray-500 dark:text-gray-400 truncate">
-                      {url.replace(/^https?:\/\//, '')}
+                      {url.replace(/^https?:\/\//, "")}
                     </span>
                   </div>
-                  <span className={`text-[10px] font-semibold tracking-wide flex-shrink-0 ${
-                    copied ? 'text-emerald-500' : 'text-gray-400 dark:text-gray-500'
-                  }`}>
-                    {copied ? 'Copied!' : 'Copy'}
+                  <span
+                    className={`text-[10px] font-semibold tracking-wide flex-shrink-0 ${
+                      copied
+                        ? "text-emerald-500"
+                        : "text-gray-400 dark:text-gray-500"
+                    }`}
+                  >
+                    {copied ? "Copied!" : "Copy"}
                   </span>
                 </button>
               </div>
