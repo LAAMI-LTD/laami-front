@@ -45,6 +45,35 @@ const HeadingComponent = ({
   );
 };
 
+const getYouTubeEmbedUrl = (url: string) => {
+  try {
+    const parsed = new URL(url);
+
+    // Short link: youtu.be/VIDEO_ID
+    if (parsed.hostname === "youtu.be") {
+      const videoId = parsed.pathname.slice(1);
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+
+    // Standard watch link: youtube.com/watch?v=VIDEO_ID
+    if (parsed.hostname.includes("youtube.com")) {
+      const videoId = parsed.searchParams.get("v");
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+
+      // Already embed format
+      if (parsed.pathname.includes("/embed/")) {
+        return url;
+      }
+    }
+
+    return url;
+  } catch {
+    return url;
+  }
+};
+
 // Language badge for code blocks
 const LanguageBadge = ({ language }: { language: string }) => {
   const colors: Record<string, string> = {
@@ -345,7 +374,7 @@ export default function BlockPreview({
                   <div className="aspect-video w-full">
                     {block.data.provider === "youtube" ? (
                       <iframe
-                        src={block.data.url.replace("watch?v=", "embed/")}
+                        src={getYouTubeEmbedUrl(block.data.url)}
                         className="w-full h-full"
                         allowFullScreen
                         title="YouTube video"
