@@ -8,27 +8,27 @@ export default function Services() {
   const CIRCLE_RADIUS = "clamp(11rem, 10vw, 16rem)";
   const services: Service[] = [
     {
-      title: "Software That Works",
+      title: "Attract Attention",
       description:
-        "No bloat. No bugs. Just clean, scalable web and mobile applications built for businesses, startups, and organizations that need systems they can depend on.",
+        "We create high-performing content—videos, graphics, and campaigns—that stop the scroll and bring your ideal customers to you.",
       position: "bottom-right",
     },
     {
-      title: "Make It Official",
+      title: "Generate Leads",
       description:
-        "Turn your idea into a legal entity. We handle company registration, structuring, and compliance—so you can focus on building, not paperwork.",
+        "Through targeted paid advertising and smart funnels, we turn attention into qualified leads ready to buy.",
       position: "bottom-left",
     },
     {
-      title: "Look the Part",
+      title: "Convert & Close",
       description:
-        "First impressions matter. We design brand identities that communicate professionalism, trust, and credibility—from logo to full visual systems.",
+        "We design landing pages, messaging, and systems that turn visitors into paying clients consistently.",
       position: "top-right",
     },
     {
-      title: "Get Found. Get Funded. Grow.",
+      title: "Scale with Systems",
       description:
-        "Strategic digital tools that put you on the map—websites that convert, platforms that scale, and systems that support long-term growth.",
+        "From websites to custom software, we build digital systems that automate, optimize, and scale your business growth.",
       position: "top-left",
     },
   ];
@@ -185,7 +185,7 @@ export default function Services() {
       `}</style>
 
       <span className="text-gray-600 dark:text-neutral-300 text-lg max-w-lg mx-auto mb-2 capitalize flex items-center justify-center transition-colors duration-300">
-        what we&apos;re offering
+        How we help you grow
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -203,7 +203,7 @@ export default function Services() {
       </span>
 
       <h1 className="text-gray-800 dark:text-neutral-100 text-4xl md:text-5xl xl:text-6xl font-semibold max-w-3xl mx-auto mb-16 leading-snug transition-colors duration-300">
-        Services Built Specifically for Your Mission
+        Services Designed to Grow Your Business
       </h1>
       <div className="flex flex-wrap justify-center mb-10">
         <div className="max-w-4xl flex flex-wrap gap-4 justify-center">
@@ -360,7 +360,7 @@ export default function Services() {
           href="/contacts"
           className="inline-flex items-center space-x-2 bg-[#a50044] hover:bg-[#003d7a] dark:bg-[#004d98] dark:hover:bg-[#8a0038] text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl dark:shadow-neutral-800/50"
         >
-          <span>Schedule a Free Consultation</span>
+          <span>Get Your Free Growth Audit</span>
           <svg
             className="w-5 h-5"
             fill="none"

@@ -51,45 +51,45 @@ export default function About() {
 
   const features: Feature[] = [
     {
-      title: "Built for Real-World Use",
+      title: "Growth-Focused Marketing",
       description:
-        "Designed around real users, real workflows, and real constraints. Reliable, clear, and built to last.",
-      icon: Zap,
-      color: "blue",
-    },
-    {
-      title: "Mission-Aware Design",
-      description:
-        "Technology shaped for mission-driven organizations—supporting structure, communication, and stewardship.",
-      icon: Users,
-      color: "maroon",
-    },
-    {
-      title: "Structure by Default",
-      description:
-        "Every project considers legitimacy, compliance, and scalability from the start—so ideas grow into stable entities.",
-      icon: Building,
-      color: "blue",
-    },
-    {
-      title: "Brand as a System",
-      description:
-        "Branding treated as an integrated system, ensuring consistency across visuals, messaging, and platforms.",
-      icon: Palette,
-      color: "maroon",
-    },
-    {
-      title: "Credibility-First Presence",
-      description:
-        "Digital platforms designed to communicate trust, clarity, and professionalism.",
+        "We design and execute digital marketing strategies that go beyond visibility—focused on generating leads, conversions, and measurable business growth.",
       icon: Target,
       color: "blue",
     },
     {
-      title: "Built for the Long Term",
+      title: "Content That Converts",
       description:
-        "Maintainable, adaptable systems designed to evolve—not one-off builds.",
+        "From short-form videos to branded visuals, we create content engineered to capture attention, retain viewers, and drive action.",
+      icon: Zap,
+      color: "maroon",
+    },
+    {
+      title: "Performance-Driven Ads",
+      description:
+        "We leverage data-driven paid advertising across platforms to reach the right audience, reduce wasted spend, and maximize ROI.",
       icon: CheckCircle,
+      color: "blue",
+    },
+    {
+      title: "Custom Software Solutions",
+      description:
+        "We build scalable websites, applications, and systems that support business operations and turn digital traffic into structured growth.",
+      icon: Building,
+      color: "maroon",
+    },
+    {
+      title: "Strategic Brand Positioning",
+      description:
+        "We craft cohesive brand identities that communicate clarity, credibility, and consistency across all digital touchpoints.",
+      icon: Palette,
+      color: "blue",
+    },
+    {
+      title: "Client-Centric Partnerships",
+      description:
+        "We work closely with businesses as growth partners—understanding their goals, solving real problems, and delivering long-term value.",
+      icon: Users,
       color: "maroon",
     },
   ];
@@ -200,14 +200,8 @@ export default function About() {
             Laami Labs
           </h2>
 
-          <p
-            className={`text-lg text-gray-600 dark:text-gray-400 font-light tracking-wide transition-all duration-1000 delay-400 ${
-              isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            Digital Growth Partners
+          <p className="text-lg text-gray-600 dark:text-gray-400 font-light tracking-wide">
+            We Help Businesses Turn Attention Into Revenue
           </p>
         </div>
 
@@ -218,10 +212,12 @@ export default function About() {
           }`}
         >
           <div className="space-y-8">
-            <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed tracking-wide font-light max-w-4xl mx-auto">
-              Laami Labs is a technology and digital solutions company dedicated
-              to helping individuals, businesses, churches, startups, and
-              organizations build strong, sustainable digital foundations.
+            <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed tracking-wide font-light  mx-auto">
+              Laami Labs is a digital marketing and software solutions company
+              focused on helping businesses grow, scale, and compete effectively
+              in the digital space. We combine creative content, performance
+              marketing, and technology to turn visibility into measurable
+              results.
             </p>
 
             <div
@@ -232,9 +228,9 @@ export default function About() {
               }`}
             >
               <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed tracking-wide italic">
-                We partner with clients from concept to execution—transforming
-                ideas into established entities with distinctive brands,
-                functional systems, and lasting digital presence.
+                We partner with businesses from strategy to execution—building
+                strong digital presence, generating consistent leads, and
+                developing systems that support long-term growth.
               </p>
             </div>
           </div>
