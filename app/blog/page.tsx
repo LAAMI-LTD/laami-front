@@ -36,7 +36,7 @@ export default function BlogsPage() {
   const [copied, setCopied] = useState(false);
   const [user, setUser] = useState<{ email?: string } | null>(null);
   const shareMenuRef = useRef<HTMLDivElement>(null);
-
+  const [isFetching, setIsFetching] = useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
     page: 1,
     total: 0,
@@ -112,7 +112,7 @@ export default function BlogsPage() {
 
   async function fetchBlogs() {
     try {
-      setLoading(true);
+      setIsFetching(true);
 
       const params = new URLSearchParams();
       params.append("page", pagination.page.toString());
@@ -126,22 +126,22 @@ export default function BlogsPage() {
         `${process.env.NEXT_PUBLIC_API_URL}/blogs?${params.toString()}`,
       );
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch blogs");
-      }
+      if (!res.ok) throw new Error("Failed to fetch blogs");
 
       const data: PaginatedResponse = await res.json();
+
       setBlogs(data.blogs);
       setPagination({
         page: data.page,
         total: data.total,
         totalPages: data.totalPages,
       });
+
+      setError(null);
     } catch (err: any) {
       setError(err.message || "Failed to load blogs");
-      console.error("Error fetching blogs:", err);
     } finally {
-      setLoading(false);
+      setIsFetching(false);
     }
   }
 
@@ -167,60 +167,6 @@ export default function BlogsPage() {
       showToast("Failed to copy link", "error");
     }
   }, [showToast]);
-
-  if (loading && blogs.length === 0) {
-    return <LoadingState />;
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-white dark:bg-[#000213] flex items-center justify-center">
-        <div className="text-center max-w-md">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-900/20 flex items-center justify-center">
-            <X className="w-8 h-8 text-red-600 dark:text-red-400" />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Oops! Something went wrong
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
-          <button
-            onClick={fetchBlogs}
-            className="px-6 py-3 bg-linear-to-r from-[#a50044] to-[#8a0038] text-white rounded-lg hover:shadow-lg transition-all duration-300"
-          >
-            Try Again
-          </button>
-          <div className="mt-4 flex flex-col sm:flex-row gap-3 justify-center">
-            <Link
-              href="/"
-              className="px-5 py-2 rounded-lg border border-gray-300 dark:border-gray-700 
-               text-gray-700 dark:text-gray-300 hover:bg-gray-100 
-               dark:hover:bg-gray-800 transition"
-            >
-              Go Home
-            </Link>
-
-            <Link
-              href="/portfolio"
-              className="px-5 py-2 rounded-lg border border-gray-300 dark:border-gray-700 
-               text-gray-700 dark:text-gray-300 hover:bg-gray-100 
-               dark:hover:bg-gray-800 transition"
-            >
-              View Portfolio
-            </Link>
-
-            <Link
-              href="/contacts"
-              className="px-5 py-2 rounded-lg border border-gray-300 dark:border-gray-700 
-               text-gray-700 dark:text-gray-300 hover:bg-gray-100 
-               dark:hover:bg-gray-800 transition"
-            >
-              Contact Us
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#000213] transition-colors duration-300">
@@ -255,51 +201,90 @@ export default function BlogsPage() {
         onShareClick={() => setShowShareMenu(!showShareMenu)}
       />
 
-      <main className=" px-4 sm:px-6 lg:px-8 py-12">
-        {filteredAndSortedBlogs.length === 0 ? (
-          <div className="text-center py-20 bg-gray-50 dark:bg-gray-900/30 rounded-2xl border border-gray-200 dark:border-gray-800">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-linear-to-br from-[#a50044]/20 to-[#004d98]/20 flex items-center justify-center">
-              <Search className="w-10 h-10 text-[#a50044]" />
+      <main className="px-4 sm:px-6 lg:px-8 py-12">
+        {/* ✅ Initial loading ONLY (no data yet) */}
+        {isFetching && blogs.length === 0 ? (
+          <LoadingState />
+        ) : error && blogs.length === 0 ? (
+          <div className="text-center py-20">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-900/20 flex items-center justify-center">
+              <X className="w-8 h-8 text-red-600 dark:text-red-400" />
             </div>
+
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
-              No articles found
+              Failed to load blogs
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
-              {filters.searchTerm || filters.selectedTag
-                ? "We couldn't find any articles matching your criteria. Try adjusting your filters."
-                : "No blog posts have been published yet."}
+
+            <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
+              {error}
             </p>
-            {filters.searchTerm || filters.selectedTag ? (
-              <button
-                onClick={clearFilters}
-                className="px-6 py-3 bg-linear-to-r from-[#a50044] to-[#8a0038] text-white rounded-lg hover:shadow-lg transition-all duration-300 font-medium"
-              >
-                Clear Filters
-              </button>
-            ) : (
-              <Link
-                href="/blog/add"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-[#a50044] to-[#8a0038] text-white rounded-lg hover:shadow-lg transition-all duration-300 font-medium"
-              >
-                Create First Post
-              </Link>
-            )}
+
+            <button
+              onClick={fetchBlogs}
+              className="px-6 py-3 bg-linear-to-r from-[#a50044] to-[#8a0038] text-white rounded-lg hover:shadow-lg transition-all duration-300 font-medium"
+            >
+              Try Again
+            </button>
           </div>
         ) : (
           <>
-            {viewMode === "grid" ? (
-              <BlogGrid blogs={filteredAndSortedBlogs} />
-            ) : (
-              <BlogList blogs={filteredAndSortedBlogs} />
+            {/* ✅ Non-blocking loader during refetch */}
+            {isFetching && (
+              <div className="mb-6 text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+                Updating articles...
+              </div>
             )}
 
-            <BlogPagination
-              currentPage={pagination.page}
-              totalPages={pagination.totalPages}
-              onPageChange={(page: any) =>
-                setPagination((prev) => ({ ...prev, page }))
-              }
-            />
+            {/* ✅ Empty state */}
+            {filteredAndSortedBlogs.length === 0 ? (
+              <div className="text-center py-20 bg-gray-50 dark:bg-gray-900/30 rounded-2xl border border-gray-200 dark:border-gray-800">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-linear-to-br from-[#a50044]/20 to-[#004d98]/20 flex items-center justify-center">
+                  <Search className="w-10 h-10 text-[#a50044]" />
+                </div>
+
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                  No articles found
+                </h3>
+
+                <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
+                  {filters.searchTerm || filters.selectedTag
+                    ? "We couldn't find any articles matching your criteria. Try adjusting your filters."
+                    : "No blog posts have been published yet."}
+                </p>
+
+                {filters.searchTerm || filters.selectedTag ? (
+                  <button
+                    onClick={clearFilters}
+                    className="px-6 py-3 bg-linear-to-r from-[#a50044] to-[#8a0038] text-white rounded-lg hover:shadow-lg transition-all duration-300 font-medium"
+                  >
+                    Clear Filters
+                  </button>
+                ) : (
+                  <Link
+                    href="/blog/add"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-[#a50044] to-[#8a0038] text-white rounded-lg hover:shadow-lg transition-all duration-300 font-medium"
+                  >
+                    Create First Post
+                  </Link>
+                )}
+              </div>
+            ) : (
+              <>
+                {viewMode === "grid" ? (
+                  <BlogGrid blogs={filteredAndSortedBlogs} />
+                ) : (
+                  <BlogList blogs={filteredAndSortedBlogs} />
+                )}
+
+                <BlogPagination
+                  currentPage={pagination.page}
+                  totalPages={pagination.totalPages}
+                  onPageChange={(page: any) =>
+                    setPagination((prev) => ({ ...prev, page }))
+                  }
+                />
+              </>
+            )}
           </>
         )}
       </main>
