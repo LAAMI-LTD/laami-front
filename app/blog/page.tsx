@@ -356,3 +356,5 @@ export default function BlogsPage() {
     </div>
   );
 }
+
+// update enforcement
