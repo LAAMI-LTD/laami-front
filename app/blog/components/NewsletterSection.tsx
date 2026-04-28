@@ -224,7 +224,9 @@ export default function SubscriptionStatus({
     "inline-block w-3 h-3 border-2 border-stone-300 dark:border-neutral-600 border-t-blue-800 dark:border-t-blue-500 rounded-full animate-spin mr-1.5 align-middle";
 
   const actionsClasses = "flex flex-col gap-2";
-
+  if (status === "error") {
+    return null;
+  }
   if (!user) {
     return (
       <div className={containerClasses}>
@@ -311,15 +313,6 @@ export default function SubscriptionStatus({
           <div className={sublabelClasses}>
             <span className={spinnerClasses} />
             Checking your status...
-          </div>
-        </>
-      )}
-
-      {status === "error" && (
-        <>
-          <div className={labelClasses}>Newsletter</div>
-          <div className={errorClasses}>
-            {errorMessage || "Unable to check subscription status."}
           </div>
         </>
       )}

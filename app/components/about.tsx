@@ -8,6 +8,9 @@ import {
   Users,
   Building,
   Palette,
+  Shield,
+  Globe,
+  Briefcase,
 } from "lucide-react";
 
 type Feature = {
@@ -22,7 +25,7 @@ export default function About() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const currentSection = sectionRef.current; // store the ref locally
+    const currentSection = sectionRef.current;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -113,7 +116,7 @@ export default function About() {
       ref={sectionRef}
       className="relative py-20 px-4 bg-white dark:bg-neutral-900 overflow-hidden"
     >
-      {/* Background Image with Overlay - FIXED OPACITY */}
+      {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20 dark:opacity-10"
@@ -122,15 +125,13 @@ export default function About() {
         <div className="absolute inset-0 bg-linear-to-b from-white/50 via-white/20 to-white/50 dark:from-gray-950/50 dark:via-gray-950/20 dark:to-gray-950/50" />
       </div>
 
-      {/* Animated Background Shapes - INCREASED OPACITY */}
+      {/* Animated Background Shapes */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        {/* Sharp geometric shapes */}
         <div className="absolute top-20 left-10 w-32 h-32 border-2 border-blue-300/50 dark:border-blue-500/20 rotate-45 animate-[spin_20s_linear_infinite]" />
         <div className="absolute top-40 right-20 w-24 h-24 border-2 border-red-300/50 dark:border-red-500/20 -rotate-12 animate-[spin_15s_linear_infinite_reverse]" />
         <div className="absolute bottom-32 left-1/4 w-40 h-40 border border-blue-400/30 dark:border-blue-400/20 rotate-12 animate-pulse" />
         <div className="absolute bottom-20 right-1/3 w-28 h-28 border border-red-400/30 dark:border-red-400/20 -rotate-45 animate-[spin_25s_linear_infinite]" />
 
-        {/* Sharp pattern elements */}
         <svg
           className="absolute top-0 right-0 w-64 h-64 opacity-10 dark:opacity-5 animate-[spin_30s_linear_infinite]"
           viewBox="0 0 200 200"
@@ -162,7 +163,6 @@ export default function About() {
           />
         </svg>
 
-        {/* Grid pattern - INCREASED VISIBILITY */}
         <div
           className="absolute inset-0 opacity-5 dark:opacity-3"
           style={{
@@ -201,7 +201,10 @@ export default function About() {
           </h2>
 
           <p className="text-lg text-gray-600 dark:text-gray-400 font-light tracking-wide">
-            We Help Businesses Turn Attention Into Revenue
+            A Division of{" "}
+            <span className="font-semibold text-[#003d7a] dark:text-blue-400">
+              LAAMI LTD
+            </span>
           </p>
         </div>
 
@@ -212,12 +215,15 @@ export default function About() {
           }`}
         >
           <div className="space-y-8">
-            <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed tracking-wide font-light  mx-auto">
-              Laami Labs is a digital marketing and software solutions company
-              focused on helping businesses grow, scale, and compete effectively
-              in the digital space. We combine creative content, performance
-              marketing, and technology to turn visibility into measurable
-              results.
+            <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed tracking-wide font-light mx-auto">
+              Laami Labs is the digital solutions division of{" "}
+              <span className="font-semibold text-[#003d7a] dark:text-blue-400">
+                LAAMI LTD
+              </span>
+              , focused on helping businesses grow, scale, and compete
+              effectively in the digital space. We combine creative content,
+              performance marketing, and technology to turn visibility into
+              measurable results.
             </p>
 
             <div
@@ -228,9 +234,10 @@ export default function About() {
               }`}
             >
               <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed tracking-wide italic">
-                We partner with businesses from strategy to execution—building
-                strong digital presence, generating consistent leads, and
-                developing systems that support long-term growth.
+                Under the umbrella of LAAMI LTD, we partner with businesses from
+                strategy to execution—building strong digital presence,
+                generating consistent leads, and developing systems that support
+                long-term growth.
               </p>
             </div>
           </div>
@@ -269,7 +276,6 @@ export default function About() {
                 <div
                   className={`relative h-full p-6 bg-white/95 dark:bg-gray-900/95 border-2 ${colors.border} rounded-lg transition-all duration-300 group-hover:-translate-y-1 group-hover:-translate-x-1 group-hover:shadow-xl`}
                 >
-                  {/* Header */}
                   <div className="flex items-start gap-3">
                     <Icon
                       className={`w-5 h-5 mt-1 shrink-0 ${colors.text} transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3`}
@@ -281,15 +287,13 @@ export default function About() {
                     </h4>
                   </div>
 
-                  {/* Divider */}
                   <div className="mt-4 mb-3 overflow-hidden">
                     <span
                       className={`block w-10 h-px ${colors.bg} transition-all duration-500 group-hover:w-full`}
                     />
                   </div>
 
-                  {/* Body */}
-                  <p className="text-base md:text-[1.05rem] font-normal  leading-[1.7] text-neutral-900 dark:text-white">
+                  <p className="text-base md:text-[1.05rem] font-normal leading-[1.7] text-neutral-900 dark:text-white">
                     {feature.description}
                   </p>
                 </div>

@@ -481,7 +481,7 @@ export default function Nav({ scrolled }: NavProps) {
           <div className="flex justify-between items-center h-20">
             {/* Logo - Left */}
             <Link href="/" className="flex items-center space-x-3">
-              <div className="relative bg-transparent w-10 h-10 rounded-lg overflow-hidden border border-[#004d98] bg-gray-900 flex items-center justify-center">
+              <div className="relative bg-transparent w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center">
                 <Image
                   src="/laami.png"
                   alt=""
@@ -491,9 +491,14 @@ export default function Nav({ scrolled }: NavProps) {
                   priority
                 />
               </div>
-              <span className="text-2xl font-bold text-white tracking-tight">
-                LAAMI<span className="text-[#a50044]">LABS</span>
-              </span>
+              <div className="text-2xl font-bold tracking-tight leading-tight">
+                <span className="text-[#004d98]">LAAMI</span>
+                <span className="text-[#a50044]">LABS</span>
+
+                <div className="text-[10px] font-medium tracking-widest text-gray-500 mt-1">
+                  A DIVISION OF LAAMI LTD
+                </div>
+              </div>
             </Link>
 
             {/* Desktop Navigation Links - Center */}

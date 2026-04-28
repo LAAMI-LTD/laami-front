@@ -24,13 +24,24 @@ const INSTAGRAM_URL =
 const WEBSITE_URL = "https://laamilabs.co.ke";
 
 export const metadata: Metadata = {
-  title: "LAAMI LABS | BUILDING WHAT COMPANIES RUN ON",
+  title: "LAAMI LTD | LAAMI LABS — Building What Companies Run On",
   description:
-    "We build web and mobile apps and strong brand identities for startups and organisations in Kenya and across Africa.",
+    "LAAMI LTD is the parent company of LAAMI LABS. We build web and mobile apps, brand identities, and digital solutions for startups and organisations across Kenya and Africa.",
 
   keywords: [
-    "Laami",
+    // Core company names
+    "LAAMI LTD",
+    "Laami Ltd",
+    "LAAMI LABS",
     "Laami Labs",
+    "Laami Labs division of LAAMI LTD",
+
+    // Branded searches
+    "Laami Ltd Kenya",
+    "LAAMI LTD Eldoret",
+    "Laami Labs co ke",
+
+    // Service keywords
     "Web development Eldoret",
     "Mobile app development Eldoret",
     "Brand identity design Kenya",
@@ -46,7 +57,7 @@ export const metadata: Metadata = {
 
   authors: [
     { name: "Keter Titus", url: "https://ketertitus.vercel.app" },
-    { name: "Laami Labs", url: WEBSITE_URL },
+    { name: "LAAMI LTD", url: WEBSITE_URL },
   ],
 
   metadataBase: new URL(WEBSITE_URL),
@@ -57,24 +68,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: WEBSITE_URL,
-    title: "LAAMI LABS | BUILDING WHAT COMPANIES RUN ON",
+    title: "LAAMI LTD | LAAMI LABS — Building What Companies Run On",
     description:
-      "We build web and mobile apps and strong brand identities for startups and organisations in Kenya and across Africa.",
-    siteName: "Laami Labs",
+      "LAAMI LTD (parent company of LAAMI LABS) builds web and mobile apps, strong brand identities, and digital solutions for startups and organisations across Kenya and Africa.",
+    siteName: "LAAMI LTD",
 
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Laami Labs — Building What Companies Run On",
+        alt: "LAAMI LTD | LAAMI LABS — Building What Companies Run On",
         type: "image/png",
       },
       {
         url: "/og-image.avif",
         width: 1200,
         height: 630,
-        alt: "Laami Labs — Building What Companies Run On",
+        alt: "LAAMI LTD | LAAMI LABS — Building What Companies Run On",
         type: "image/avif",
       },
     ],
@@ -86,9 +97,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@LaamiLabs",
     creator: "@LaamiLabs",
-    title: "LAAMI LABS | Digital Solutions, Branding & Web/Mobile Apps",
+    title:
+      "LAAMI LTD | LAAMI LABS — Digital Solutions, Branding & Web/Mobile Apps",
     description:
-      "Building digital solutions and professional branding for startups and organizations in Kenya.",
+      "LAAMI LTD is the parent company of LAAMI LABS. Building digital solutions and professional branding for startups and organizations in Kenya.",
     images: ["/og-image.avif", "/og-image.png"],
   },
 
@@ -105,7 +117,7 @@ export const metadata: Metadata = {
   },
 
   appleWebApp: {
-    title: "Laami Labs",
+    title: "LAAMI LTD",
     statusBarStyle: "black-translucent",
   },
 
@@ -131,6 +143,10 @@ export const metadata: Metadata = {
     "instagram:url": INSTAGRAM_URL,
     "facebook:page": FACEBOOK_URL,
     "og:see_also": [FACEBOOK_URL, INSTAGRAM_URL],
+
+    // Corporate identity
+    "business:parent_company": "LAAMI LTD",
+    "business:division": "LAAMI LABS",
   },
 };
 
@@ -143,11 +159,6 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="icon" href="/favicon.avif" type="image/avif" />
-        <link rel="apple-touch-icon" href="/apple-icon.png" />
-        <link rel="manifest" href="/site.webmanifest" />
-
         <meta name="theme-color" content="#000000" />
         <meta name="color-scheme" content="dark light" />
 
@@ -155,6 +166,12 @@ export default function RootLayout({
         <meta property="fb:pages" content="YOUR_FACEBOOK_PAGE_ID" />
 
         <meta name="instagram:creator" content="@laamilabs" />
+
+        {/* Explicit parent company & division declaration */}
+        <meta name="business:parent_company" content="LAAMI LTD" />
+        <meta name="business:division" content="LAAMI LABS" />
+        <meta name="organization" content="LAAMI LTD" />
+        <meta name="legal_name" content="LAAMI LTD" />
 
         <meta
           name="viewport"
