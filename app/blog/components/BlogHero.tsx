@@ -2,17 +2,7 @@
 
 import { Search } from "lucide-react";
 
-interface BlogHeroProps {
-  totalArticles: number;
-  searchTerm: string;
-  onSearchChange: (value: string) => void;
-}
-
-export default function BlogHero({
-  totalArticles,
-  searchTerm,
-  onSearchChange,
-}: BlogHeroProps) {
+export default function BlogHero() {
   return (
     <div className="relative md:pt-0 pt-20 overflow-hidden">
       {/* Background image */}
@@ -50,7 +40,7 @@ export default function BlogHero({
             className="inline-flex items-center gap-2 px-4 py-2 rounded-sm bg-[#004d98]/50 backdrop-blur-sm border border-[#004d98]/50
                           text-white/95 text-xs sm:text-sm font-semibold tracking-wide uppercase mb-6"
           >
-            <span>Dive into {totalArticles}+ explorations</span>
+            <span>Dive into explorations</span>
           </div>
 
           {/* Main headline */}
@@ -91,8 +81,6 @@ export default function BlogHero({
               <input
                 type="text"
                 placeholder="Search articles by title, author, or topic…"
-                value={searchTerm}
-                onChange={(e) => onSearchChange(e.target.value)}
                 className="
                   w-full
                   pl-12 pr-4 py-4
