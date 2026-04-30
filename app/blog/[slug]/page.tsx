@@ -79,6 +79,80 @@ export default async function PostPage({
 
   const categories = post.categories?.map((c: any) => c.title) || [];
 
+  const portableComponents = {
+    block: {
+      h2: ({ children }: any) => (
+        <h2 className="mt-20 text-3xl md:text-4xl font-black tracking-tight text-gray-900 dark:text-white relative">
+          <span className="absolute -left-4 top-1 h-full w-1 bg-[#a50044] rounded" />
+          {children}
+        </h2>
+      ),
+
+      h3: ({ children }: any) => (
+        <h3 className="mt-14 text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+          {children}
+        </h3>
+      ),
+
+      normal: ({ children }: any) => (
+        <p className="text-lg leading-[1.95] text-gray-700 dark:text-white/80 my-5">
+          {children}
+        </p>
+      ),
+
+      blockquote: ({ children }: any) => (
+        <div className="my-12 relative">
+          <div className="absolute -left-2 top-0 h-full w-1 bg-[#a50044] rounded" />
+          <blockquote className="pl-6 italic text-xl md:text-2xl font-medium text-gray-900 dark:text-white/90">
+            {children}
+          </blockquote>
+        </div>
+      ),
+    },
+
+    marks: {
+      strong: ({ children }: any) => (
+        <strong className="font-bold text-[#a50044] tracking-tight">
+          {children}
+        </strong>
+      ),
+
+      em: ({ children }: any) => (
+        <em className="text-[#004d98] font-semibold not-italic">{children}</em>
+      ),
+
+      link: ({ value, children }: any) => (
+        <a
+          href={value?.href}
+          className="text-[#a50044] underline decoration-2 underline-offset-4 hover:text-[#b43968]"
+        >
+          {children}
+        </a>
+      ),
+    },
+
+    types: {
+      image: ({ value }: any) => {
+        // ✅ FIX: Guarantee a string before passing to Image
+        const imageUrl = urlFor(value)?.width(1600).url();
+
+        if (!imageUrl) return null;
+
+        return (
+          <figure className="my-14 overflow-hidden rounded-3xl border border-gray-200 dark:border-white/10 shadow-xl">
+            <Image
+              src={imageUrl}
+              alt="blog image"
+              width={1600}
+              height={900}
+              className="w-full object-cover transition-transform duration-700 hover:scale-[1.02]"
+            />
+          </figure>
+        );
+      },
+    },
+  };
+
   return (
     <>
       <main className="min-h-screen bg-white text-gray-900 dark:bg-[#050816] dark:text-white">
@@ -227,7 +301,12 @@ export default async function PostPage({
                   max-w-none
                 `}
               >
-                {Array.isArray(post.body) && <PortableText value={post.body} />}
+                {Array.isArray(post.body) && (
+                  <PortableText
+                    value={post.body}
+                    components={portableComponents}
+                  />
+                )}
               </div>
             </article>
           </div>
