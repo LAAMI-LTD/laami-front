@@ -46,7 +46,7 @@ const urlFor = (source: SanityImageSource) =>
 
 const options = { next: { revalidate: 30 } };
 
-// Generate metadata for social sharing (optimized for WhatsApp & all platforms)
+// Generate metadata for social sharing - optimized for WhatsApp with prominent image
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> },
   parent: ResolvingMetadata,
@@ -65,39 +65,41 @@ export async function generateMetadata(
     };
   }
 
-  // Generate multiple image sizes for different platforms
+  // Generate multiple image sizes - larger for WhatsApp prominence
   const ogImage = post.mainImage
     ? urlFor(post.mainImage)?.width(1200).height(630).url()
     : null;
 
+  // Larger image for WhatsApp (2:1 ratio works best)
   const whatsappImage = post.mainImage
-    ? urlFor(post.mainImage)?.width(800).height(420).url()
+    ? urlFor(post.mainImage)?.width(1024).height(512).url() // 2:1 ratio for WhatsApp
+    : null;
+
+  // Extra large for high-res displays
+  const highResImage = post.mainImage
+    ? urlFor(post.mainImage)?.width(1600).height(800).url()
     : null;
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yourdomain.com";
   const fullUrl = `${baseUrl}/blog/${slug}`;
 
-  // Truncate description for WhatsApp (recommended ~150 chars)
+  // Shorter description for WhatsApp (image will be more prominent)
   const description = post.excerpt
-    ? post.excerpt.length > 160
-      ? `${post.excerpt.substring(0, 157)}...`
+    ? post.excerpt.length > 120
+      ? `${post.excerpt.substring(0, 117)}...`
       : post.excerpt
     : `Read ${post.title} on our blog.`;
 
-  // Get site name from env or default
   const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "Your Blog Name";
-
-  // Get social media handles
   const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@yourhandle";
   const facebookAppId = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || "";
 
   return {
-    title: `${post.title} | ${siteName}`,
+    title: `${post.title}`,
     description: description,
     authors: post.author?.name ? [{ name: post.author.name }] : undefined,
     keywords: post.categories?.map((c: any) => c.title).join(", "),
 
-    // Open Graph (Facebook, LinkedIn, WhatsApp, etc.)
     openGraph: {
       title: post.title,
       description: description,
@@ -106,64 +108,81 @@ export async function generateMetadata(
       modifiedTime: post.publishedAt,
       authors: post.author?.name ? [post.author.name] : undefined,
       tags: post.categories?.map((c: any) => c.title),
-      images: ogImage
-        ? [
-            {
-              url: ogImage,
-              width: 1200,
-              height: 630,
-              alt: post.title,
-              type: "image/jpeg",
-            },
-          ]
-        : [],
+      images: [
+        // Primary image - large and prominent
+        {
+          url: highResImage || whatsappImage || ogImage || "",
+          width: 1600,
+          height: 800,
+          alt: post.title,
+          type: "image/jpeg",
+          secureUrl: highResImage || whatsappImage || ogImage || "",
+        },
+        // Secondary image - standard size
+        ...(ogImage
+          ? [
+              {
+                url: ogImage,
+                width: 1200,
+                height: 630,
+                alt: post.title,
+                type: "image/jpeg",
+              },
+            ]
+          : []),
+      ],
       url: fullUrl,
       siteName: siteName,
       locale: "en_KE",
       determiner: "auto",
     },
 
-    // Twitter Card (X/Twitter)
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: description,
-      images: ogImage ? [ogImage] : [],
+      images:
+        highResImage || whatsappImage || ogImage
+          ? [highResImage || whatsappImage || ogImage || ""]
+          : [],
       creator: twitterHandle,
       site: twitterHandle,
     },
 
-    // Additional meta tags for better platform support
     alternates: {
       canonical: fullUrl,
     },
 
-    // For rich previews on messaging apps
     other: {
-      // WhatsApp specific (uses Open Graph)
-      "og:image:width": "1200",
-      "og:image:height": "630",
+      // WhatsApp prioritizes these
+      "og:image:width": "1600",
+      "og:image:height": "800",
       "og:image:alt": post.title,
       "og:image:type": "image/jpeg",
+      "og:image:secure_url": highResImage || whatsappImage || ogImage || "",
 
-      // For iMessage and other iOS sharing
+      // Additional image tags for better display
+      "og:image:url": highResImage || whatsappImage || ogImage || "",
+
+      // Force image to be prominent
+      "og:image:dominant_color": "dark",
+
+      // For iMessage and iOS
       "apple-mobile-web-app-title": post.title,
 
-      // For better link previews
+      // Twitter specific
       "twitter:image:alt": post.title,
-      "twitter:image:width": "1200",
-      "twitter:image:height": "630",
+      "twitter:image:width": "1600",
+      "twitter:image:height": "800",
 
-      // Facebook App ID for analytics
       ...(facebookAppId && { "fb:app_id": facebookAppId }),
 
-      // Article metadata
       "article:published_time": post.publishedAt,
       "article:author": post.author?.name || "",
       "article:section": post.categories?.[0]?.title || "Blog",
 
-      // For WhatsApp link previews (helps with caching)
-      "cache-control": "max-age=31536000",
+      // Force cache refresh for WhatsApp
+      "cache-control": "max-age=3600, must-revalidate",
     },
   };
 }
@@ -181,7 +200,6 @@ export default async function PostPage({
     options,
   );
 
-  // 🛑 SAFE GUARD (fix crash)
   if (!post) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#e3e4ee] text-gray-900 dark:bg-[#050816] dark:text-white">
@@ -202,7 +220,6 @@ export default async function PostPage({
 
   const categories = post.categories?.map((c: any) => c.title) || [];
 
-  // JSON-LD Structured Data for better search and social previews
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -230,6 +247,11 @@ export default async function PostPage({
     },
     keywords: categories.join(", "),
   };
+
+  // Generate WhatsApp-specific meta tags in the component
+  const whatsAppImageUrl = post.mainImage
+    ? urlFor(post.mainImage)?.width(1024).height(512).url()
+    : null;
 
   const portableComponents = {
     block: {
@@ -285,7 +307,6 @@ export default async function PostPage({
 
     types: {
       image: ({ value }: any) => {
-        // ✅ FIX: Guarantee a string before passing to Image
         const imageUrl = urlFor(value)?.width(1600).url();
 
         if (!imageUrl) return null;
@@ -307,16 +328,26 @@ export default async function PostPage({
 
   return (
     <>
-      {/* Add JSON-LD structured data to head */}
+      {/* JSON-LD Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
+      {/* WhatsApp-specific meta tags - injected directly for prominence */}
+      <meta property="og:image" content={whatsAppImageUrl || heroImage || ""} />
+      <meta property="og:image:width" content="1024" />
+      <meta property="og:image:height" content="512" />
+      <meta property="og:image:alt" content={post.title} />
+      <meta property="og:title" content={post.title} />
+      <meta
+        property="og:description"
+        content={post.excerpt?.substring(0, 120) || ""}
+      />
+
       <main className="min-h-screen bg-white text-gray-900 dark:bg-[#050816] dark:text-white">
-        {/* ================= HERO ================= */}
+        {/* HERO SECTION */}
         <section className="relative overflow-hidden border-b border-gray-200 pt-10 dark:border-white/10">
-          {/* IMAGE LAYER */}
           <div className="absolute inset-0">
             {heroImage && (
               <Image
@@ -328,23 +359,18 @@ export default async function PostPage({
               />
             )}
 
-            {/* GRADIENT STACK - Light mode */}
             <div className="absolute inset-0 bg-gradient-to-b from-[#004d98]/20 via-[#004d98]/70 to-[#004d98]/90" />
-
-            {/* Decorative radial gradients using logo colors */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(165,0,68,0.15),transparent_55%),radial-gradient(circle_at_bottom_right,rgba(0,77,152,0.15),transparent_60%)] dark:bg-[radial-gradient(circle_at_top,rgba(236,72,153,0.25),transparent_55%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.25),transparent_60%)]" />
           </div>
 
-          {/* CONTENT */}
           <div className="relative z-10 mx-auto flex min-h-[75vh] w-full max-w-7xl flex-col justify-end px-5 py-14 sm:px-8 md:px-12 lg:px-16">
             <Link
               href="/blog"
-              className="mt-10 mb-1 inline-flex w-fit items-center gap-2 rounded-md bg-[#004d98]/60 px-5 py-2 text-sm text-white backdrop-blur-md transition hover:border-[#a50044]/40 hover:bg-[#a50044]/10 "
+              className="mt-10 mb-1 inline-flex w-fit items-center gap-2 rounded-md bg-[#004d98]/60 px-5 py-2 text-sm text-white backdrop-blur-md transition hover:border-[#a50044]/40 hover:bg-[#a50044]/10"
             >
               ← Back to posts
             </Link>
 
-            {/* Categories */}
             <div className="mb-6 flex flex-wrap gap-3">
               {categories.map((cat: string) => (
                 <span
@@ -356,19 +382,16 @@ export default async function PostPage({
               ))}
             </div>
 
-            {/* Title */}
             <h1 className="max-w-5xl text-2xl font-black leading-[1.05] tracking-tight text-white sm:text-2xl md:text-3xl lg:text-4xl">
               {post.title}
             </h1>
 
-            {/* Excerpt */}
             {post.excerpt && (
               <p className="mt-6 max-w-5xl text-base leading-8 text-white sm:text-lg md:text-xl">
                 {post.excerpt}
               </p>
             )}
 
-            {/* META */}
             <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-gray-200 pt-6 text-sm text-gray-600 dark:border-white/10 dark:text-blue-100/70">
               <span className="text-white">
                 {new Date(post.publishedAt).toLocaleDateString()}
@@ -402,7 +425,7 @@ export default async function PostPage({
           </div>
         </section>
 
-        {/* ================= ARTICLE ================= */}
+        {/* ARTICLE SECTION */}
         <section className="relative">
           <div className="mx-auto w-full px-4 py-12 sm:px-6 md:px-10 lg:px-14 xl:px-20">
             <article className="mx-auto w-full max-w-6xl">
@@ -471,9 +494,7 @@ export default async function PostPage({
         </section>
       </main>
 
-      {/* ================= RELATED ================= */}
       <RelatedPosts slug={safeSlug} categories={categories} />
-
       <Footer />
     </>
   );
