@@ -7,6 +7,7 @@ import {
   type SanityImageSource,
 } from "@sanity/image-url";
 import { Roboto } from "next/font/google";
+import type { Metadata, ResolvingMetadata } from "next";
 
 import { client } from "@/sanity/client";
 import RelatedPosts from "./related";
@@ -45,6 +46,128 @@ const urlFor = (source: SanityImageSource) =>
 
 const options = { next: { revalidate: 30 } };
 
+// Generate metadata for social sharing (optimized for WhatsApp & all platforms)
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await client.fetch<SanityDocument>(
+    POST_QUERY,
+    { slug },
+    options,
+  );
+
+  if (!post) {
+    return {
+      title: "Post Not Found",
+      description: "The requested blog post could not be found.",
+    };
+  }
+
+  // Generate multiple image sizes for different platforms
+  const ogImage = post.mainImage
+    ? urlFor(post.mainImage)?.width(1200).height(630).url()
+    : null;
+
+  const whatsappImage = post.mainImage
+    ? urlFor(post.mainImage)?.width(800).height(420).url()
+    : null;
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yourdomain.com";
+  const fullUrl = `${baseUrl}/blog/${slug}`;
+
+  // Truncate description for WhatsApp (recommended ~150 chars)
+  const description = post.excerpt
+    ? post.excerpt.length > 160
+      ? `${post.excerpt.substring(0, 157)}...`
+      : post.excerpt
+    : `Read ${post.title} on our blog.`;
+
+  // Get site name from env or default
+  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "Your Blog Name";
+
+  // Get social media handles
+  const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@yourhandle";
+  const facebookAppId = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || "";
+
+  return {
+    title: `${post.title} | ${siteName}`,
+    description: description,
+    authors: post.author?.name ? [{ name: post.author.name }] : undefined,
+    keywords: post.categories?.map((c: any) => c.title).join(", "),
+
+    // Open Graph (Facebook, LinkedIn, WhatsApp, etc.)
+    openGraph: {
+      title: post.title,
+      description: description,
+      type: "article",
+      publishedTime: post.publishedAt,
+      modifiedTime: post.publishedAt,
+      authors: post.author?.name ? [post.author.name] : undefined,
+      tags: post.categories?.map((c: any) => c.title),
+      images: ogImage
+        ? [
+            {
+              url: ogImage,
+              width: 1200,
+              height: 630,
+              alt: post.title,
+              type: "image/jpeg",
+            },
+          ]
+        : [],
+      url: fullUrl,
+      siteName: siteName,
+      locale: "en_KE",
+      determiner: "auto",
+    },
+
+    // Twitter Card (X/Twitter)
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: description,
+      images: ogImage ? [ogImage] : [],
+      creator: twitterHandle,
+      site: twitterHandle,
+    },
+
+    // Additional meta tags for better platform support
+    alternates: {
+      canonical: fullUrl,
+    },
+
+    // For rich previews on messaging apps
+    other: {
+      // WhatsApp specific (uses Open Graph)
+      "og:image:width": "1200",
+      "og:image:height": "630",
+      "og:image:alt": post.title,
+      "og:image:type": "image/jpeg",
+
+      // For iMessage and other iOS sharing
+      "apple-mobile-web-app-title": post.title,
+
+      // For better link previews
+      "twitter:image:alt": post.title,
+      "twitter:image:width": "1200",
+      "twitter:image:height": "630",
+
+      // Facebook App ID for analytics
+      ...(facebookAppId && { "fb:app_id": facebookAppId }),
+
+      // Article metadata
+      "article:published_time": post.publishedAt,
+      "article:author": post.author?.name || "",
+      "article:section": post.categories?.[0]?.title || "Blog",
+
+      // For WhatsApp link previews (helps with caching)
+      "cache-control": "max-age=31536000",
+    },
+  };
+}
+
 export default async function PostPage({
   params,
 }: {
@@ -78,6 +201,35 @@ export default async function PostPage({
     : null;
 
   const categories = post.categories?.map((c: any) => c.title) || [];
+
+  // JSON-LD Structured Data for better search and social previews
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    image: heroImage,
+    datePublished: post.publishedAt,
+    dateModified: post.publishedAt,
+    author: {
+      "@type": "Person",
+      name: post.author?.name || "Anonymous",
+      image: authorImage,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: process.env.NEXT_PUBLIC_SITE_NAME || "Your Blog Name",
+      logo: {
+        "@type": "ImageObject",
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/logo.png`,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${safeSlug}`,
+    },
+    keywords: categories.join(", "),
+  };
 
   const portableComponents = {
     block: {
@@ -155,6 +307,12 @@ export default async function PostPage({
 
   return (
     <>
+      {/* Add JSON-LD structured data to head */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
       <main className="min-h-screen bg-white text-gray-900 dark:bg-[#050816] dark:text-white">
         {/* ================= HERO ================= */}
         <section className="relative overflow-hidden border-b border-gray-200 pt-10 dark:border-white/10">
