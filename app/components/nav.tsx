@@ -37,6 +37,7 @@ const NAV_LINKS = {
     { href: "/", label: "Home" },
     { href: "/portfolio", label: "Portfolio" },
     { href: "/blog", label: "Blog" },
+    { href: "/services", label: "Services" },
   ] as const,
   cta: { href: "/contacts", label: "Reach us" } as const,
 } as const;
