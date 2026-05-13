@@ -158,7 +158,7 @@ export default function Home() {
               >
                 {/* Primary CTA */}
                 <Link
-                  href="/contacts"
+                  href="/services"
                   className="relative overflow-hidden group inline-flex items-center justify-center
                     px-6 py-3
                     sm:px-8 sm:py-4
@@ -182,7 +182,7 @@ export default function Home() {
                     transition-all duration-500 ease-in-out group-hover:w-full z-0"
                   />
                   <span className="relative z-10 flex items-center">
-                    Get Free Audit
+                    Explore our services
                     <ArrowRight className="ml-2 w-5 h-5 lg:w-6 lg:h-6 xl:w-7 xl:h-7" />
                   </span>
                 </Link>
