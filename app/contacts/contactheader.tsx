@@ -40,19 +40,14 @@ export default function CCTA() {
         {/* Content */}
         <div className="relative z-10 py-2 m-4 pt-30">
           {" "}
-          <div className="max-w-2xl animate-[fadeIn_1s_ease-out_0.3s]">
+          <div className="max-w-2xl animate-[fadeIn_1s_ease-out_0.3s] md:pl-32">
             <h2 className="font-sans font-extrabold tracking-tight leading-[1.05] text-3xl sm:text-4xl xl:text-5xl text-gray-900 dark:text-white">
               Ready to build something
               <span className="block text-[#004d98] dark:text-[#a50044]">
                 truly meaningful?
               </span>
             </h2>
-
-            <p className="mt-6 max-w-xl text-base sm:text-lg xl:text-xl leading-relaxed text-gray-700 dark:text-neutral-200 animate-[slideUp_1s_ease-out_0.5s]">
-              We help organizations establish a strong digital presence, build
-              reliable systems, and grow sustainably. Let’s work together to
-              turn your ideas into products, platforms and brands that last.
-            </p>
+     
           </div>
         </div>
 

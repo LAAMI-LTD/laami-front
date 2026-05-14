@@ -29,10 +29,8 @@ export default function Footer() {
                 </div>
               </div>
               <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-lg leading-relaxed">
-                Building sustainable digital foundations for mission-driven
-                organizations. From idea to impact—without the hassle.
+                Grow your Business online.
               </p>
-
               {/* Contact Information */}
               <div className="space-y-3 mb-6">
                 <div className="flex items-center space-x-3">

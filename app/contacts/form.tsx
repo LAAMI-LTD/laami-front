@@ -304,10 +304,10 @@ ${formData.message}`;
                             Location
                           </h4>
                           <p className="text-base font-bold text-neutral-800 dark:text-neutral-200">
-                            Eldoret, Kenya
+                            Komora Center, 2nd Floor
                             <br />
                             <span className="text-sm text-neutral-600 dark:text-neutral-400 font-medium">
-                              Serving clients globally
+                              Eldoret -Kenya
                             </span>
                           </p>
                         </div>

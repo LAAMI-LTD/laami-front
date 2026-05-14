@@ -40,7 +40,7 @@ export default function CTA() {
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
           {/* Text */}
           <div className="max-w-xl">
-                        <AnimatedButton
+            <AnimatedButton
               color="#a50044"
               ariaLabel="Contact us"
               className="
@@ -72,18 +72,6 @@ export default function CTA() {
               </span>
             </h2>
 
-            <p
-              className="
-                mt-6
-                text-base sm:text-lg xl:text-xl
-                leading-relaxed
-                text-gray-700 dark:text-neutral-200
-              "
-            >
-              We help organizations establish a strong digital presence, build
-              reliable systems, and grow sustainably. Let’s turn your idea into
-              a product, a brand, and a structure that lasts.
-            </p>
           </div>
 
           {/* Action */}
