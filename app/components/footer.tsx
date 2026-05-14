@@ -218,7 +218,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="/portfolio"
                     className="hover:text-[#a50044] dark:hover:text-[#a50044] transition-colors inline-flex items-center group"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-[#a50044] mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
