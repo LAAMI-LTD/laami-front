@@ -352,29 +352,72 @@ export default function Services() {
       </div>
 
       {/* Bottom CTA */}
-      <div className="mt-10 max-w-2xl mx-auto">
-        <p className="text-lg text-gray-600 dark:text-neutral-300 mb-6 transition-colors duration-300">
-          Not sure what you need? Let&apos;s figure it out together.
+      <div className="mt-20 max-w-4xl mx-auto">
+        {/* Heading text */}
+        <p className="text-center text-lg md:text-xl text-gray-600 dark:text-neutral-300 mb-8 transition-colors duration-300">
+          Not sure what you need? <span className="font-semibold">Let's figure it out together.</span>
         </p>
-        <a
-          href="/contacts"
-          className="inline-flex items-center space-x-2 bg-[#a50044] hover:bg-[#003d7a] dark:bg-[#004d98] dark:hover:bg-[#8a0038] text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl dark:shadow-neutral-800/50"
-        >
-          <span>Get Your Free Growth Audit</span>
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+
+        {/* CTA Buttons Container - Responsive flex layout */}
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-stretch sm:items-center">
+          {/* Primary CTA - Growth Audit */}
+          <a
+            href="/contacts"
+            className="group relative inline-flex items-center justify-center space-x-2 bg-[#a50044] hover:bg-[#003d7a] dark:bg-[#004d98] dark:hover:bg-[#8a0038] text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl dark:shadow-neutral-800/50 overflow-hidden"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 8l4 4m0 0l-4 4m4-4H3"
-            />
-          </svg>
-        </a>
+            {/* Animated background effect */}
+            <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
+
+            <span className="relative text-sm sm:text-base">Get Your Free Growth Audit</span>
+            <svg
+              className="relative w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
+          </a>
+
+          {/* Secondary CTA - Insights */}
+          <a
+            href="/blog"
+            className="group relative inline-flex items-center justify-center space-x-2 bg-[#004d98] hover:bg-[#a50044] dark:bg-[#004d98] dark:hover:bg-[#8a0038] text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl dark:shadow-neutral-800/50 overflow-hidden"
+          >
+            {/* Animated background effect */}
+            <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
+
+            <span className="relative text-sm sm:text-base">Get More Insights</span>
+            <svg
+              className="relative w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
+          </a>
+        </div>
+
+        {/* Optional: Add a subtle divider or trust indicator */}
+        <div className="mt-8 text-center">
+          <div className="inline-flex items-center space-x-2 text-xs text-gray-500 dark:text-neutral-400">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            </svg>
+            <span>No commitment • Free consultation</span>
+          </div>
+        </div>
       </div>
     </section>
   );
