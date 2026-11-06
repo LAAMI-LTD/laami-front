@@ -325,7 +325,7 @@ ${formData.message}`;
                             href={s.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label={`LAAMi LABS on ${s.label}`}
+                            aria-label={`LAAMI LTD on ${s.label}`}
                             title={s.label}
                             className="
                           w-9 h-9 rounded-xl

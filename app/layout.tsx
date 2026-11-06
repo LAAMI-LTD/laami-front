@@ -12,22 +12,19 @@ const INSTAGRAM_URL =
 const WEBSITE_URL = "https://laamilabs.co.ke";
 
 export const metadata: Metadata = {
-  title: "LAAMI LTD | LAAMI LABS — Building What Companies Run On",
+  title: "LAAMI LTD — Building What Companies Run On",
   description:
-    "LAAMI LTD is the parent company of LAAMI LABS. We build web and mobile apps, brand identities, and digital solutions for startups and organisations across Kenya and Africa.",
+    "LAAMI LTD brings technology, brand identity, and digital growth services to startups and organisations across Kenya and Africa through LAAMI LABS, its digital solutions division.",
 
   keywords: [
     // Core company names
     "LAAMI LTD",
     "Laami Ltd",
-    "LAAMI LABS",
-    "Laami Labs",
-    "Laami Labs division of LAAMI LTD",
+    "LAAMI LABS division of LAAMI LTD",
 
     // Branded searches
     "Laami Ltd Kenya",
     "LAAMI LTD Eldoret",
-    "Laami Labs co ke",
 
     // Service keywords
     "Web development Eldoret",
@@ -56,9 +53,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: WEBSITE_URL,
-    title: "LAAMI LTD | LAAMI LABS — Building What Companies Run On",
+    title: "LAAMI LTD — Building What Companies Run On",
     description:
-      "LAAMI LTD (parent company of LAAMI LABS) builds web and mobile apps, strong brand identities, and digital solutions for startups and organisations across Kenya and Africa.",
+      "LAAMI LTD brings web, mobile, branding, and digital growth solutions to organisations across Kenya and Africa through LAAMI LABS, its digital solutions division.",
     siteName: "LAAMI LTD",
 
     images: [
@@ -66,14 +63,14 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "LAAMI LTD | LAAMI LABS — Building What Companies Run On",
+        alt: "LAAMI LTD — Building What Companies Run On",
         type: "image/png",
       },
       {
         url: "/og-image.avif",
         width: 1200,
         height: 630,
-        alt: "LAAMI LTD | LAAMI LABS — Building What Companies Run On",
+        alt: "LAAMI LTD — Building What Companies Run On",
         type: "image/avif",
       },
     ],
@@ -86,9 +83,9 @@ export const metadata: Metadata = {
     site: "@LaamiLabs",
     creator: "@LaamiLabs",
     title:
-      "LAAMI LTD | LAAMI LABS — Digital Solutions, Branding & Web/Mobile Apps",
+      "LAAMI LTD — Digital Solutions, Branding & Web/Mobile Apps",
     description:
-      "LAAMI LTD is the parent company of LAAMI LABS. Building digital solutions and professional branding for startups and organizations in Kenya.",
+      "LAAMI LTD delivers digital solutions and professional branding through LAAMI LABS, its digital solutions division.",
     images: ["/og-image.avif", "/og-image.png"],
   },
 

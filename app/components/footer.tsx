@@ -13,7 +13,7 @@ export default function Footer() {
                 <div className="w-12 h-12 rounded-lg overflow-hidden border-2 border-[#004d98] dark:border-[#004d98] bg-white dark:bg-gray-900 flex items-center justify-center">
                   <Image
                     src="/laami.png"
-                    alt="Laami Labs Logo"
+                    alt="LAAMI LABS logo, a division of LAAMI LTD"
                     width={36}
                     height={36}
                     className="object-contain"
@@ -21,10 +21,13 @@ export default function Footer() {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-2xl font-bold tracking-tight text-[#004d98]">
-                    LAAMI<span className="text-[#a50044]">LABS</span>
+                    LAAMI LTD
                   </span>
                   <span className="text-xs font-medium tracking-widest text-gray-600 dark:text-gray-400 uppercase -mt-0.5">
                     Building What Companies Run On
+                  </span>
+                  <span className="mt-1 text-[10px] text-gray-500 dark:text-gray-500">
+                    LAAMI LABS is the digital solutions division of LAAMI LTD
                   </span>
                 </div>
               </div>
@@ -83,7 +86,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-full border-2 border-gray-300 dark:border-gray-700 hover:border-[#004d98] dark:hover:border-[#004d98] flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-[#004d98] dark:hover:text-[#004d98] transition-all"
-                  aria-label="Laami Labs on Facebook"
+                  aria-label="LAAMI LTD on Facebook"
                 >
                   <svg
                     className="w-5 h-5"
@@ -100,7 +103,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-full border-2 border-gray-300 dark:border-gray-700 hover:border-[#004d98] dark:hover:border-[#004d98] flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-[#004d98] dark:hover:text-[#004d98] transition-all"
-                  aria-label="Laami Labs on Instagram"
+                  aria-label="LAAMI LTD on Instagram"
                 >
                   <svg
                     className="w-5 h-5"
@@ -115,7 +118,7 @@ export default function Footer() {
                 <a
                   href="mailto:hello@laamilabs.co.ke"
                   className="w-10 h-10 rounded-full border-2 border-gray-300 dark:border-gray-700 hover:border-[#004d98] dark:hover:border-[#004d98] flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-[#004d98] dark:hover:text-[#004d98] transition-all"
-                  aria-label="Email Laami Labs"
+                  aria-label="Email LAAMI LTD"
                 >
                   <svg
                     className="w-5 h-5"
@@ -207,7 +210,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <a
-                    href="#about"
+                    href="/about"
                     className="hover:text-[#a50044] dark:hover:text-[#a50044] transition-colors inline-flex items-center group"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-[#a50044] mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
@@ -230,7 +233,7 @@ export default function Footer() {
           {/* Bottom Bar */}
           <div className="border-t border-gray-200 dark:border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-500 dark:text-gray-500 text-sm">
-              &copy; {new Date().getFullYear()} Laami Labs. All rights reserved.
+              &copy; {new Date().getFullYear()} LAAMI LTD. All rights reserved.
             </p>
             <div className="flex items-center space-x-6 text-sm">
               <a

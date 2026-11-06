@@ -14,11 +14,12 @@ export default function Home() {
     name: "LAAMI LTD",
     legalName: "LAAMI LTD",
     url: "https://laamilabs.co.ke",
-    brand: "LAAMI LABS",
+    brand: "LAAMI LTD",
     department: {
       "@type": "Organization",
       name: "LAAMI LABS",
       url: "https://laamilabs.co.ke",
+      description: "Digital solutions division of LAAMI LTD",
     },
     address: {
       "@type": "PostalAddress",

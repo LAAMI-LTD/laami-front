@@ -24,8 +24,26 @@ export interface ProjectType {
   }[];
 }
 
-// Professional Projects Data
-export const professionalProjects: ProjectType[] = [
+type ProjectDraft = Pick<
+  ProjectType,
+  "id" | "title" | "description" | "category" | "year"
+> & Partial<Omit<ProjectType, "id" | "title" | "description" | "category" | "year">>;
+
+const createProject = (draft: ProjectDraft): ProjectType => ({
+  clientType: "general",
+  status: "live",
+  link: "#",
+  logo: "",
+  images: [],
+  tech: [],
+  features: [],
+  ...draft,
+});
+
+// Add projects with this small core; all other fields are optional:
+// { id: "project-id", title: "Project name", description: "What it does.", category: "Education", year: 2026 }
+// Images, technology, features, logos, and links receive safe defaults.
+const projectDrafts: ProjectDraft[] = [
     {
     id: "shepherd",
     title: "The Shepherd App",
@@ -419,6 +437,9 @@ export const professionalProjects: ProjectType[] = [
     ],
   },
 ];
+
+// Add projects here with the five core fields; images, technologies, and features are optional.
+export const professionalProjects: ProjectType[] = projectDrafts.map(createProject);
 
 // Filtering functions
 export const filterProjects = (filter: string) => {

@@ -9,6 +9,7 @@ interface NavProps { scrolled: boolean }
 
 const links = [
   { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/blog", label: "Blog" },
   { href: "/services", label: "Services" },
@@ -37,7 +38,7 @@ export default function Nav({ scrolled }: NavProps) {
         <div className="mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <div className="flex justify-between items-center h-16 md:h-20">
             <Link href="/" className="flex items-center space-x-2 md:space-x-3 flex-shrink-0">
-              <Image src="/laami.png" alt="LaamiLabs Logo" width={42} height={42} priority />
+              <Image src="/laami.png" alt="LAAMI LABS logo, a division of LAAMI LTD" width={42} height={42} priority />
               <div>
                 <div className="text-xl md:text-2xl font-bold tracking-tight leading-tight"><span className="text-[#004d98]">LAAMI</span><span className="text-[#a50044]">LABS</span></div>
                 <div className="hidden sm:block text-[8px] md:text-[10px] font-medium tracking-widest text-gray-500 -mt-1">A DIVISION OF LAAMI LTD</div>
@@ -56,7 +57,7 @@ export default function Nav({ scrolled }: NavProps) {
       </nav>
       {mobileMenuOpen && <div className="fixed inset-0 z-[60] md:hidden flex flex-col bg-gray-950 text-white">
         <div className="flex items-center justify-between h-20 px-6 border-b border-gray-800">
-          <Link href="/" onClick={() => setMobileMenuOpen(false)} className="font-bold text-lg">LAAMI<span className="text-[#a50044]">LABS</span></Link>
+          <Link href="/" onClick={() => setMobileMenuOpen(false)} className="font-bold text-lg">LAAMI LTD</Link>
           <button onClick={() => setMobileMenuOpen(false)} aria-label="Close menu" className="p-2 rounded-md bg-gray-800"><X className="w-5 h-5" /></button>
         </div>
         <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6">
@@ -64,7 +65,7 @@ export default function Nav({ scrolled }: NavProps) {
           <Link href="/contacts" onClick={() => setMobileMenuOpen(false)} className="inline-flex items-center px-6 py-3 font-semibold rounded-md bg-[#a50044]">Reach us <ChevronRight className="ml-2 w-5 h-5" /></Link>
           <div className="flex gap-5 border-t border-gray-800 pt-6">{socials.map(({ href, label, icon: Icon }) => <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}><Icon className="w-5 h-5" /></a>)}</div>
         </div>
-        <div className="py-6 text-center text-xs text-gray-500 border-t border-gray-800">&copy; {new Date().getFullYear()} LaamiLabs</div>
+        <div className="py-6 text-center text-xs text-gray-500 border-t border-gray-800">&copy; {new Date().getFullYear()} LAAMI LTD</div>
       </div>}
     </>
   );

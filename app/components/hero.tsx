@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-// Structured data for LAAMI LTD & LAAMI LABS
+// Structured data for LAAMI LTD and its LAAMI LABS digital solutions division.
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -12,7 +12,7 @@ const structuredData = {
   logo: "https://laamilabs.co.ke/logo.png",
   brand: {
     "@type": "Brand",
-    name: "LAAMI LABS",
+    name: "LAAMI LTD",
   },
   department: {
     "@type": "Organization",
@@ -31,7 +31,7 @@ const structuredData = {
     "https://www.instagram.com/laamilabs",
   ],
   description:
-    "LAAMI LTD is the parent company of LAAMI LABS, building web and mobile apps, brand identities, and digital solutions for startups and organisations across Kenya and Africa.",
+    "LAAMI LTD builds web and mobile apps, brand identities, and digital solutions for startups and organisations across Kenya and Africa through LAAMI LABS, its digital solutions division.",
 };
 
 export default function Home() {

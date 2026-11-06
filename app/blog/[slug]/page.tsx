@@ -84,7 +84,7 @@ export async function generateMetadata(
       : post.excerpt
     : `Read ${post.title} on our blog.`;
 
-  const siteName = "LAAMI LABS";
+  const siteName = "LAAMI LTD";
   const twitterHandle = "@LaamiLabs";
 
   return {
@@ -227,7 +227,7 @@ export default async function PostPage({
     },
     publisher: {
       "@type": "Organization",
-      name: "LAAMI LABS",
+      name: "LAAMI LTD",
       logo: {
         "@type": "ImageObject",
         url: `${SITE_URL}/laami.png`,
@@ -329,7 +329,7 @@ export default async function PostPage({
 
       {/* WhatsApp-specific meta tags - injected directly for prominence */}
       <meta property="og:url" content={postUrl} />
-      <meta property="og:site_name" content="LAAMI LABS" />
+      <meta property="og:site_name" content="LAAMI LTD" />
       <meta property="og:image" content={whatsAppImageUrl || heroImage || ""} />
       <meta property="og:image:width" content="1024" />
       <meta property="og:image:height" content="512" />

@@ -210,7 +210,7 @@ export default function PrivacyPolicy() {
                 <p className="text-base text-[#8a8070] leading-loose">
                   At{" "}
                   <span className="text-[#c8a96e]" style={{  fontSize: "1.05em", fontStyle: "italic" }}>
-                    LAAMI LABS
+                    LAAMI LTD
                   </span>
                   , accessible from{" "}
                   <span className="text-[#d4c9b0]">laamilabs.co.ke</span>,
@@ -321,7 +321,7 @@ export default function PrivacyPolicy() {
                 <div />
                 <div className="space-y-4">
                   <p className="text-sm text-[#6a6050] leading-loose">
-                    LAAMI LABS follows standard industry practice in maintaining log files.
+                    LAAMI LTD follows standard industry practice in maintaining log files.
                     These files record visitor activity on our servers as part of our hosting
                     analytics infrastructure.
                   </p>
@@ -354,7 +354,7 @@ export default function PrivacyPolicy() {
                 <div />
                 <div className="space-y-4 text-sm text-[#6a6050] leading-loose">
                   <p>
-                    Like most websites, LAAMI LABS uses cookies to store information
+                    Like most websites, LAAMI LTD uses cookies to store information
                     about visitor preferences and the pages accessed. This data is used
                     to optimize the user experience by customizing page content based on
                     browser type and browsing patterns.
@@ -389,11 +389,11 @@ export default function PrivacyPolicy() {
                   <p>
                     Third-party ad servers and networks may use technologies such
                     as cookies, JavaScript, or Web Beacons in advertisements and
-                    links appearing on LAAMI LABS. These are sent directly to your
+                    links appearing on LAAMI LTD. These are sent directly to your
                     browser, and your IP address is automatically received at that point.
                   </p>
                   <p>
-                    LAAMI LABS has no access to or control over the cookies used
+                    LAAMI LTD has no access to or control over the cookies used
                     by third-party advertisers. We recommend consulting their
                     individual privacy policies for full details.
                   </p>
@@ -409,7 +409,7 @@ export default function PrivacyPolicy() {
               <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12">
                 <div />
                 <p className="text-sm text-[#6a6050] leading-loose">
-                  This Privacy Policy applies solely to LAAMI LABS and does not extend
+                  This Privacy Policy applies solely to LAAMI LTD and does not extend
                   to third-party advertisers or external websites linked from our platform.
                   We advise consulting the respective Privacy Policies of any third-party
                   services you interact with, including instructions on how to opt out
@@ -487,7 +487,7 @@ export default function PrivacyPolicy() {
                 <div className="space-y-4 text-sm text-[#6a6050] leading-loose">
                   <p>
                     We encourage parents and guardians to observe, participate in,
-                    and monitor their children&apos;s online activity. LAAMI LABS does
+                    and monitor their children&apos;s online activity. LAAMI LTD does
                     not knowingly collect personally identifiable information from
                     children under the age of 13.
                   </p>
@@ -553,7 +553,7 @@ export default function PrivacyPolicy() {
           <FadeSection delay={500}>
             <footer className="pt-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
               <p className="text-[10px] text-[#2a2418] uppercase tracking-[0.2em]">
-                © {new Date().getFullYear()} LAAMI LABS — All rights reserved
+                © {new Date().getFullYear()} LAAMI LTD — All rights reserved
               </p>
 
               <div className="flex items-center gap-8 text-[10px] uppercase tracking-[0.2em]">

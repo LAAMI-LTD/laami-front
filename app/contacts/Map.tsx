@@ -7,7 +7,7 @@ interface SimpleMapProps {
 
 export default function SimpleMap({ 
   location = "Eldoret, Kenya",
-  title = "LAAMI LABS"
+  title = "LAAMI LTD"
 }: SimpleMapProps) {
   // Your provided Google Maps embed URL
   const googleMapsEmbedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.6554003043098!2d35.2732939!3d0.5177854!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x17810100ccaeb923%3A0x56935602e2a2ab91!2sLAAMI%20LABS!5e0!3m2!1sen!2ske!4v1778729600400!5m2!1sen!2ske";

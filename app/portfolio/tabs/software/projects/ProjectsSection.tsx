@@ -1,102 +1,72 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import Image from "next/image";
+import { ArrowUpRight, Pause, Play, Search } from "lucide-react";
 import { professionalProjects } from "./projects";
 
-// Auto-scrolling continuous flow
-function AutoScrollingImageFlow({
-  images,
-  title = "",
-  index,
-}: {
-  images: string[];
-  title?: string;
-  index: number;
-}) {
-  const accentColor = index % 2 === 0 ? "#004d98" : "#a50044";
+const focusRing =
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#004d98]";
 
-  if (images.length === 0) {
+function AutoScrollingImageFlow({ images, title }: { images: string[]; title: string }) {
+  const [paused, setPaused] = useState(false);
+  const carouselImages = [...images, ...images];
+
+  if (!images.length) {
     return (
-      <div
-        className="h-full w-full flex items-center justify-center dark:bg-gray-800/50"
-        style={{ backgroundColor: `${accentColor}10` }}
-      >
-        <span
-          className="text-gray-500 dark:text-gray-400"
-          style={{ color: accentColor }}
-        >
-          No images available
-        </span>
+      <div className="grid h-full place-items-center bg-[#eceef1] text-sm text-neutral-600 dark:bg-[#151923] dark:text-neutral-400">
+        Project imagery coming soon
       </div>
     );
   }
 
   return (
     <div
-      className="relative h-full overflow-hidden dark:bg-gray-800/30"
-      style={{ backgroundColor: `${accentColor}05` }}
+      className="portfolio-carousel relative h-full overflow-hidden bg-[#eceef1] dark:bg-[#151923]"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={`${title} image carousel`}
     >
-      {/* Duplicate images for seamless loop */}
-      <div className="flex h-full animate-scroll">
-        {/* First set */}
-        {images.map((image, idx) => (
-          <div
-            key={`first-${idx}`}
-            className="shrink-0 h-full flex pl-1 items-center justify-center"
-          >
-            <img
+      <div className="portfolio-image-track flex h-full w-max" style={{ animationPlayState: paused ? "paused" : undefined }}>
+        {carouselImages.map((image, index) => (
+          <div key={`${image}-${index}`} className="flex h-full shrink-0 items-center justify-center p-4 2xl:p-6">
+            <Image
               src={image}
-              alt={
-                title
-                  ? `${title} - Image ${idx + 1}`
-                  : `Project image ${idx + 1}`
-              }
-              className="h-full w-auto object-contain rounded-sm"
-              style={{
-                border: `2px solid ${accentColor}`,
-                boxShadow: `0 4px 6px ${accentColor}40`,
-              }}
-            />
-          </div>
-        ))}
-        {/* Second set for seamless loop */}
-        {images.map((image, idx) => (
-          <div
-            key={`second-${idx}`}
-            className="shrink-0 h-full flex items-center justify-center p-2"
-          >
-            <img
-              src={image}
-              alt={
-                title
-                  ? `${title} - Image ${idx + 1}`
-                  : `Project image ${idx + 1}`
-              }
-              className="h-full w-auto object-contain rounded-sm"
-              style={{
-                border: `2px solid ${accentColor}`,
-                boxShadow: `0 4px 6px ${accentColor}40`,
-              }}
+              alt={index < images.length ? `${title} preview ${index + 1}` : ""}
+              aria-hidden={index >= images.length}
+              width={1200}
+              height={900}
+              sizes="(max-width: 640px) 78vw, 40rem"
+              className="h-full w-auto max-w-[78vw] rounded-sm object-contain shadow-[0_8px_24px_rgba(15,23,42,0.14)] sm:max-w-none"
             />
           </div>
         ))}
       </div>
-
+      <button
+        type="button"
+        onClick={() => setPaused((value) => !value)}
+        aria-label={paused ? `Play ${title} image carousel` : `Pause ${title} image carousel`}
+        className={`absolute bottom-3 right-3 z-10 inline-flex h-9 items-center gap-2 rounded-sm bg-white px-3 text-xs font-medium text-neutral-900 shadow-sm transition-colors duration-150 hover:bg-neutral-100 active:scale-[0.97] dark:bg-[#0d111b] dark:text-white dark:hover:bg-[#1b202b] ${focusRing}`}
+      >
+        {paused ? <Play size={14} /> : <Pause size={14} />}
+        {paused ? "Play" : "Pause"}
+      </button>
       <style jsx>{`
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
+        .portfolio-image-track {
+          animation: portfolio-scroll 48s linear infinite;
+        }
+        .portfolio-carousel:hover .portfolio-image-track {
+          animation-play-state: paused;
+        }
+        @keyframes portfolio-scroll {
+          to {
             transform: translateX(-50%);
           }
         }
-        .animate-scroll {
-          animation: scroll 40s linear infinite;
-          width: 200%;
-        }
-        .animate-scroll:hover {
-          animation-play-state: running !important;
+        @media (prefers-reduced-motion: reduce) {
+          .portfolio-image-track {
+            animation: none;
+          }
         }
       `}</style>
     </div>
@@ -104,241 +74,175 @@ function AutoScrollingImageFlow({
 }
 
 export default function ProjectsSection() {
-  const [activeFilter, setActiveFilter] = useState("All");
+  const [activeCategory, setActiveCategory] = useState("All work");
+  const [query, setQuery] = useState("");
+  const categories = useMemo(
+    () => ["All work", ...Array.from(new Set(professionalProjects.map((project) => project.category)))],
+    [],
+  );
 
-  const filteredProjects = professionalProjects.filter((project) => {
-    if (activeFilter === "All") return true;
-    return project.category === activeFilter;
-  });
+  const visibleProjects = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return professionalProjects.filter((project) => {
+      const okCategory = activeCategory === "All work" || project.category === activeCategory;
+      const okQuery =
+        !q ||
+        `${project.title} ${project.description} ${project.category} ${project.tech.join(" ")}`.toLowerCase().includes(q);
+      return okCategory && okQuery;
+    });
+  }, [activeCategory, query]);
 
-  const categories = [
-    "All",
-    ...Array.from(new Set(professionalProjects.map((p) => p.category))),
-  ];
-
-  const getAccentColor = (index: number) =>
-    index % 2 === 0 ? "#004d98" : "#a50044";
+  const resetFilters = () => {
+    setQuery("");
+    setActiveCategory("All work");
+  };
 
   return (
-    <section className="min-h-screen  bg-transparent transition-colors duration-300">
-      <div className="max-w-7xl mx-auto">
-        {/* Filters */}
-        <div className="mb-8 sm:mb-10 lg:mb-12">
-          <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveFilter(category)}
-                className={`
-          px-2.5 py-1.5
-          sm:px-3 sm:py-1.5
-          md:px-3.5 md:py-2
-          rounded-sm
-          text-xs sm:text-sm
-          font-medium
-          transition-all duration-200
-          hover:scale-[1.03]
-          active:scale-[0.97]
-          ${
-            activeFilter === category
-              ? "text-white"
-              : "bg-transparent hover:opacity-90"
-          }
-        `}
-                style={{
-                  backgroundColor:
-                    activeFilter === category
-                      ? getAccentColor(categories.indexOf(category) % 2)
-                      : "transparent",
-                  border: `1.5px solid ${getAccentColor(
-                    categories.indexOf(category) % 2,
-                  )}`,
-                  color:
-                    activeFilter === category
-                      ? "white"
-                      : getAccentColor(categories.indexOf(category) % 2),
-                }}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
+    <section id="portfolio-projects" aria-labelledby="projects-heading" className="w-full scroll-mt-28 py-14 sm:py-20">
+      {/* Header */}
+      <div className="mb-8 flex flex-col gap-6 sm:mb-10 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <h2
+            id="projects-heading"
+            className="max-w-4xl text-3xl font-semibold leading-[1.05] tracking-tight text-neutral-950 dark:text-white sm:text-4xl lg:text-5xl 2xl:text-6xl"
+          >
+            Projects built to move people forward
+          </h2>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-neutral-700 dark:text-neutral-300 2xl:text-lg">
+            A selection of digital products and experiences created with ambitious teams.
+          </p>
         </div>
+        <div className="relative w-full sm:max-w-xs 2xl:max-w-sm">
+          <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" aria-hidden="true" />
+          <input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            type="search"
+            aria-label="Search projects"
+            placeholder="Search projects"
+            className="h-10 w-full rounded-sm border border-neutral-300 bg-white pl-9 pr-3 text-sm outline-none transition-colors duration-150 placeholder:text-neutral-500 focus:border-[#004d98] dark:border-white/15 dark:bg-white/5 dark:text-white dark:focus:border-blue-400"
+          />
+        </div>
+      </div>
 
-        {/* Projects Grid */}
-        <div className="flex flex-col gap-3">
-          {filteredProjects.map((project, index) => {
-            const accentColor = getAccentColor(index);
+      {/* Category filter */}
+      <div className="mb-6 flex gap-2 overflow-x-auto pb-1" role="group" aria-label="Filter projects by category">
+        {categories.map((category) => {
+          const selected = activeCategory === category;
+          const count =
+            category === "All work"
+              ? professionalProjects.length
+              : professionalProjects.filter((project) => project.category === category).length;
+          return (
+            <button
+              key={category}
+              type="button"
+              onClick={() => setActiveCategory(category)}
+              aria-pressed={selected}
+              className={`inline-flex shrink-0 items-center gap-2 rounded-sm px-4 py-2 text-sm font-medium transition-colors duration-150 ${focusRing} ${
+                selected
+                  ? "bg-[#151515] text-white dark:bg-white dark:text-[#151515]"
+                  : "border border-neutral-300 text-neutral-700 hover:border-neutral-500 dark:border-white/15 dark:text-neutral-300 dark:hover:border-white/40"
+              }`}
+            >
+              {category}
+              <span className={selected ? "text-white/70 dark:text-black/60" : "text-neutral-500"}>{count}</span>
+            </button>
+          );
+        })}
+      </div>
 
-            return (
-              <div
-                key={project.id}
-                className="group overflow-hidden transition-all duration-500 shadow-lg hover:shadow-xl "
-              >
-                {/* Project Image with Auto-scrolling Flow */}
-                <div className="h-48 sm:h-56 md:h-64">
-                  {project.images && project.images.length > 0 ? (
-                    <AutoScrollingImageFlow
-                      images={project.images}
-                      title={project.title}
-                      index={index}
-                    />
-                  ) : (
-                    <div
-                      className="h-full w-full flex items-center justify-center"
-                      style={{ backgroundColor: `${accentColor}10` }}
-                    >
-                      <span
-                        className="text-sm sm:text-base"
-                        style={{ color: accentColor }}
-                      >
-                        No images available
-                      </span>
-                    </div>
-                  )}
+      <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400" aria-live="polite">
+        Showing {visibleProjects.length} of {professionalProjects.length} projects
+      </p>
+
+      {visibleProjects.length ? (
+        <div className="flex flex-col gap-4 2xl:gap-5">
+          {visibleProjects.map((project) => (
+            <article
+              key={project.id}
+              className="grid overflow-hidden rounded-sm border border-neutral-200 bg-white dark:border-white/10 dark:bg-[#0d111b] lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]"
+            >
+              {/* Images */}
+              <div className="h-60 sm:h-72 lg:h-[clamp(20rem,22vw,32rem)]">
+                <AutoScrollingImageFlow images={project.images} title={project.title} />
+              </div>
+
+              {/* Details: solid panel, no text over images */}
+              <div className="flex flex-col p-5 sm:p-6 lg:p-8 2xl:p-10">
+                <div className="mb-4 flex items-center gap-3 text-sm text-neutral-600 dark:text-neutral-400">
+                  <span className="rounded-sm bg-[#a50044]/10 px-2.5 py-1 text-xs font-semibold text-[#a50044] dark:bg-pink-400/15 dark:text-pink-300">
+                    {project.category}
+                  </span>
+                  <span>{project.year}</span>
                 </div>
 
-                {/* Project Content */}
-                <div className="p-6 sm:p-8">
-                  {/* Category & Year */}
-                  <div className="flex items-center gap-3 mb-4 flex-wrap">
-                    <span
-                      className="text-xs sm:text-sm font-semibold px-3 py-1 rounded-full"
-                      style={{
-                        backgroundColor: `${accentColor}15`,
-                        color: accentColor,
-                        border: `1px solid ${accentColor}30`,
-                      }}
-                    >
-                      {project.category}
-                    </span>
-                    <span className="text-gray-400 dark:text-gray-500">•</span>
-                    <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                      {project.year}
-                    </span>
-                  </div>
+                <div className="flex items-center gap-3">
+                  {project.logo && (
+                    <Image src={project.logo} alt="" width={128} height={64} sizes="56px" className="h-9 w-14 shrink-0 object-contain" />
+                  )}
+                  <h3 className="text-2xl font-semibold leading-tight tracking-tight text-neutral-950 dark:text-white 2xl:text-4xl">
+                    {project.title}
+                  </h3>
+                </div>
 
-                  {/* Title with Logo */}
-                  <div className="flex items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-                    {project.logo && (
-                      <img
-                        src={project.logo}
-                        alt={`${project.title} logo`}
-                        className="h-8 sm:h-10 w-auto object-contain"
-                      />
-                    )}
-                    <h3
-                      className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight"
-                      style={{ color: accentColor }}
-                    >
-                      {project.title}
-                    </h3>
-                  </div>
+                <p className="mt-3 line-clamp-4 text-base leading-7 text-neutral-700 dark:text-neutral-300 2xl:text-lg 2xl:leading-8">
+                  {project.description}
+                </p>
 
-                  {/* Description */}
-                  <p className="text-sm sm:text-base mb-6 leading-relaxed text-gray-700 dark:text-gray-300">
-                    {project.description}
-                  </p>
+                {project.features.length > 0 && (
+                  <ul className="mt-5 space-y-2 text-sm leading-6 text-neutral-700 dark:text-neutral-300 2xl:text-base">
+                    {project.features.slice(0, 4).map((feature) => (
+                      <li key={feature} className="flex gap-2.5">
+                        <span aria-hidden="true" className="mt-2.5 h-1 w-3 shrink-0 bg-[#a50044]" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                )}
 
-                  {/* Tech Stack */}
-                  <div className="mb-6 sm:mb-8">
-                    <p className="text-xs sm:text-sm font-semibold mb-2 sm:mb-3 text-gray-600 dark:text-gray-400 uppercase tracking-wide">
-                      Technologies
-                    </p>
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                      {project.tech.map((tech) => (
+                <div className="mt-auto flex flex-wrap items-end justify-between gap-4 pt-6">
+                  {project.tech.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.tech.slice(0, 5).map((technology) => (
                         <span
-                          key={tech}
-                          className="px-3 py-1.5 rounded-lg text-xs sm:text-sm"
-                          style={{
-                            backgroundColor: `${accentColor}10`,
-                            color: accentColor,
-                            border: `1px solid ${accentColor}30`,
-                          }}
+                          key={technology}
+                          className="rounded-sm border border-neutral-300 px-2.5 py-1 text-xs text-neutral-700 dark:border-white/15 dark:text-neutral-300"
                         >
-                          {tech}
+                          {technology}
                         </span>
                       ))}
+                      {project.tech.length > 5 && <span className="px-1.5 py-1 text-xs text-neutral-600">+{project.tech.length - 5}</span>}
                     </div>
-                  </div>
-
-                  {/* Features */}
-                  <div className="mb-6 sm:mb-8 pt-6 border-t border-gray-100 dark:border-gray-700">
-                    <p className="text-xs sm:text-sm font-semibold mb-3 text-gray-600 dark:text-gray-400 uppercase tracking-wide">
-                      Key Features
-                    </p>
-                    <ul className="space-y-2 sm:space-y-3">
-                      {project.features.slice(0, 3).map((feature, i) => (
-                        <li
-                          key={i}
-                          className="text-sm sm:text-base flex items-start gap-3 text-gray-700 dark:text-gray-300"
-                        >
-                          <span
-                            className="mt-0.5 sm:mt-1 flex-shrink-0"
-                            style={{ color: accentColor }}
-                          >
-                            ✓
-                          </span>
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Links */}
-                  <div className="flex flex-wrap gap-3">
-                    {project.link !== "#" && (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-all transform hover:scale-105 active:scale-95 shadow-md hover:shadow-lg"
-                        style={{
-                          backgroundColor: accentColor,
-                          color: "white",
-                        }}
-                      >
-                        <svg
-                          className="w-4 h-4 sm:w-5 sm:h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                          />
-                        </svg>
-                        Visit Site
-                      </a>
-                    )}
-                                   </div>
+                  )}
+                  {project.link !== "#" && (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center gap-1.5 rounded-sm bg-[#004d98] px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-[#003d7a] active:scale-[0.97] ${focusRing}`}
+                    >
+                      Visit project <ArrowUpRight size={15} />
+                    </a>
+                  )}
                 </div>
               </div>
-            );
-          })}
+            </article>
+          ))}
         </div>
-
-        {/* No Results */}
-        {filteredProjects.length === 0 && (
-          <div className="text-center py-16 sm:py-20">
-            <div
-              className="text-5xl sm:text-6xl mb-4"
-              style={{ color: "#004d98" }}
-            >
-              🔍
-            </div>
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-3 dark:text-white">
-              No projects found
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400">
-              Try adjusting your filters
-            </p>
-          </div>
-        )}
-      </div>
+      ) : (
+        <div className="rounded-sm border border-dashed border-neutral-300 px-6 py-16 text-center dark:border-white/20">
+          <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">No projects match your search</h3>
+          <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">Try another name or category.</p>
+          <button
+            type="button"
+            onClick={resetFilters}
+            className={`mt-5 rounded-sm bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white active:scale-[0.97] dark:bg-white dark:text-neutral-900 ${focusRing}`}
+          >
+            Clear filters
+          </button>
+        </div>
+      )}
     </section>
   );
 }

@@ -339,7 +339,7 @@ export default function CookiePolicy() {
                 <p className="text-base text-[#8a8070] leading-loose">
                   This Cookie Policy explains how{" "}
                   <span className="text-[#c8a96e]" style={{  fontSize: "1.05em", fontStyle: "italic" }}>
-                    LAAMI LABS
+                    LAAMI LTD
                   </span>{" "}
                   uses cookies and similar tracking technologies on{" "}
                   <span className="text-[#d4c9b0]">laamilabs.co.ke</span>.
@@ -684,7 +684,7 @@ export default function CookiePolicy() {
           <FadeSection delay={550}>
             <footer className="pt-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
               <p className="text-[10px] text-[#2a2418] uppercase tracking-[0.2em]">
-                © {new Date().getFullYear()} LAAMI LABS — All rights reserved
+                © {new Date().getFullYear()} LAAMI LTD — All rights reserved
               </p>
 
               <div className="flex items-center gap-8 text-[10px] uppercase tracking-[0.2em]">

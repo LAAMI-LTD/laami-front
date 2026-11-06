@@ -205,7 +205,7 @@ export default function TermsOfService() {
                 <p className="text-base text-[#8a8070] leading-loose">
                   Welcome to{" "}
                   <span className="text-[#c8a96e]" style={{  fontSize: "1.05em", fontStyle: "italic" }}>
-                    LAAMI LABS
+                    LAAMI LTD
                   </span>
                   . By accessing or using our website at{" "}
                   <span className="text-[#d4c9b0]">laamilabs.co.ke</span>,
@@ -218,7 +218,7 @@ export default function TermsOfService() {
                   <p className="text-[10px] uppercase tracking-[0.2em] text-[#c8a96e]/50 mb-3">Legal Notice</p>
                   <p className="text-sm text-[#5a5448] leading-relaxed">
                     These Terms constitute a legally binding agreement between you and
-                    LAAMI LABS. Please read them carefully before using our services.
+                    LAAMI LTD. Please read them carefully before using our services.
                   </p>
                 </div>
               </div>
@@ -235,7 +235,7 @@ export default function TermsOfService() {
                   By accessing our services, you confirm that you are at least 18 years old
                   or have parental or guardian consent, and that you agree to comply with
                   these terms. These terms constitute a legally binding agreement between
-                  you and LAAMI LABS.
+                  you and LAAMI LTD.
                 </p>
               </div>
             </section>
@@ -254,11 +254,11 @@ export default function TermsOfService() {
                 <div className="pl-4">
                   <DefRow
                     term="Company"
-                    definition="Referred to as 'We', 'Us', or 'Our' — refers to LAAMI LABS, Eldoret, Kenya."
+                    definition="Referred to as 'We', 'Us', or 'Our' — refers to LAAMI LTD, Eldoret, Kenya."
                   />
                   <DefRow
                     term="Service"
-                    definition="The website and all associated services provided by LAAMI LABS at laamilabs.co.ke."
+                    definition="The website and all associated services provided by LAAMI LTD at laamilabs.co.ke."
                   />
                   <DefRow
                     term="User"
@@ -355,7 +355,7 @@ export default function TermsOfService() {
                 <p className="text-sm text-[#6a6050] leading-loose">
                   You may not access or use the Service for any purpose other than
                   that for which we make it available. Commercial use requires explicit
-                  prior endorsement from LAAMI LABS.
+                  prior endorsement from LAAMI LTD.
                 </p>
               </div>
 
@@ -401,14 +401,14 @@ export default function TermsOfService() {
                 <div className="space-y-5">
                   <p className="text-sm text-[#6a6050] leading-loose">
                     The Service and its original content, features, and functionality
-                    are and will remain the exclusive property of LAAMI LABS and its
+                    are and will remain the exclusive property of LAAMI LTD and its
                     licensors. Our trademarks and trade dress may not be used in
                     connection with any product or service without our prior written
                     consent.
                   </p>
 
                   <div className="flex flex-wrap gap-3">
-                    {["LAAMI LABS", "LAAMI", "All logos & designs"].map((item) => (
+                    {["LAAMI LTD", "LAAMI", "All logos & designs"].map((item) => (
                       <span
                         key={item}
                         className="px-4 py-2 border border-[#c8a96e]/20 text-[#c8a96e]/60 text-xs uppercase tracking-[0.15em]"
@@ -482,7 +482,7 @@ export default function TermsOfService() {
                     <span className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428]">Limitation</span>
                   </div>
                   <p className="text-xs text-[#4a4438] leading-relaxed mb-4">
-                    LAAMI LABS shall not be liable for any indirect, incidental, or
+                    LAAMI LTD shall not be liable for any indirect, incidental, or
                     consequential damages arising from:
                   </p>
                   <ul className="space-y-1">
@@ -637,7 +637,7 @@ export default function TermsOfService() {
           <FadeSection delay={475}>
             <footer className="pt-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
               <p className="text-[10px] text-[#2a2418] uppercase tracking-[0.2em]">
-                © {new Date().getFullYear()} LAAMI LABS — All rights reserved
+                © {new Date().getFullYear()} LAAMI LTD — All rights reserved
               </p>
 
               <div className="flex items-center gap-8 text-[10px] uppercase tracking-[0.2em]">

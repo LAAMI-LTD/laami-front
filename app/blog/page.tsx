@@ -33,19 +33,19 @@ const options = { next: { revalidate: 30 } };
 const siteUrl = "https://laamilabs.co.ke";
 
 export const metadata: Metadata = {
-  title: "Insights & Stories | LAAMI LABS Blog",
+  title: "Insights & Stories | LAAMI LTD Blog",
   description: "Ideas, practical guides, and stories on software, design, branding, and building businesses in Kenya and across Africa.",
   alternates: { canonical: `${siteUrl}/blog` },
   openGraph: {
     type: "website",
     url: `${siteUrl}/blog`,
-    title: "Insights & Stories | LAAMI LABS Blog",
+    title: "Insights & Stories | LAAMI LTD Blog",
     description: "Ideas, practical guides, and stories on software, design, branding, and building businesses in Kenya and across Africa.",
-    siteName: "LAAMI LABS",
+    siteName: "LAAMI LTD",
     locale: "en_KE",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "LAAMI LABS Blog" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "LAAMI LTD Blog" }],
   },
-  twitter: { card: "summary_large_image", title: "LAAMI LABS Blog", description: "Ideas and practical guides from LAAMI LABS.", images: ["/og-image.png"] },
+  twitter: { card: "summary_large_image", title: "LAAMI LTD Blog", description: "Ideas and practical guides from LAAMI LTD.", images: ["/og-image.png"] },
 };
 
 export default async function IndexPage() {
@@ -53,9 +53,9 @@ export default async function IndexPage() {
 
   const categories = Array.from(
     new Set(
-      posts.flatMap((post) => post.categories?.map((cat: any) => cat.title)),
+      posts.flatMap((post) => post.categories?.map((cat) => cat.title) ?? []).filter(Boolean),
     ),
-  );
+  ) as string[];
 
   const authors = Array.from(
     new Set(

@@ -1,144 +1,50 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { professionalProjects } from "./tabs/software/projects/projects";
 
 type TabId = "software" | "marketing" | "company";
 
 interface HeroShowcaseProps {
   activeTab: TabId;
-  onTabChange: (tab: TabId) => void;
 }
 
-export default function HeroShowcase({
-  activeTab,
-  onTabChange,
-}: HeroShowcaseProps) {
-  const tabs = [
-    { id: "software", label: "Software Development", short: "Software" },
-    {
-      id: "marketing",
-      label: "Marketing",
-      short: "Marketing",
-    },
-    { id: "company", label: "Company Setup", short: "Company" },
-  ] as const;
+const disciplines: Record<TabId, { title: string; subtitle: string }> = {
+  software: { title: "Digital products, made useful.", subtitle: "Software and web experiences designed around the people who use them." },
+  marketing: { title: "Brands with a point of view.", subtitle: "Identity, content, and campaigns that help good work get noticed." },
+  company: { title: "A stronger start for business.", subtitle: "Practical company setup and support for ideas ready to grow." },
+};
 
-  const colors = ["#a50044", "#004d98", "#8a0038", "#003d7a"];
-
-  const activeTabIndex = tabs.findIndex((t) => t.id === activeTab);
-  const activeTabColor = colors[activeTabIndex % colors.length];
-  const activeTabLabel = tabs[activeTabIndex]?.label ?? "";
+export default function HeroShowcase({ activeTab }: HeroShowcaseProps) {
+  const content = disciplines[activeTab];
 
   return (
-    <section className="relative bg-black text-white overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 z-0">
-        <Image src="/work.avif" alt="" fill className="object-cover" priority />
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
+    <section className="relative isolate overflow-hidden bg-[#0b101a] text-white">
+      <div className="absolute inset-0 -z-20">
+        <Image src="/work.avif" alt="" fill priority sizes="100vw" className="object-cover object-center opacity-40" />
       </div>
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-r from-[#080b12] via-[#080b12]/90 to-[#080b12]/45" />
+      <div aria-hidden="true" className="absolute -right-20 top-0 -z-10 h-96 w-96 rounded-full bg-[#a50044]/20 blur-3xl" />
 
-      {/* Hero Content */}
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 items-center px-6 lg:px-20 py-20 lg:py-28">
-        <div className="max-w-xl">
-          <h1 className="text-4xl lg:text-5xl font-light leading-tight">
-            Explore our work on <br />
-            <span style={{ color: activeTabColor }}>{activeTabLabel}</span>
-          </h1>
+      <div className="mx-auto grid min-h-[28rem] max-w-7xl items-end gap-12 px-5 pb-12 pt-32 sm:px-8 sm:pb-16 sm:pt-36 lg:grid-cols-[1fr_auto] lg:items-center lg:px-12 lg:py-28">
+        <div className="max-w-3xl">
+          <p className="mb-5 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/65"><span className="h-px w-8 bg-[#d84f86]" />LAAMI LTD / SELECTED WORK</p>
+          <h1 className="max-w-3xl text-4xl font-semibold leading-[1.02] tracking-[-0.035em] sm:text-6xl lg:text-7xl">{content.title}</h1>
+          <p className="mt-5 max-w-xl text-base leading-7 text-white/70 sm:text-lg">{content.subtitle}</p>
+          <button type="button" onClick={() => {
+            const target = document.getElementById(activeTab === "software" ? "portfolio-projects" : "portfolio-content");
+            target?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+          }} className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-neutral-950 transition-colors duration-150 hover:bg-[#f2d8e2] active:scale-[0.97]">
+            {activeTab === "software" ? "Browse selected projects" : "Explore this discipline"} <ArrowDown size={16} />
+          </button>
+        </div>
 
-          <div className="mt-10">
-            <Link
-              href="#"
-              className="relative overflow-hidden border border-gray-700 px-8 py-4 rounded-lg font-medium text-base md:text-lg text-gray-300 group inline-flex items-center justify-center transition-all duration-500 hover:border-[#004d98]"
-            >
-              <span className="absolute inset-0 scale-x-0 origin-left bg-[#004d98] transition-transform duration-500 group-hover:scale-x-100 z-0" />
-              <span className="relative z-10 group-hover:text-white">
-                View Our Success Stories
-              </span>
-            </Link>
-          </div>
+        <div className="flex items-end justify-between gap-10 border-t border-white/15 pt-5 lg:min-w-64 lg:border-l lg:border-t-0 lg:pb-1 lg:pl-8 lg:pt-0">
+          <div><span className="block text-4xl font-semibold tracking-tight">{String(professionalProjects.length).padStart(2, "0")}</span><span className="mt-1 block text-xs uppercase tracking-[0.15em] text-white/55">Featured projects</span></div>
+          <a href="/contacts" className="inline-flex items-center gap-1 text-sm font-medium text-white/75 transition-colors duration-150 hover:text-white">Start a project <ArrowUpRight size={15} /></a>
         </div>
       </div>
-      {/* ===== STICKY TABS BELOW NAVBAR ===== */}
-      <div
-        className="
-    sticky top-[var(--navbar-height)]
-    z-30
-    border-b border-black/10
-    bg-white/90 backdrop-blur-md
-  "
-      >
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-20">
-          {/* Scroll hint (mobile only) */}
-          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white/90 to-transparent lg:hidden flex items-center justify-end pr-2">
-            <ChevronRight className="w-5 h-5 text-black/50 animate-pulse" />
-          </div>
-
-          <div
-            className="
-        flex gap-3 py-4
-        overflow-x-auto scrollbar-hide
-        lg:justify-center lg:flex-wrap lg:overflow-visible
-      "
-          >
-            {tabs.map((tab, index) => {
-              const isActive = tab.id === activeTab;
-              const color = colors[index % colors.length];
-
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => onTabChange(tab.id)}
-                  className="
-              group relative shrink-0 overflow-hidden
-              px-5 py-3 lg:px-6 lg:py-3
-              rounded-lg border
-              text-sm font-medium
-              transition-all duration-300
-              focus:outline-none focus-visible:ring-2 focus-visible:ring-black/20
-            "
-                  style={{
-                    borderColor: isActive ? color : `${color}55`,
-                    backgroundColor: isActive ? color : "rgba(255,255,255,0.6)",
-                    boxShadow: isActive ? `0 8px 30px ${color}40` : "none",
-                  }}
-                >
-                  {/* Swipe / fill animation */}
-                  {!isActive && (
-                    <span
-                      className="
-                  absolute inset-0
-                  scale-x-0 origin-left
-                  transition-transform duration-500 ease-out
-                  group-hover:scale-x-100
-                "
-                      style={{ backgroundColor: color }}
-                    />
-                  )}
-
-                  {/* Active indicator */}
-                  {isActive && (
-                    <span className="absolute left-0 right-0 bottom-0 h-[2px] bg-white" />
-                  )}
-
-                  {/* Label */}
-                  <span
-                    className="relative z-10 whitespace-nowrap transition-colors duration-300"
-                    style={{ color: isActive ? "#fff" : "#111" }}
-                  >
-                    <span className="lg:hidden">{tab.short}</span>
-                    <span className="hidden lg:inline">{tab.label}</span>
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      {/* Vignette */}
-      <div className="pointer-events-none absolute inset-0 bg-radial-fade z-5" />
     </section>
   );
 }

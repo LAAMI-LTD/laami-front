@@ -197,15 +197,8 @@ export default function About() {
                 : "opacity-0 translate-y-8"
             }`}
           >
-            Laami Labs
+            LAAMI LTD
           </h2>
-
-          <p className="text-lg text-gray-600 dark:text-gray-400 font-light tracking-wide">
-            A Division of{" "}
-            <span className="font-semibold text-[#003d7a] dark:text-blue-400">
-              LAAMI LTD
-            </span>
-          </p>
         </div>
 
         {/* Description with slide-in animation */}
@@ -216,7 +209,7 @@ export default function About() {
         >
           <div className="space-y-8">
             <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed tracking-wide font-light mx-auto">
-              Laami Labs is the digital solutions division of{" "}
+              LAAMI LABS is the digital solutions division of{" "}
               <span className="font-semibold text-[#003d7a] dark:text-blue-400">
                 LAAMI LTD
               </span>
