@@ -37,7 +37,7 @@ export default function Nav({ scrolled }: NavProps) {
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-gray-950/95 backdrop-blur-md shadow-lg border-b border-gray-800" : "bg-gray-950/40 backdrop-blur-sm"}`}>
         <div className="mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <div className="flex justify-between items-center h-16 md:h-20">
-            <Link href="/" className="flex items-center space-x-2 md:space-x-3 flex-shrink-0">
+            <Link href="/" className="flex items-center space-x-2 md:space-x-3 shrink-0">
               <Image src="/laami.png" alt="LAAMI LABS logo, a division of LAAMI LTD" width={42} height={42} priority />
               <div>
                 <div className="text-xl md:text-2xl font-bold tracking-tight leading-tight"><span className="text-[#004d98]">LAAMI</span><span className="text-[#a50044]">LTD</span></div>
