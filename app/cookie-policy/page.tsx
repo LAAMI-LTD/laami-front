@@ -76,7 +76,7 @@ function CookieCard({
           <h3
             className="text-xl font-bold tracking-tight transition-colors duration-300"
             style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
+
               color: hovered ? "#f5f0e8" : "#d4c9b0",
             }}
           >
@@ -119,7 +119,7 @@ function BrowserRow({
         <span className="w-1.5 h-1.5 rounded-full bg-[#c8a96e]/40 group-hover:bg-[#c8a96e] transition-colors duration-300" />
         <span
           className="text-base font-semibold text-[#d4c9b0] group-hover:text-[#f5f0e8] transition-colors duration-300"
-          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+          style={{  }}
         >
           {browser}
         </span>
@@ -156,7 +156,7 @@ function ThirdPartyRow({
       <div>
         <div
           className="text-base font-bold text-[#d4c9b0] group-hover:text-[#f5f0e8] mb-1 transition-colors"
-          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+          style={{  }}
         >
           {name}
         </div>
@@ -181,7 +181,7 @@ function SectionTitle({ roman, title }: { roman: string; title: string }) {
       <div className="h-px flex-1 bg-[#1e1a14]" />
       <h2
         className="text-2xl sm:text-3xl font-bold text-[#f5f0e8]"
-        style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+        style={{  }}
       >
         {title}
       </h2>
@@ -201,7 +201,6 @@ export default function CookiePolicy() {
     <>
       {/* Google Font import */}
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Mono:wght@400;500&display=swap');
 
         @keyframes fade-in {
           from { opacity: 0; transform: translateY(20px); }
@@ -247,7 +246,7 @@ export default function CookiePolicy() {
         }
       `}</style>
 
-      <main className="grain relative min-h-screen bg-[#0a0a08] text-[#7a7060]" style={{ fontFamily: "'DM Mono', monospace" }}>
+      <main className="grain relative min-h-screen bg-[#0a0a08] text-[#7a7060]">
 
         {/* Ambient radial glow */}
         <div className="pointer-events-none fixed inset-0 overflow-hidden">
@@ -292,14 +291,14 @@ export default function CookiePolicy() {
                 <div>
                   <h1
                     className="text-7xl sm:text-8xl md:text-9xl font-bold leading-[0.9] tracking-tight text-[#f5f0e8] mb-2"
-                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    style={{  }}
                   >
                     Cookie
                   </h1>
                   <h1
                     className="text-7xl sm:text-8xl md:text-9xl font-bold leading-[0.9] tracking-tight"
                     style={{
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+
                       WebkitTextStroke: "1px rgba(200,169,110,0.4)",
                       color: "transparent",
                     }}
@@ -314,7 +313,7 @@ export default function CookiePolicy() {
                   </span>
                   <span
                     className="text-lg text-[#c8a96e]"
-                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    style={{  }}
                   >
                     {effectiveDate}
                   </span>
@@ -339,7 +338,7 @@ export default function CookiePolicy() {
               <div>
                 <p className="text-base text-[#8a8070] leading-loose">
                   This Cookie Policy explains how{" "}
-                  <span className="text-[#c8a96e]" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "1.05em", fontStyle: "italic" }}>
+                  <span className="text-[#c8a96e]" style={{  fontSize: "1.05em", fontStyle: "italic" }}>
                     LAAMI LABS
                   </span>{" "}
                   uses cookies and similar tracking technologies on{" "}
@@ -401,7 +400,7 @@ export default function CookiePolicy() {
                     </div>
                     <div
                       className="text-lg font-bold text-[#d4c9b0] group-hover:text-[#f5f0e8] mb-2 transition-colors"
-                      style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                      style={{  }}
                     >
                       {label}
                     </div>
@@ -508,7 +507,7 @@ export default function CookiePolicy() {
                   </div>
                   <h4
                     className="text-2xl font-bold text-[#f5f0e8] mb-4"
-                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    style={{  }}
                   >
                     Session Cookies
                   </h4>
@@ -531,7 +530,7 @@ export default function CookiePolicy() {
                   </div>
                   <h4
                     className="text-2xl font-bold text-[#f5f0e8] mb-4"
-                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    style={{  }}
                   >
                     Persistent Cookies
                   </h4>
@@ -598,7 +597,7 @@ export default function CookiePolicy() {
                 </p>
                 <h3
                   className="text-xl font-bold text-[#d4c9b0] mb-5"
-                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  style={{  }}
                 >
                   Consent & Control
                 </h3>
@@ -620,7 +619,7 @@ export default function CookiePolicy() {
                 </p>
                 <h3
                   className="text-xl font-bold text-[#d4c9b0] mb-5"
-                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  style={{  }}
                 >
                   Updates to This Policy
                 </h3>
@@ -646,7 +645,7 @@ export default function CookiePolicy() {
                   <div className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428] mb-4">Email</div>
                   <div
                     className="text-base font-bold text-[#d4c9b0] group-hover:text-[#c8a96e] transition-colors leading-tight"
-                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    style={{  }}
                   >
                     privacy@laamilabs.co.ke
                   </div>
@@ -660,7 +659,7 @@ export default function CookiePolicy() {
                   <div className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428] mb-4">Phone</div>
                   <div
                     className="text-base font-bold text-[#d4c9b0] group-hover:text-[#c8a96e] transition-colors leading-tight"
-                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    style={{  }}
                   >
                     +234 707 848 528
                   </div>
@@ -671,7 +670,7 @@ export default function CookiePolicy() {
                   <div className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428] mb-4">Office</div>
                   <div
                     className="text-base font-bold text-[#d4c9b0] leading-tight"
-                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    style={{  }}
                   >
                     Eldoret, Kenya
                   </div>

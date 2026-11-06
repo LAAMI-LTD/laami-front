@@ -1,21 +1,9 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import FloatingActions from "./components/FloatingActions";
-import FirebaseAnalytics from "./components/FirebaseAnalytics";
 import CookieBanner from "./components/CookieBanner";
 import NavWrapper from "./components/NavWrapper";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 // Social media URLs
 const FACEBOOK_URL = "https://www.facebook.com/share/1Zv7PtL4T3/";
@@ -192,7 +180,7 @@ export default function RootLayout({
         <meta name="ICBM" content="0.5143, 35.2698" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className="antialiased"
       >
         <NavWrapper />
         {children}
@@ -204,7 +192,6 @@ export default function RootLayout({
 
         <CookieBanner />
 
-        <FirebaseAnalytics />
       </body>
     </html>
   );

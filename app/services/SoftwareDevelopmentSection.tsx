@@ -369,7 +369,7 @@ export default function SoftwareDevelopmentSection() {
                                 },
                                 {
                                     q: "What technologies do you use?",
-                                    a: "We use modern technologies including Next.js, React, Node.js, TypeScript, PostgreSQL, Firebase, and cloud platforms such as AWS and Vercel depending on project requirements.",
+                                    a: "We use modern technologies including Next.js, React, TypeScript, and cloud platforms such as Vercel depending on project requirements.",
                                     icon: Code2,
                                     color: CRIMSON,
                                     bg: CRIMSON_LIGHT,

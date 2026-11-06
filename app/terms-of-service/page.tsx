@@ -25,7 +25,7 @@ function SectionTitle({ roman, title }: { roman: string; title: string }) {
       <div className="h-px flex-1 bg-[#1e1a14]" />
       <h2
         className="text-2xl sm:text-3xl font-bold text-[#f5f0e8]"
-        style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+        style={{  }}
       >
         {title}
       </h2>
@@ -51,7 +51,7 @@ function DefRow({ term, definition }: { term: string; definition: string }) {
     <div className="group flex items-start gap-4 py-5 border-b border-[#1e1a14] hover:border-[#c8a96e]/20 transition-colors">
       <span
         className="shrink-0 text-sm font-bold text-[#c8a96e]/60 group-hover:text-[#c8a96e] transition-colors w-28"
-        style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "1em" }}
+        style={{  fontSize: "1em" }}
       >
         &quot;{term}&quot;
       </span>
@@ -73,7 +73,6 @@ export default function TermsOfService() {
   return (
     <>
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Mono:wght@400;500&display=swap');
 
         @keyframes fade-in {
           from { opacity: 0; transform: translateY(20px); }
@@ -115,7 +114,7 @@ export default function TermsOfService() {
         }
       `}</style>
 
-      <main className="grain relative min-h-screen bg-[#0a0a08] text-[#7a7060]" style={{ fontFamily: "'DM Mono', monospace" }}>
+      <main className="grain relative min-h-screen bg-[#0a0a08] text-[#7a7060]">
 
         {/* Ambient glow */}
         <div className="pointer-events-none fixed inset-0 overflow-hidden">
@@ -158,14 +157,14 @@ export default function TermsOfService() {
                 <div>
                   <h1
                     className="text-7xl sm:text-8xl md:text-9xl font-bold leading-[0.9] tracking-tight text-[#f5f0e8] mb-2"
-                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    style={{  }}
                   >
                     Terms of
                   </h1>
                   <h1
                     className="text-7xl sm:text-8xl md:text-9xl font-bold leading-[0.9] tracking-tight"
                     style={{
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+
                       WebkitTextStroke: "1px rgba(200,169,110,0.4)",
                       color: "transparent",
                     }}
@@ -180,7 +179,7 @@ export default function TermsOfService() {
                   </span>
                   <span
                     className="text-lg text-[#c8a96e]"
-                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    style={{  }}
                   >
                     {effectiveDate}
                   </span>
@@ -205,7 +204,7 @@ export default function TermsOfService() {
               <div>
                 <p className="text-base text-[#8a8070] leading-loose">
                   Welcome to{" "}
-                  <span className="text-[#c8a96e]" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "1.05em", fontStyle: "italic" }}>
+                  <span className="text-[#c8a96e]" style={{  fontSize: "1.05em", fontStyle: "italic" }}>
                     LAAMI LABS
                   </span>
                   . By accessing or using our website at{" "}
@@ -379,7 +378,7 @@ export default function TermsOfService() {
                     <div className="text-xs text-[#3a3428] mb-4 font-bold">{num}</div>
                     <div
                       className="text-base font-bold text-[#d4c9b0] group-hover:text-[#f5f0e8] mb-2 transition-colors"
-                      style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                      style={{  }}
                     >
                       {label}
                     </div>
@@ -536,7 +535,7 @@ export default function TermsOfService() {
                   <p className="text-sm text-[#5a5448] leading-relaxed mb-4">
                     These Terms shall be governed and construed in accordance with the
                     laws of{" "}
-                    <span className="text-[#d4c9b0]" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+                    <span className="text-[#d4c9b0]" style={{  }}>
                       Kenya
                     </span>
                     , without regard to conflict of law provisions.
@@ -577,7 +576,7 @@ export default function TermsOfService() {
                 </p>
                 <p
                   className="text-xl sm:text-2xl font-bold text-[#d4c9b0] leading-relaxed"
-                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  style={{  }}
                 >
                   By using the Service, you acknowledge that you have read these
                   Terms of Service and agree to be bound by them.
@@ -599,7 +598,7 @@ export default function TermsOfService() {
                   <div className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428] mb-4">Legal Email</div>
                   <div
                     className="text-base font-bold text-[#d4c9b0] group-hover:text-[#c8a96e] transition-colors leading-tight"
-                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    style={{  }}
                   >
                     legal@laamilabs.co.ke
                   </div>
@@ -613,7 +612,7 @@ export default function TermsOfService() {
                   <div className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428] mb-4">Phone</div>
                   <div
                     className="text-base font-bold text-[#d4c9b0] group-hover:text-[#c8a96e] transition-colors leading-tight"
-                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    style={{  }}
                   >
                     +234 707 848 528
                   </div>
@@ -624,7 +623,7 @@ export default function TermsOfService() {
                   <div className="text-[10px] uppercase tracking-[0.2em] text-[#3a3428] mb-4">Office</div>
                   <div
                     className="text-base font-bold text-[#d4c9b0] leading-tight"
-                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    style={{  }}
                   >
                     Eldoret, Kenya
                   </div>

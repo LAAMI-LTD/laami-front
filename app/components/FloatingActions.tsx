@@ -3,7 +3,6 @@
 
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
-import { useAnalytics } from "../hooks/useAnalytics";
 
 export default function FloatingActions({
   facebookUrl,
@@ -13,7 +12,6 @@ export default function FloatingActions({
   instagramUrl: string;
 }) {
   const [visible, setVisible] = useState(false);
-  const { logAnalyticsEvent, trackSocialClick } = useAnalytics();
 
   useEffect(() => {
     const onScroll = () => {
@@ -27,26 +25,7 @@ export default function FloatingActions({
   }, []);
 
   const scrollToTop = () => {
-    // Track scroll to top action
-    logAnalyticsEvent("scroll_to_top", {
-      scroll_position: window.scrollY,
-    });
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const handleWhatsAppClick = () => {
-    // Track WhatsApp click
-    logAnalyticsEvent("whatsapp_click", {
-      action: "chat",
-    });
-  };
-
-  const handleFacebookClick = () => {
-    trackSocialClick("facebook");
-  };
-
-  const handleInstagramClick = () => {
-    trackSocialClick("instagram");
   };
 
   return (
@@ -69,7 +48,6 @@ export default function FloatingActions({
         href="https://wa.me/254707848528"
         target="_blank"
         rel="noopener noreferrer"
-        onClick={handleWhatsAppClick}
         aria-label="Chat on WhatsApp"
         className="w-11 h-11 rounded-full bg-[#25D366] text-white
           shadow-lg hover:shadow-xl
@@ -103,7 +81,6 @@ export default function FloatingActions({
         href={facebookUrl}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={handleFacebookClick}
         aria-label="Visit Facebook"
         className="w-11 h-11 rounded-full bg-[#1877F2] text-white
           shadow-lg hover:shadow-xl
@@ -134,7 +111,6 @@ export default function FloatingActions({
         href={instagramUrl}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={handleInstagramClick}
         aria-label="Visit Instagram"
         className="w-11 h-11 rounded-full bg-gradient-to-tr from-[#F58529] via-[#DD2A7B] to-[#8134AF] text-white
           shadow-lg hover:shadow-xl

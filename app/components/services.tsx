@@ -76,10 +76,8 @@ export default function Services() {
       className="min-h-screen bg-gray-50 dark:bg-neutral-900 text-center py-20 px-8 xl:px-0 flex flex-col justify-center transition-colors duration-300"
     >
       <style jsx>{`
-        @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&display=swap");
-
         .service-title {
-          font-family: "Playfair Display", serif;
+          font-family: "Redaction 35", serif;
           font-optical-sizing: auto;
           font-weight: 400;
           font-style: normal;

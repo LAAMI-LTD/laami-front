@@ -22,7 +22,6 @@ export default function ServicesSection() {
     },
     {
       icon: <Database className="w-8 h-8" />,
-      title: "Backend Solutions",
       description: "Scalable APIs, databases, and server infrastructure.",
       color: "#a50044",
       pattern: "diagonal",

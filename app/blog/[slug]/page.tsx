@@ -6,11 +6,11 @@ import {
   createImageUrlBuilder,
   type SanityImageSource,
 } from "@sanity/image-url";
-import { Roboto } from "next/font/google";
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 
 import { client } from "@/sanity/client";
 import RelatedPosts from "./related";
+import { ShareButtons } from "./share";
 import Footer from "@/app/components/footer";
 
 const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{
@@ -34,22 +34,17 @@ const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{
 
 const { projectId, dataset } = client.config();
 
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "900"],
-});
-
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
     ? createImageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 
 const options = { next: { revalidate: 30 } };
+const SITE_URL = "https://laamilabs.co.ke";
 
 // Generate metadata for social sharing - optimized for WhatsApp with prominent image
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> },
-  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { slug } = await params;
   const post = await client.fetch<SanityDocument>(
@@ -80,8 +75,7 @@ export async function generateMetadata(
     ? urlFor(post.mainImage)?.width(1600).height(800).url()
     : null;
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yourdomain.com";
-  const fullUrl = `${baseUrl}/blog/${slug}`;
+  const fullUrl = `${SITE_URL}/blog/${slug}`;
 
   // Shorter description for WhatsApp (image will be more prominent)
   const description = post.excerpt
@@ -90,9 +84,8 @@ export async function generateMetadata(
       : post.excerpt
     : `Read ${post.title} on our blog.`;
 
-  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "Your Blog Name";
-  const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@yourhandle";
-  const facebookAppId = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || "";
+  const siteName = "LAAMI LABS";
+  const twitterHandle = "@LaamiLabs";
 
   return {
     title: `${post.title}`,
@@ -175,7 +168,6 @@ export async function generateMetadata(
       "twitter:image:width": "1600",
       "twitter:image:height": "800",
 
-      ...(facebookAppId && { "fb:app_id": facebookAppId }),
 
       "article:published_time": post.publishedAt,
       "article:author": post.author?.name || "",
@@ -235,15 +227,15 @@ export default async function PostPage({
     },
     publisher: {
       "@type": "Organization",
-      name: process.env.NEXT_PUBLIC_SITE_NAME || "Your Blog Name",
+      name: "LAAMI LABS",
       logo: {
         "@type": "ImageObject",
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/logo.png`,
+        url: `${SITE_URL}/laami.png`,
       },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${safeSlug}`,
+      "@id": `${SITE_URL}/blog/${safeSlug}`,
     },
     keywords: categories.join(", "),
   };
@@ -252,6 +244,7 @@ export default async function PostPage({
   const whatsAppImageUrl = post.mainImage
     ? urlFor(post.mainImage)?.width(1024).height(512).url()
     : null;
+  const postUrl = `${SITE_URL}/blog/${safeSlug}`;
 
   const portableComponents = {
     block: {
@@ -335,6 +328,8 @@ export default async function PostPage({
       />
 
       {/* WhatsApp-specific meta tags - injected directly for prominence */}
+      <meta property="og:url" content={postUrl} />
+      <meta property="og:site_name" content="LAAMI LABS" />
       <meta property="og:image" content={whatsAppImageUrl || heroImage || ""} />
       <meta property="og:image:width" content="1024" />
       <meta property="og:image:height" content="512" />
@@ -429,10 +424,12 @@ export default async function PostPage({
         <section className="relative">
           <div className="mx-auto w-full px-4 py-12 sm:px-6 md:px-10 lg:px-14 xl:px-20">
             <article className="mx-auto w-full max-w-6xl">
+              <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-gray-200 pb-6 dark:border-white/10">
+                <p className="text-sm font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Share this article</p>
+                <ShareButtons url={postUrl} title={post.title} description={post.excerpt} image={whatsAppImageUrl || heroImage || undefined} showLabels variant="full" />
+              </div>
               <div
                 className={`
-                  ${roboto.className}
-
                   prose
                   prose-base sm:prose-lg lg:prose-xl
                   dark:prose-invert

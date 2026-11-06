@@ -30,7 +30,7 @@ export const professionalProjects: ProjectType[] = [
     id: "shepherd",
     title: "The Shepherd App",
     description:
-      "A full-featured spiritual life companion mobile app built with Flutter, powered by NestJS backend and MongoDB database.",
+      "A full-featured spiritual life companion mobile app built with Flutter, NestJS, and MongoDB.",
     category: "Religious",
     year: 2024,
     clientType: "church",
@@ -229,7 +229,7 @@ export const professionalProjects: ProjectType[] = [
     id: "melodia",
     title: "Melodia Institute of Music",
     description:
-      "A modern music institute website built with Next.js 14, TypeScript, and Tailwind CSS featuring a sleek design and Firebase-powered backend. Server-side rendering for optimal performance and SEO.",
+      "A modern music institute website built with Next.js 14, TypeScript, and Tailwind CSS, with server rendering for performance and SEO.",
     category: "Educational",
     year: 2025,
     clientType: "education",
@@ -244,10 +244,10 @@ export const professionalProjects: ProjectType[] = [
       "/portfolio/melodia/nav2.png",
       "/portfolio/melodia/about2.png",
     ],
-    tech: ["Next.js", "TypeScript", "Tailwind CSS", "Firebase", "SSR", "SEO"],
+    tech: ["Next.js", "TypeScript", "Tailwind CSS", "SSR", "SEO"],
     features: [
       "Server-side rendering for optimal performance",
-      "Firebase integration for secure contact forms",
+      "Secure contact forms",
       "Dynamic course catalog with filtering",
       "Fully responsive mobile-first design",
       "Image optimization with Next.js Image",
@@ -256,7 +256,6 @@ export const professionalProjects: ProjectType[] = [
       { name: "Next.js", icon: "SiNextdotjs", color: "#000000" },
       { name: "TypeScript", icon: "SiTypescript", color: "#3178C6" },
       { name: "Tailwind CSS", icon: "SiTailwindcss", color: "#38BDF8" },
-      { name: "Firebase", icon: "SiFirebase", color: "#FFCA28" },
     ],
     screenshots: [
       { src: "/portfolio/melodia/home1.png", type: "desktop", theme: "light" },
@@ -461,7 +460,6 @@ export const techIcons: Record<string, { icon: string; color: string }> = {
   "Next.js": { icon: "SiNextdotjs", color: "#000000" },
   TypeScript: { icon: "SiTypescript", color: "#3178C6" },
   "Tailwind CSS": { icon: "SiTailwindcss", color: "#38BDF8" },
-  Firebase: { icon: "SiFirebase", color: "#FFCA28" },
   React: { icon: "SiReact", color: "#61DAFB" },
   "Node.js": { icon: "SiNodedotjs", color: "#339933" },
   Express: { icon: "SiExpress", color: "#000000" },
@@ -492,7 +490,6 @@ export const techStackOptions = [
   "Tailwind CSS",
   "Node.js",
   "MongoDB",
-  "Firebase",
   "WordPress",
   "Flutter",
 ];
