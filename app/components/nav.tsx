@@ -40,8 +40,7 @@ export default function Nav({ scrolled }: NavProps) {
             <Link href="/" className="flex items-center space-x-2 md:space-x-3 flex-shrink-0">
               <Image src="/laami.png" alt="LAAMI LABS logo, a division of LAAMI LTD" width={42} height={42} priority />
               <div>
-                <div className="text-xl md:text-2xl font-bold tracking-tight leading-tight"><span className="text-[#004d98]">LAAMI</span><span className="text-[#a50044]">LABS</span></div>
-                <div className="hidden sm:block text-[8px] md:text-[10px] font-medium tracking-widest text-gray-500 -mt-1">A DIVISION OF LAAMI LTD</div>
+                <div className="text-xl md:text-2xl font-bold tracking-tight leading-tight"><span className="text-[#004d98]">LAAMI</span><span className="text-[#a50044]">LTD</span></div>
               </div>
             </Link>
             <div className="hidden md:flex items-center space-x-6 lg:space-x-10">
